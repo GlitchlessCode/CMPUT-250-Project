@@ -1,0 +1,10 @@
+{
+  "name": "user2",
+  "date": "2025-09-01",
+  "bio": "something idk",
+  "messages": [
+    "fuck"
+  ],
+  "appeal_message": "I didn't do anything wrong",
+  "should_approve": false
+}
