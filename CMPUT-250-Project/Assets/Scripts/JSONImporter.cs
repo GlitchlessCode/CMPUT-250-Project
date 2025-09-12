@@ -2,25 +2,32 @@
 using System.IO;
 using UnityEngine;
 
-// For now, this dataclass will just be kept inside of this file too
 [System.Serializable]
-public class UserEntry
+public struct UserEntry
 {
-    // Props are readonly
     public string name;
-
+    public string date;
+    public string bio;
+    public int image_index;
     public string[] messages;
+    public string appeal_message;
+    public bool should_approve;
 }
+
+[System.Serializable]
+public struct DirectMessage { }
 
 public class JSONImporter : MonoBehaviour
 {
     void Start()
     {
         // Example using ImportDirectory
-        List<UserEntry> users = ImportDirectory<UserEntry>(Path.Combine("lang", "en", "users"));
+        List<UserEntry> users = ImportDirectory<UserEntry>(
+            Path.Combine("lang", "en", "days", "day1")
+        );
         foreach (UserEntry user in users)
         {
-            Debug.Log("name: " + user.name + ", messages: " + string.Join(",", user.messages));
+            Debug.Log(JsonUtility.ToJson(user));
         }
     }
 
@@ -35,7 +42,12 @@ public class JSONImporter : MonoBehaviour
         // try
         // {
         List<T> items = new List<T>();
-        foreach (string filename in Directory.EnumerateFiles(path))
+
+        // Sort the filenames
+        List<string> files = new List<string>(Directory.EnumerateFiles(path));
+        files.Sort();
+
+        foreach (string filename in files)
         {
             if (filename.EndsWith(".json"))
             {

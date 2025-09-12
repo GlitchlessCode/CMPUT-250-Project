@@ -1,0 +1,11 @@
+{
+  "name": "user1",
+  "date": "2025-09-11",
+  "bio": "This is my bio!",
+  "messages": [
+    "My first message here!",
+    "My second message here"
+  ],
+  "appeal_message": "Please please please let me back in",
+  "should_approve": true
+}
