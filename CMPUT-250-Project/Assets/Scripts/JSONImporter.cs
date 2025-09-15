@@ -19,17 +19,17 @@ public struct DirectMessage { }
 
 public class JSONImporter : MonoBehaviour
 {
-    void Start()
-    {
-        // Example using ImportDirectory
-        List<UserEntry> users = ImportDirectory<UserEntry>(
-            Path.Combine("lang", "en", "days", "day1")
-        );
-        foreach (UserEntry user in users)
-        {
-            Debug.Log(JsonUtility.ToJson(user));
-        }
-    }
+    // void Start()
+    // {
+    //     // Example using ImportDirectory
+    //     List<UserEntry> users = ImportDirectory<UserEntry>(
+    //         Path.Combine("lang", "en", "days", "day1")
+    //     );
+    //     foreach (UserEntry user in users)
+    //     {
+    //         Debug.Log(JsonUtility.ToJson(user));
+    //     }
+    // }
 
     /// <summary>
     /// Import all .json files in a directory as type T

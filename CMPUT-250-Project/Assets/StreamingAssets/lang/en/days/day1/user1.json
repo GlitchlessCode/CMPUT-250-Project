@@ -1,11 +1,13 @@
 {
-  "name": "user1",
-  "date": "2025-09-11",
-  "bio": "This is my bio!",
+  "name": "poopBoi",
+  "date": "2025/03/26",
+  "bio": "Poop is delicious",
+  "image_index": 0,
   "messages": [
-    "My first message here!",
-    "My second message here"
+    "omg poop",
+    "I love eating phoquing poop",
+    "Ummm why did I get a time out??? I just said phoque???"
   ],
-  "appeal_message": "Please please please let me back in",
+  "appeal_message": "pppplllllsssssss",
   "should_approve": true
 }
