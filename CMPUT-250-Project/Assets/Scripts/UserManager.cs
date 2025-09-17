@@ -7,31 +7,29 @@ public class UserManager : MonoBehaviour
 {
     private JSONImporter jsonImporter;
     private int currentUserIndex = 0;
-    public List<UserEntry> users;
+    private List<UserEntry> users;
 
-
-    void Start() 
+    void Awake()
     {
-
         // load users
         jsonImporter = GetComponent<JSONImporter>();
-        users = jsonImporter.ImportDirectory<UserEntry>(
-            Path.Combine("lang", "en", "days", "day1")
-        );
+        users = jsonImporter.ImportDirectory<UserEntry>(Path.Combine("lang", "en", "days", "day1"));
 
         // set first user
-         if (users == null || users.Count == 0)
-         {
+        if (users == null || users.Count == 0)
+        {
             currentUserIndex = -1; // no users loaded
-         } else {
-            currentUserIndex = 0;  // first user by default
-         }
+        }
+        else
+        {
+            currentUserIndex = 0; // first user by default
+        }
     }
 
     void Update()
     {
         // what i commented out is an example usage of the methods in usermanager
-        
+
         // // testing
         // if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)){
         //     MoveToNextUser();
@@ -39,9 +37,6 @@ public class UserManager : MonoBehaviour
         // if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)){
         //     Debug.Log(GetCurrentUserName());
         // }
-
-        
-
     }
 
     public UserEntry? GetCurrentUser()
@@ -61,17 +56,17 @@ public class UserManager : MonoBehaviour
     public bool MoveToNextUser()
     {
         // if we somehow get here with no users
-        if (users == null || users.Count == 0) 
+        if (users == null || users.Count == 0)
         {
             return false;
         }
-        
+
         // for now, loop back to first user after last one
         currentUserIndex++;
 
         if (currentUserIndex >= users.Count)
         {
-            currentUserIndex = 0; 
+            currentUserIndex = 0;
         }
 
         // return true if successful
@@ -83,10 +78,10 @@ public class UserManager : MonoBehaviour
     {
         if (currentUserIndex >= users.Count)
         {
-            currentUserIndex = userIndex; 
+            currentUserIndex = userIndex;
             return true;
         }
-        
+
         return false;
     }
 
@@ -99,7 +94,7 @@ public class UserManager : MonoBehaviour
         {
             return user.Value.name;
         }
-        else   
+        else
         {
             return null;
         }
@@ -114,12 +109,12 @@ public class UserManager : MonoBehaviour
         {
             return user.Value.date;
         }
-        else   
+        else
         {
             return null;
         }
     }
-    
+
     // get your users bio
     public string GetCurrentUserBio()
     {
@@ -129,7 +124,7 @@ public class UserManager : MonoBehaviour
         {
             return user.Value.bio;
         }
-        else   
+        else
         {
             return null;
         }
@@ -144,7 +139,7 @@ public class UserManager : MonoBehaviour
         {
             return user.Value.image_index;
         }
-        else   
+        else
         {
             return null;
         }
@@ -159,7 +154,7 @@ public class UserManager : MonoBehaviour
         {
             return user.Value.appeal_message;
         }
-        else   
+        else
         {
             return null;
         }
@@ -174,7 +169,7 @@ public class UserManager : MonoBehaviour
         {
             return user.Value.should_approve;
         }
-        else   
+        else
         {
             return null;
         }
@@ -189,7 +184,7 @@ public class UserManager : MonoBehaviour
         {
             return user.Value.messages[index];
         }
-        else   
+        else
         {
             return null;
         }
@@ -204,7 +199,7 @@ public class UserManager : MonoBehaviour
         {
             return user.Value.messages;
         }
-        else   
+        else
         {
             return null;
         }
