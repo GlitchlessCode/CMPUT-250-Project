@@ -17,24 +17,12 @@ public struct UserEntry
 [System.Serializable]
 public struct DirectMessage { }
 
-public class JSONImporter : MonoBehaviour
+public static class JSONImporter
 {
-    // void Start()
-    // {
-    //     // Example using ImportDirectory
-    //     List<UserEntry> users = ImportDirectory<UserEntry>(
-    //         Path.Combine("lang", "en", "days", "day1")
-    //     );
-    //     foreach (UserEntry user in users)
-    //     {
-    //         Debug.Log(JsonUtility.ToJson(user));
-    //     }
-    // }
-
     /// <summary>
     /// Import all .json files in a directory as type T
     /// </summary>
-    public List<T> ImportDirectory<T>(string dir_path)
+    public static List<T> ImportDirectory<T>(string dir_path)
     {
         string path = Path.Combine(Application.streamingAssetsPath, dir_path);
 
@@ -61,7 +49,7 @@ public class JSONImporter : MonoBehaviour
         // }
     }
 
-    private T ImportFile<T>(string filename)
+    private static T ImportFile<T>(string filename)
     {
         // try
         // {
@@ -75,7 +63,7 @@ public class JSONImporter : MonoBehaviour
         // }
     }
 
-    private string ReadFileToString(string path)
+    private static string ReadFileToString(string path)
     {
         // try
         // {

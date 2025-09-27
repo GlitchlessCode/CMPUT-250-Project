@@ -5,15 +5,13 @@ using UnityEngine;
 
 public class UserManager : MonoBehaviour
 {
-    private JSONImporter jsonImporter;
     private int currentUserIndex = 0;
     private List<UserEntry> users;
 
     void Awake()
     {
         // load users
-        jsonImporter = GetComponent<JSONImporter>();
-        users = jsonImporter.ImportDirectory<UserEntry>(Path.Combine("lang", "en", "days", "day1"));
+        users = JSONImporter.ImportDirectory<UserEntry>(Path.Combine("lang", "en", "days", "day1"));
 
         // set first user
         if (users == null || users.Count == 0)
