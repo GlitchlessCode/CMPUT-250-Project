@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 [System.Serializable]
@@ -22,24 +23,21 @@ public static class JSONImporter
     /// <summary>
     /// Import all .json files in a directory as type T
     /// </summary>
-    public static List<T> ImportDirectory<T>(string dir_path)
+    public static Dictionary<string, T> ImportDirectory<T>(string dir_path)
     {
         string path = Path.Combine(Application.streamingAssetsPath, dir_path);
 
         // All try-catches are commented for now to imply fallability, even if I haven't taken the time to implement correct error handling
         // try
         // {
-        List<T> items = new List<T>();
+        Dictionary<string, T> items = new Dictionary<string, T>();
 
-        // Sort the filenames
-        List<string> files = new List<string>(Directory.EnumerateFiles(path));
-        files.Sort();
-
-        foreach (string filename in files)
+        foreach (string filename in Directory.EnumerateFiles(path))
         {
             if (filename.EndsWith(".json"))
             {
-                items.Add(ImportFile<T>(filename));
+                string simple_name = Path.GetFileNameWithoutExtension(filename);
+                items.Add(simple_name, ImportFile<T>(filename));
             }
         }
         return items;

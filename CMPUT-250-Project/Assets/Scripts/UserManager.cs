@@ -3,45 +3,50 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class UserManager : MonoBehaviour
+public class UserManager : Subscriber
 {
+    public DayDefinition Day;
+
     private int currentUserIndex = 0;
-    private List<UserEntry> users;
+    private Dictionary<string, UserEntry> users;
 
-    void Awake()
+    [Header("Event Listeners")]
+    public BoolGameEvent ResolveAppeal;
+    public UnitGameEvent UserInfoRequest;
+
+    [Header("Events")]
+    public UserEntryGameEvent UserLoaded;
+
+    // `true` implies player chose correctly, `false` implies player chose incorrectly
+    public BoolGameEvent AfterAppeal;
+
+    protected override void Subscribe()
     {
+        ResolveAppeal?.Subscribe(OnResolveAppeal);
+        UserInfoRequest?.Subscribe(OnUserInfoRequest);
+    }
+
+    protected override void AfterSubscribe()
+    {
+        if (Day == null)
+        {
+            Day = new DayDefinition("daynull");
+        }
+
         // load users
-        users = JSONImporter.ImportDirectory<UserEntry>(Path.Combine("lang", "en", "days", "day1"));
+        users = JSONImporter.ImportDirectory<UserEntry>(
+            Path.Combine("lang", "en", "days", Day.Directory)
+        );
 
-        // set first user
-        if (users == null || users.Count == 0)
-        {
-            currentUserIndex = -1; // no users loaded
-        }
-        else
-        {
-            currentUserIndex = 0; // first user by default
-        }
+        currentUserIndex = -1;
+        MoveToNextUser();
     }
 
-    void Update()
-    {
-        // what i commented out is an example usage of the methods in usermanager
-
-        // // testing
-        // if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)){
-        //     MoveToNextUser();
-        // }
-        // if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)){
-        //     Debug.Log(GetCurrentUserName());
-        // }
-    }
-
-    public UserEntry? GetCurrentUser()
+    private UserEntry? GetCurrentUser()
     {
         if (users != null && currentUserIndex >= 0 && currentUserIndex < users.Count)
         {
-            return users[currentUserIndex];
+            return users[Day.Users[currentUserIndex].filename];
         }
 
         // Might be worth making an "error" user that just displays a bunch of shit to use when things go wrong
@@ -51,7 +56,7 @@ public class UserManager : MonoBehaviour
     }
 
     // moves to next user index
-    public bool MoveToNextUser()
+    private bool MoveToNextUser()
     {
         // if we somehow get here with no users
         if (users == null || users.Count == 0)
@@ -66,6 +71,8 @@ public class UserManager : MonoBehaviour
         {
             currentUserIndex = 0;
         }
+
+        UserLoaded?.Emit(users[Day.Users[currentUserIndex].filename]);
 
         // return true if successful
         return true;
@@ -83,123 +90,34 @@ public class UserManager : MonoBehaviour
         return false;
     }
 
-    // get users username
-    public string GetCurrentUserName()
+    private void OnResolveAppeal(bool decision)
     {
-        var user = GetCurrentUser();
-
+        UserEntry? user = GetCurrentUser();
         if (user != null)
         {
-            return user.Value.name;
+            bool success = decision == user.Value.should_approve;
+
+            AfterAppeal?.Emit(success);
+            foreach (BoolGameEvent after in Day.Users[currentUserIndex].after)
+            {
+                after.Emit(success);
+            }
         }
-        else
+
+        MoveToNextUser();
+
+        foreach (UnitGameEvent before in Day.Users[currentUserIndex].before)
         {
-            return null;
+            before.Emit();
         }
     }
 
-    // get the date for your messages
-    public string GetCurrentUserDate()
+    private void OnUserInfoRequest()
     {
-        var user = GetCurrentUser();
-
+        UserEntry? user = GetCurrentUser();
         if (user != null)
         {
-            return user.Value.date;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    // get your users bio
-    public string GetCurrentUserBio()
-    {
-        var user = GetCurrentUser();
-
-        if (user != null)
-        {
-            return user.Value.bio;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    // get the index related to what the current image should be
-    public int? GetCurrentUserImg()
-    {
-        var user = GetCurrentUser();
-
-        if (user != null)
-        {
-            return user.Value.image_index;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    // get the appeal message
-    public string GetCurrentUserAppeal()
-    {
-        var user = GetCurrentUser();
-
-        if (user != null)
-        {
-            return user.Value.appeal_message;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    // get the approval bool
-    public bool? GetCurrentUserApproval()
-    {
-        var user = GetCurrentUser();
-
-        if (user != null)
-        {
-            return user.Value.should_approve;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    // get a specific message
-    public string GetCurrentUserMessage(int index)
-    {
-        var user = GetCurrentUser();
-
-        if (user != null)
-        {
-            return user.Value.messages[index];
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    // get all messages
-    public string[] GetCurrentUserMessagesAll()
-    {
-        var user = GetCurrentUser();
-
-        if (user != null)
-        {
-            return user.Value.messages;
-        }
-        else
-        {
-            return null;
+            UserLoaded.Emit(user.Value);
         }
     }
 

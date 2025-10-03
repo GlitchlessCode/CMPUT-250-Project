@@ -3,104 +3,109 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AppealPanelController : MonoBehaviour
+public class AppealPanelController : Subscriber
 {
-    [Header("Data")]
-    public UserManager userManager;
-
     [Header("UI")]
-    public Text nameText;
-    public Text dateText;
-    public Text bioText;
-    public Text appealText;
+    public Text NameText;
+    public Text DateText;
+    public Text BioText;
+    public Text AppealText;
 
     [Header("Chat")]
-    public Text chatLogText; // ← NEW
-    public ScrollRect chatScroll; // ← optional: auto-scroll
-
-    [Header("Buttons")]
-    public Button approveButton;
-    public Button ignoreButton;
+    public Text ChatLogText; // ← NEW
+    public ScrollRect ChatScroll; // ← optional: auto-scroll
 
     [Header("Delay Time")]
     public float delayTime = 1f;
-    
+
     private bool canUpdate = true;
-    
-    void Awake()
-    { 
-        approveButton.onClick.AddListener(OnDecision);
-        ignoreButton.onClick.AddListener(OnDecision);
+
+    [Header("Event Listeners")]
+    public UserEntryGameEvent RefreshUserInfo;
+
+    [Header("Events")]
+    public BoolGameEvent ResolveAppeal;
+    public UnitGameEvent RequestUser;
+
+    protected override void Subscribe()
+    {
+        RefreshUserInfo?.Subscribe(OnRefreshUserInfo);
     }
 
     void OnEnable()
     {
+        RefreshUI(null);
+        RequestUser?.Emit();
         canUpdate = true;
-        RefreshUI();
     }
 
-    void RefreshUI()
+    void RefreshUI(UserEntry? userOption)
     {
-        var uOpt = userManager.GetCurrentUser();
-        if (uOpt == null)
+        if (userOption == null)
         {
-            nameText.text = "No appeals loaded";
-            dateText.text = bioText.text = appealText.text = "";
-            if (chatLogText)
-                chatLogText.text = "";
+            NameText.text = "No appeals loaded";
+            DateText.text = BioText.text = AppealText.text = "";
+            if (ChatLogText)
+                ChatLogText.text = "";
             return;
         }
 
-        var u = uOpt.Value;
-        nameText.text = u.name;
-        dateText.text = u.date;
-        bioText.text = u.bio;
-        appealText.text = u.appeal_message;
+        var user = userOption.Value;
+        NameText.text = user.name;
+        DateText.text = user.date;
+        BioText.text = user.bio;
+        AppealText.text = user.appeal_message;
 
         // Build chat log from messages[]
-        if (chatLogText)
+        if (ChatLogText)
         {
-            var msgs = userManager.GetCurrentUserMessagesAll();
-            chatLogText.text =
+            var msgs = user.messages;
+            ChatLogText.text =
                 (msgs != null && msgs.Length > 0)
                     ? string.Join("\n\n", msgs) // blank line between messages
                     : "";
 
             // optional: scroll to bottom after layout updates
-            if (chatScroll)
+            if (ChatScroll)
             {
                 Canvas.ForceUpdateCanvases();
-                chatScroll.verticalNormalizedPosition = 0f; // 0 = bottom, 1 = top
+                ChatScroll.verticalNormalizedPosition = 0f; // 0 = bottom, 1 = top
             }
         }
     }
 
-    void OnDecision()
+    void OnRefreshUserInfo(UserEntry user)
     {
-        if (userManager.MoveToNextUser())
-            RefreshUI();
+        RefreshUI(user);
     }
 
-    void Update(){
-        if(Input.GetKey(KeyCode.A)){
-            if(canUpdate == true){
-                if(userManager.MoveToNextUser()){
-                    RefreshUI();
-                    StartCoroutine(DelayAction(delayTime));
-                }
+    public void OnDecision(bool decision)
+    {
+        ResolveAppeal?.Emit(decision);
+    }
+
+    void Update()
+    {
+        if (Input.GetKey(KeyCode.A))
+        {
+            if (canUpdate == true)
+            {
+                OnDecision(false);
+                StartCoroutine(DelayAction(delayTime));
             }
         }
-        if(Input.GetKey(KeyCode.D)){
-            if(canUpdate == true){
-                if(userManager.MoveToNextUser()){
-                    RefreshUI();
-                    StartCoroutine(DelayAction(delayTime));
-                }
+        if (Input.GetKey(KeyCode.D))
+        {
+            if (canUpdate == true)
+            {
+                OnDecision(false);
+                StartCoroutine(DelayAction(delayTime));
             }
         }
     }
 
-    IEnumerator DelayAction(float time){
+    IEnumerator DelayAction(float time)
+    {
         canUpdate = false;
         Debug.Log("Updating...");
         yield return new WaitForSeconds(time);
