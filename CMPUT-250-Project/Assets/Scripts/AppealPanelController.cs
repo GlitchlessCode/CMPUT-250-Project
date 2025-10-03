@@ -3,75 +3,71 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AppealPanelController : MonoBehaviour
+public class AppealPanelController : Subscriber
 {
-    [Header("Data")]
-    public UserManager userManager;
-
     [Header("UI")]
-    public Text nameText;
-    public Text dateText;
-    public Text bioText;
-    public Text appealText;
+    public Text NameText;
+    public Text DateText;
+    public Text BioText;
+    public Text AppealText;
 
     [Header("Chat")]
-    public Text chatLogText; // ← NEW
-    public ScrollRect chatScroll; // ← optional: auto-scroll
+    public Text ChatLogText; // ← NEW
+    public ScrollRect ChatScroll; // ← optional: auto-scroll
 
-    [Header("Buttons")]
-    public Button approveButton;
-    public Button ignoreButton;
+    [Header("Event Listeners")]
+    public UserEntryGameEvent RefreshUserInfo;
 
-    void Awake()
+    [Header("Events")]
+    public BoolGameEvent ResolveAppeal;
+
+    protected override void Subscribe()
     {
-        approveButton.onClick.AddListener(OnDecision);
-        ignoreButton.onClick.AddListener(OnDecision);
+        RefreshUserInfo?.Subscribe(OnRefreshUserInfo);
     }
 
-    void OnEnable()
+    void RefreshUI(UserEntry? userOption)
     {
-        RefreshUI();
-    }
-
-    void RefreshUI()
-    {
-        var uOpt = userManager.GetCurrentUser();
-        if (uOpt == null)
+        if (userOption == null)
         {
-            nameText.text = "No appeals loaded";
-            dateText.text = bioText.text = appealText.text = "";
-            if (chatLogText)
-                chatLogText.text = "";
+            NameText.text = "No appeals loaded";
+            DateText.text = BioText.text = AppealText.text = "";
+            if (ChatLogText)
+                ChatLogText.text = "";
             return;
         }
 
-        var u = uOpt.Value;
-        nameText.text = u.name;
-        dateText.text = u.date;
-        bioText.text = u.bio;
-        appealText.text = u.appeal_message;
+        var user = userOption.Value;
+        NameText.text = user.name;
+        DateText.text = user.date;
+        BioText.text = user.bio;
+        AppealText.text = user.appeal_message;
 
         // Build chat log from messages[]
-        if (chatLogText)
+        if (ChatLogText)
         {
-            var msgs = userManager.GetCurrentUserMessagesAll();
-            chatLogText.text =
+            var msgs = user.messages;
+            ChatLogText.text =
                 (msgs != null && msgs.Length > 0)
                     ? string.Join("\n\n", msgs) // blank line between messages
                     : "";
 
             // optional: scroll to bottom after layout updates
-            if (chatScroll)
+            if (ChatScroll)
             {
                 Canvas.ForceUpdateCanvases();
-                chatScroll.verticalNormalizedPosition = 0f; // 0 = bottom, 1 = top
+                ChatScroll.verticalNormalizedPosition = 0f; // 0 = bottom, 1 = top
             }
         }
     }
 
-    void OnDecision()
+    void OnRefreshUserInfo(UserEntry user)
     {
-        if (userManager.MoveToNextUser())
-            RefreshUI();
+        RefreshUI(user);
+    }
+
+    public void OnDecision(bool decision)
+    {
+        ResolveAppeal?.Emit(decision);
     }
 }

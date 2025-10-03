@@ -1093,7 +1093,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 676759490}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1239063810}
+        m_MethodName: OnDecision
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &676759490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1746,15 +1757,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 388d279957e6a8f45876113a138c4026, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  userManager: {fileID: 1539020978}
-  nameText: {fileID: 1651128188}
-  dateText: {fileID: 1852667167}
-  bioText: {fileID: 1907957896}
-  appealText: {fileID: 558936790}
-  chatLogText: {fileID: 1146844095}
-  chatScroll: {fileID: 0}
-  approveButton: {fileID: 1744924064}
-  ignoreButton: {fileID: 676759489}
+  NameText: {fileID: 1651128188}
+  DateText: {fileID: 1852667167}
+  BioText: {fileID: 1907957896}
+  AppealText: {fileID: 558936790}
+  ChatLogText: {fileID: 1146844095}
+  ChatScroll: {fileID: 0}
+  RefreshUserInfo: {fileID: 11400000, guid: 2e23c26185f87442795df3f94db57909, type: 2}
+  ResolveAppeal: {fileID: 11400000, guid: 4c381b5a82e316b71a52ad513c65bbb5, type: 2}
 --- !u!1 &1457516533
 GameObject:
   m_ObjectHideFlags: 0
@@ -1928,6 +1938,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3df76cb733ee772448cd1ffa253ae05c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Day: {fileID: 11400000, guid: 360076ef013db9f3fa77780f7a9851cb, type: 2}
+  ResolveAppeal: {fileID: 11400000, guid: 4c381b5a82e316b71a52ad513c65bbb5, type: 2}
+  UserLoaded: {fileID: 11400000, guid: 2e23c26185f87442795df3f94db57909, type: 2}
+  AfterAppeal: {fileID: 0}
 --- !u!4 &1539020980
 Transform:
   m_ObjectHideFlags: 0
@@ -2101,7 +2115,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1744924065}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1239063810}
+        m_MethodName: OnDecision
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &1744924065
 MonoBehaviour:
   m_ObjectHideFlags: 0
