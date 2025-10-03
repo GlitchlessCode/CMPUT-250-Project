@@ -16,12 +16,12 @@ public class TabMenu : MonoBehaviour
     void Start()
     {
         rulesTab.isOn = true;
-        appealTab.onValueChanged.AddListener(appealTime);
-        rulesTab.onValueChanged.AddListener(rulesTime);
-        dmsTab.onValueChanged.AddListener(dmsTime);
+        appealTab.onValueChanged.AddListener(appealActive);
+        rulesTab.onValueChanged.AddListener(rulesActive);
+        dmsTab.onValueChanged.AddListener(dmsActive);
     }
 
-    private void appealTime(bool arg0)
+    private void appealActive(bool arg0)
     {
         if (appealTab.isOn)
         {
@@ -30,7 +30,7 @@ public class TabMenu : MonoBehaviour
             dmsPanel.gameObject.SetActive(false);
         }
     }
-    private void rulesTime(bool arg0)
+    private void rulesActive(bool arg0)
     {
         if (rulesTab.isOn)
         {
@@ -39,13 +39,28 @@ public class TabMenu : MonoBehaviour
             dmsPanel.gameObject.SetActive(false);
         }
     }
-    private void dmsTime(bool arg0)
+    private void dmsActive(bool arg0)
     {
         if (dmsTab.isOn)
         {
             appealPanel.gameObject.SetActive(false);
             rulesPanel.gameObject.SetActive(false);
             dmsPanel.gameObject.SetActive(true);
+        }
+    }
+    void Update(){
+
+        if(Input.GetKey(KeyCode.Alpha1) || Input.GetKey(KeyCode.Keypad1))
+        {
+            rulesTab.isOn = !rulesTab.isOn;
+        }
+        else if(Input.GetKey(KeyCode.Alpha2) || Input.GetKey(KeyCode.Keypad2))
+        {
+            appealTab.isOn = !appealTab.isOn;
+        }
+        else if(Input.GetKey(KeyCode.Alpha3) || Input.GetKey(KeyCode.Keypad3))
+        {
+            dmsTab.isOn = !dmsTab.isOn;
         }
     }
 
