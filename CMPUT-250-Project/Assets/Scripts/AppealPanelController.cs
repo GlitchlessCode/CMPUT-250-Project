@@ -25,6 +25,7 @@ public class AppealPanelController : Subscriber
 
     [Header("Events")]
     public BoolGameEvent ResolveAppeal;
+    public UnitGameEvent RequestUser;
 
     protected override void Subscribe()
     {
@@ -34,6 +35,7 @@ public class AppealPanelController : Subscriber
     void OnEnable()
     {
         RefreshUI(null);
+        RequestUser?.Emit();
         canUpdate = true;
     }
 
@@ -88,22 +90,16 @@ public class AppealPanelController : Subscriber
         {
             if (canUpdate == true)
             {
-                if (userManager.MoveToNextUser())
-                {
-                    RefreshUI();
-                    StartCoroutine(DelayAction(delayTime));
-                }
+                OnDecision(false);
+                StartCoroutine(DelayAction(delayTime));
             }
         }
         if (Input.GetKey(KeyCode.D))
         {
             if (canUpdate == true)
             {
-                if (userManager.MoveToNextUser())
-                {
-                    RefreshUI();
-                    StartCoroutine(DelayAction(delayTime));
-                }
+                OnDecision(false);
+                StartCoroutine(DelayAction(delayTime));
             }
         }
     }

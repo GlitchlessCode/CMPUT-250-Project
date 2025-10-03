@@ -1763,8 +1763,10 @@ MonoBehaviour:
   AppealText: {fileID: 558936790}
   ChatLogText: {fileID: 1146844095}
   ChatScroll: {fileID: 0}
+  delayTime: 1
   RefreshUserInfo: {fileID: 11400000, guid: 2e23c26185f87442795df3f94db57909, type: 2}
   ResolveAppeal: {fileID: 11400000, guid: 4c381b5a82e316b71a52ad513c65bbb5, type: 2}
+  RequestUser: {fileID: 11400000, guid: bd767a99f22ae800b90886e07da843ce, type: 2}
 --- !u!1 &1457516533
 GameObject:
   m_ObjectHideFlags: 0
@@ -1940,6 +1942,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Day: {fileID: 11400000, guid: 360076ef013db9f3fa77780f7a9851cb, type: 2}
   ResolveAppeal: {fileID: 11400000, guid: 4c381b5a82e316b71a52ad513c65bbb5, type: 2}
+  UserInfoRequest: {fileID: 11400000, guid: bd767a99f22ae800b90886e07da843ce, type: 2}
   UserLoaded: {fileID: 11400000, guid: 2e23c26185f87442795df3f94db57909, type: 2}
   AfterAppeal: {fileID: 0}
 --- !u!4 &1539020980

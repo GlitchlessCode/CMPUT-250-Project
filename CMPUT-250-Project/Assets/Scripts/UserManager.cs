@@ -12,6 +12,7 @@ public class UserManager : Subscriber
 
     [Header("Event Listeners")]
     public BoolGameEvent ResolveAppeal;
+    public UnitGameEvent UserInfoRequest;
 
     [Header("Events")]
     public UserEntryGameEvent UserLoaded;
@@ -22,6 +23,7 @@ public class UserManager : Subscriber
     protected override void Subscribe()
     {
         ResolveAppeal?.Subscribe(OnResolveAppeal);
+        UserInfoRequest?.Subscribe(OnUserInfoRequest);
     }
 
     protected override void AfterSubscribe()
@@ -107,6 +109,15 @@ public class UserManager : Subscriber
         foreach (UnitGameEvent before in Day.Users[currentUserIndex].before)
         {
             before.Emit();
+        }
+    }
+
+    private void OnUserInfoRequest()
+    {
+        UserEntry? user = GetCurrentUser();
+        if (user != null)
+        {
+            UserLoaded.Emit(user.Value);
         }
     }
 
