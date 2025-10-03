@@ -22,14 +22,20 @@ public class AppealPanelController : MonoBehaviour
     public Button approveButton;
     public Button ignoreButton;
 
+    [Header("Delay Time")]
+    public float delayTime = 1f;
+    
+    private bool canUpdate = true;
+    
     void Awake()
-    {
+    { 
         approveButton.onClick.AddListener(OnDecision);
         ignoreButton.onClick.AddListener(OnDecision);
     }
 
     void OnEnable()
     {
+        canUpdate = true;
         RefreshUI();
     }
 
@@ -74,16 +80,30 @@ public class AppealPanelController : MonoBehaviour
         if (userManager.MoveToNextUser())
             RefreshUI();
     }
+
     void Update(){
         if(Input.GetKey(KeyCode.A)){
-            if(userManager.MoveToNextUser()){
-                RefreshUI();
+            if(canUpdate == true){
+                if(userManager.MoveToNextUser()){
+                    RefreshUI();
+                    StartCoroutine(DelayAction(delayTime));
+                }
             }
         }
         if(Input.GetKey(KeyCode.D)){
-            if(userManager.MoveToNextUser()){
-                RefreshUI();
+            if(canUpdate == true){
+                if(userManager.MoveToNextUser()){
+                    RefreshUI();
+                    StartCoroutine(DelayAction(delayTime));
+                }
             }
         }
+    }
+
+    IEnumerator DelayAction(float time){
+        canUpdate = false;
+        Debug.Log("Updating...");
+        yield return new WaitForSeconds(time);
+        canUpdate = true;
     }
 }
