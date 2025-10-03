@@ -74,4 +74,16 @@ public class AppealPanelController : MonoBehaviour
         if (userManager.MoveToNextUser())
             RefreshUI();
     }
+    void Update(){
+        if(Input.GetKey(KeyCode.A)){
+            if(userManager.MoveToNextUser()){
+                RefreshUI();
+            }
+        }
+        if(Input.GetKey(KeyCode.D)){
+            if(userManager.MoveToNextUser()){
+                RefreshUI();
+            }
+        }
+    }
 }
