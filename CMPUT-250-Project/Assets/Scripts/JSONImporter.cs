@@ -20,8 +20,6 @@ public struct DirectMessage { }
 
 public static class JSONImporter
 {
-    private static Regex regex = new Regex(@"([^\/\\]+)(?:\.json)$");
-
     /// <summary>
     /// Import all .json files in a directory as type T
     /// </summary>
@@ -38,7 +36,7 @@ public static class JSONImporter
         {
             if (filename.EndsWith(".json"))
             {
-                string simple_name = regex.Match(filename).Groups[1].Value;
+                string simple_name = Path.GetFileNameWithoutExtension(filename);
                 items.Add(simple_name, ImportFile<T>(filename));
             }
         }
