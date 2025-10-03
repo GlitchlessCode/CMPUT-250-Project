@@ -711,7 +711,7 @@ GameObject:
   - component: {fileID: 485931864}
   - component: {fileID: 485931865}
   m_Layer: 5
-  m_Name: DMSToggle
+  m_Name: DMSTab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

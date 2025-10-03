@@ -15,6 +15,11 @@ public class AppealPanelController : Subscriber
     public Text ChatLogText; // ← NEW
     public ScrollRect ChatScroll; // ← optional: auto-scroll
 
+    [Header("Delay Time")]
+    public float delayTime = 1f;
+
+    private bool canUpdate = true;
+
     [Header("Event Listeners")]
     public UserEntryGameEvent RefreshUserInfo;
 
@@ -24,6 +29,12 @@ public class AppealPanelController : Subscriber
     protected override void Subscribe()
     {
         RefreshUserInfo?.Subscribe(OnRefreshUserInfo);
+    }
+
+    void OnEnable()
+    {
+        RefreshUI(null);
+        canUpdate = true;
     }
 
     void RefreshUI(UserEntry? userOption)
@@ -69,5 +80,39 @@ public class AppealPanelController : Subscriber
     public void OnDecision(bool decision)
     {
         ResolveAppeal?.Emit(decision);
+    }
+
+    void Update()
+    {
+        if (Input.GetKey(KeyCode.A))
+        {
+            if (canUpdate == true)
+            {
+                if (userManager.MoveToNextUser())
+                {
+                    RefreshUI();
+                    StartCoroutine(DelayAction(delayTime));
+                }
+            }
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            if (canUpdate == true)
+            {
+                if (userManager.MoveToNextUser())
+                {
+                    RefreshUI();
+                    StartCoroutine(DelayAction(delayTime));
+                }
+            }
+        }
+    }
+
+    IEnumerator DelayAction(float time)
+    {
+        canUpdate = false;
+        Debug.Log("Updating...");
+        yield return new WaitForSeconds(time);
+        canUpdate = true;
     }
 }
