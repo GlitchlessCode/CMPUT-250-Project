@@ -16,6 +16,7 @@ public class ScoreManager : Subscriber
     private float worstTime = 30;
 
     private float timer = 0;
+    private float time = 0;
     private bool timerStarted = false;
 
     // only stored seperately for now in case we want to do a fun 
@@ -46,9 +47,10 @@ public class ScoreManager : Subscriber
 
     private void OnAfterAppeal(bool accuracy)
     {
-        currentDayScores.Add(ComputeScore(accuracy, timer));
+        time = timer;
+        currentDayScores.Add(ComputeScore(accuracy, time));
         currentDayAccuracies.Add(accuracy);
-        currentDayTimes.Add((int)timer);
+        currentDayTimes.Add((int)time);
         timerStarted = false;
     }
 
