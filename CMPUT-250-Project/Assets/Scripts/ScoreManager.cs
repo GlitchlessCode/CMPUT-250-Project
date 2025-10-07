@@ -1,25 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System;
+using System.Linq;
 using UnityEngine;
 
 public class ScoreManager : Subscriber
 {
     [Header("Event Listeners")]
-    public BoolGameEvent ResolveAppeal;
+    public BoolGameEvent AfterAppeal;
     public UserEntryGameEvent UserLoaded;
 
     [Header("Score Calculation Details")]
-    private int score = 0;
-    private float perfectAppealTime = 15;
-    private float worstTime = 120;
+    private float perfectAppealTime = 5;
+    private float worstTime = 30;
 
     private float timer = 0;
-    private int userScore;
+    private bool timerStarted = false;
+
+    // only stored seperately for now in case we want to do a fun 
+    // little user by user score summing animation at end of day
+    // will probably also need to reformat this for multiple days
+    private List<int> currentDayScores = new List<int>();
+    private List<int> currentDayTimes = new List<int>();
+    private List<bool> currentDayAccuracies = new List<bool>();
 
     protected override void Subscribe()
     {
-        ResolveAppeal?.Subscribe(OnResolveAppeal);
+        AfterAppeal?.Subscribe(OnAfterAppeal);
         UserLoaded?.Subscribe(OnUserLoaded);
     }
 
@@ -30,29 +38,41 @@ public class ScoreManager : Subscriber
 
     private void Update()
     {
-        if (timer < worstTime)
+        if (timerStarted)
         {
             timer += Time.deltaTime;
-            // Debug.Log(timer);
         }
     }
 
-    private void OnResolveAppeal(bool accuracy)
+    private void OnAfterAppeal(bool accuracy)
     {
-        score += ComputeScore(accuracy, timer);
-        Debug.Log(score);
+        currentDayScores.Add(ComputeScore(accuracy, timer));
+        currentDayAccuracies.Add(accuracy);
+        currentDayTimes.Add((int)timer);
+        timerStarted = false;
     }
 
     private void OnUserLoaded(UserEntry user)
     {
-        Debug.Log("loaded");
-        timer = 0;
+        timer = (timerStarted ? 1 : 0)*timer;
+        timerStarted = true;
     }
 
     private int ComputeScore(bool accuracy, float time)
     {
-        userScore = (accuracy ? 1 : 0);
-        return userScore;
+        if (timer <= perfectAppealTime)
+        {
+            return 200*(accuracy ? 1 : 0);
+        } 
+        if (timer >= worstTime) 
+        {
+            return 100*(accuracy ? 1 : 0);
+        }
+        return (100+(int)(200/(1+Math.Exp(perfectAppealTime*(timer-perfectAppealTime)/(worstTime)))))*(accuracy ? 1 : 0);
+    }
+
+    public int GetDayScore(){
+        return currentDayScores.Sum();
     }
 
 }
