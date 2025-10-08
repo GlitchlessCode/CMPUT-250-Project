@@ -1921,6 +1921,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1539020980}
   - component: {fileID: 1539020978}
+  - component: {fileID: 1539020979}
   m_Layer: 0
   m_Name: Data
   m_TagString: Untagged
@@ -1944,7 +1945,21 @@ MonoBehaviour:
   ResolveAppeal: {fileID: 11400000, guid: 4c381b5a82e316b71a52ad513c65bbb5, type: 2}
   UserInfoRequest: {fileID: 11400000, guid: bd767a99f22ae800b90886e07da843ce, type: 2}
   UserLoaded: {fileID: 11400000, guid: 2e23c26185f87442795df3f94db57909, type: 2}
-  AfterAppeal: {fileID: 0}
+  AfterAppeal: {fileID: 11400000, guid: 3415a55705509574ba2326867d1369be, type: 2}
+--- !u!114 &1539020979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1539020977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f89da033d2108a940a6c2023aedd222f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AfterAppeal: {fileID: 11400000, guid: 3415a55705509574ba2326867d1369be, type: 2}
+  UserLoaded: {fileID: 11400000, guid: 2e23c26185f87442795df3f94db57909, type: 2}
 --- !u!4 &1539020980
 Transform:
   m_ObjectHideFlags: 0
