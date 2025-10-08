@@ -28,4 +28,9 @@ public class GameEvent<T> : ScriptableObject
     {
         listeners -= listener;
     }
+
+    void OnEnable()
+    {
+        listeners = null;
+    }
 }
