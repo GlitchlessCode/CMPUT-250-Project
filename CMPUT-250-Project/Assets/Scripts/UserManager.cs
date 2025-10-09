@@ -1,205 +1,194 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class UserManager : MonoBehaviour
+class InternalDayDefinition
 {
-    private int currentUserIndex = 0;
-    private List<UserEntry> users;
+    public string Directory;
+    public string Date;
+    public List<UserPoolDefinition> PoolDefinitions;
+    public List<UserPool> PoolOrder;
 
-    void Awake()
+    private int currentOrder;
+    private int currentCountInOrder;
+
+    public InternalDayDefinition(DayDefinition day)
     {
+        Directory = day.Directory;
+        Date = day.Date;
+        PoolDefinitions = new List<UserPoolDefinition>();
+        PoolOrder = new List<UserPool>();
+
+        currentOrder = 0;
+        currentCountInOrder = 0;
+
+        // Copy pools
+        foreach (UserPoolDefinition def in day.PoolDefinitions)
+        {
+            PoolDefinitions.Add(def.Clone());
+        }
+        foreach (UserPool pool in day.PoolOrder)
+        {
+            PoolOrder.Add(pool.Clone());
+        }
+
+        if (PoolOrder.Count != 0)
+        {
+            foreach (UnitGameEvent before in PoolOrder[0].Before)
+            {
+                before.Emit();
+            }
+        }
+    }
+
+    public string PopNextUser()
+    {
+        // If we try to access an order past how many we have defined
+        if (currentOrder >= PoolOrder.Count)
+        {
+            return null;
+        }
+
+        // If we finish the current order
+        if (++currentCountInOrder > PoolOrder[currentOrder].UserCount)
+        {
+            // Call all after events
+            foreach (UnitGameEvent after in PoolOrder[currentOrder].After)
+            {
+                after.Emit();
+            }
+
+            // Increment the order and reset the order counter
+            currentCountInOrder = 0;
+            currentOrder += 1;
+
+            // Check again for an access of an order past the defined count
+            if (currentOrder >= PoolOrder.Count)
+            {
+                return null;
+            }
+
+            // Call all before events on the new order
+            foreach (UnitGameEvent before in PoolOrder[currentOrder].Before)
+            {
+                before.Emit();
+            }
+        }
+
+        // If the selected pool definition doesn't exist
+        if (PoolOrder[currentOrder].PoolIndex > PoolDefinitions.Count)
+        {
+            return null;
+        }
+
+        UserPoolDefinition pool = PoolDefinitions[PoolOrder[currentOrder].PoolIndex];
+
+        // If the selected pool definition has no remaining users
+        if (pool.UserFiles.Count == 0)
+        {
+            return null;
+        }
+
+        // Pick a random index
+        System.Random rand = new System.Random();
+        int idx = rand.Next(pool.UserFiles.Count);
+
+        string file = pool.UserFiles[idx];
+        pool.UserFiles.RemoveAt(idx);
+
+        return file;
+    }
+}
+
+public class UserManager : Subscriber
+{
+    public DayDefinition Day;
+    private InternalDayDefinition day;
+
+    private UserEntry? currentUser;
+
+    private Dictionary<string, UserEntry> users;
+
+    [Header("Event Listeners")]
+    public BoolGameEvent ResolveAppeal;
+    public UnitGameEvent UserInfoRequest;
+
+    [Header("Events")]
+    public UserEntryGameEvent UserLoaded;
+
+    // `true` implies player chose correctly, `false` implies player chose incorrectly
+    public BoolGameEvent AfterAppeal;
+
+    protected override void Subscribe()
+    {
+        ResolveAppeal?.Subscribe(OnResolveAppeal);
+        UserInfoRequest?.Subscribe(OnUserInfoRequest);
+    }
+
+    protected override void AfterSubscribe()
+    {
+        if (Day == null)
+        {
+            Day = new DayDefinition();
+        }
+
+        day = new InternalDayDefinition(Day);
+
         // load users
-        users = JSONImporter.ImportDirectory<UserEntry>(Path.Combine("lang", "en", "days", "day1"));
+        users = JSONImporter.ImportDirectory<UserEntry>(
+            Path.Combine("lang", "en", "days", day.Directory)
+        );
 
-        // set first user
-        if (users == null || users.Count == 0)
-        {
-            currentUserIndex = -1; // no users loaded
-        }
-        else
-        {
-            currentUserIndex = 0; // first user by default
-        }
-    }
-
-    void Update()
-    {
-        // what i commented out is an example usage of the methods in usermanager
-
-        // // testing
-        // if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)){
-        //     MoveToNextUser();
-        // }
-        // if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)){
-        //     Debug.Log(GetCurrentUserName());
-        // }
-    }
-
-    public UserEntry? GetCurrentUser()
-    {
-        if (users != null && currentUserIndex >= 0 && currentUserIndex < users.Count)
-        {
-            return users[currentUserIndex];
-        }
-
-        // Might be worth making an "error" user that just displays a bunch of shit to use when things go wrong
-        // for now im assuming you wont call this if you dont have a user
-        // later problem
-        return null;
+        currentUser = null;
+        MoveToNextUser();
     }
 
     // moves to next user index
-    public bool MoveToNextUser()
+    private bool MoveToNextUser()
     {
         // if we somehow get here with no users
         if (users == null || users.Count == 0)
         {
+            currentUser = null;
             return false;
         }
 
-        // for now, loop back to first user after last one
-        currentUserIndex++;
-
-        if (currentUserIndex >= users.Count)
+        string user_file = day.PopNextUser();
+        if (user_file != null && users.ContainsKey(user_file))
         {
-            currentUserIndex = 0;
+            currentUser = users[user_file];
         }
+        else
+        {
+            currentUser = null;
+            return false;
+        }
+
+        OnUserInfoRequest();
 
         // return true if successful
         return true;
     }
 
-    // sets index and returns true if it worked
-    public bool SetCurrentUser(int userIndex)
+    private void OnResolveAppeal(bool decision)
     {
-        if (currentUserIndex >= users.Count)
-        {
-            currentUserIndex = userIndex;
-            return true;
-        }
-
-        return false;
-    }
-
-    // get users username
-    public string GetCurrentUserName()
-    {
-        var user = GetCurrentUser();
-
+        UserEntry? user = currentUser;
         if (user != null)
         {
-            return user.Value.name;
+            bool success = decision == user.Value.should_approve;
+
+            AfterAppeal?.Emit(success);
         }
-        else
-        {
-            return null;
-        }
+
+        MoveToNextUser();
     }
 
-    // get the date for your messages
-    public string GetCurrentUserDate()
+    private void OnUserInfoRequest()
     {
-        var user = GetCurrentUser();
-
+        UserEntry? user = currentUser;
         if (user != null)
         {
-            return user.Value.date;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    // get your users bio
-    public string GetCurrentUserBio()
-    {
-        var user = GetCurrentUser();
-
-        if (user != null)
-        {
-            return user.Value.bio;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    // get the index related to what the current image should be
-    public int? GetCurrentUserImg()
-    {
-        var user = GetCurrentUser();
-
-        if (user != null)
-        {
-            return user.Value.image_index;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    // get the appeal message
-    public string GetCurrentUserAppeal()
-    {
-        var user = GetCurrentUser();
-
-        if (user != null)
-        {
-            return user.Value.appeal_message;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    // get the approval bool
-    public bool? GetCurrentUserApproval()
-    {
-        var user = GetCurrentUser();
-
-        if (user != null)
-        {
-            return user.Value.should_approve;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    // get a specific message
-    public string GetCurrentUserMessage(int index)
-    {
-        var user = GetCurrentUser();
-
-        if (user != null)
-        {
-            return user.Value.messages[index];
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    // get all messages
-    public string[] GetCurrentUserMessagesAll()
-    {
-        var user = GetCurrentUser();
-
-        if (user != null)
-        {
-            return user.Value.messages;
-        }
-        else
-        {
-            return null;
+            UserLoaded.Emit(user.Value);
         }
     }
 
