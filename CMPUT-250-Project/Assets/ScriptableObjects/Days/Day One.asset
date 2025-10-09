@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Directory: day1
   Date: 2025-10-03
-  Users:
-  - filename: user1
-    before: []
-    after: []
-  - filename: user2
-    before: []
-    after: []
+  PoolDefinitions:
+  - UserFiles:
+    - user1
+    - user2
+  PoolOrder:
+  - PoolIndex: 0
+    UserCount: 2
+    Before: []
+    After: []

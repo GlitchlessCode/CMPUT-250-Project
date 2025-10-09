@@ -3,13 +3,48 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public struct UserDefinition
+public class UserPoolDefinition
 {
-    public string filename;
+    public List<string> UserFiles;
+
+    UserPoolDefinition(List<string> files)
+    {
+        UserFiles = files;
+    }
+
+    public UserPoolDefinition Clone()
+    {
+        return new UserPoolDefinition(new List<string>(UserFiles));
+    }
+}
+
+[Serializable]
+public class UserPool
+{
+    public int PoolIndex;
+    public int UserCount;
 
     [Header("Events")]
-    public UnitGameEvent[] before;
-    public BoolGameEvent[] after;
+    public List<UnitGameEvent> Before;
+    public List<UnitGameEvent> After;
+
+    UserPool(int index, int count, List<UnitGameEvent> before, List<UnitGameEvent> after)
+    {
+        PoolIndex = index;
+        UserCount = count;
+        Before = before;
+        After = after;
+    }
+
+    public UserPool Clone()
+    {
+        return new UserPool(
+            PoolIndex,
+            UserCount,
+            new List<UnitGameEvent>(Before),
+            new List<UnitGameEvent>(After)
+        );
+    }
 }
 
 [CreateAssetMenu(menuName = "Day Definition")]
@@ -17,26 +52,18 @@ public class DayDefinition : ScriptableObject
 {
     public string Directory;
     public string Date;
-    public List<UserDefinition> Users;
 
-    public DayDefinition(string DirectoryIn)
-    {
-        Directory = DirectoryIn;
-        Users = new List<UserDefinition>();
-        Date = "";
-    }
+    [Header("User Pools")]
+    public List<UserPoolDefinition> PoolDefinitions;
 
-    public DayDefinition(string DirectoryIn, string DateIn)
-    {
-        Directory = DirectoryIn;
-        Users = new List<UserDefinition>();
-        Date = DateIn;
-    }
+    [Header("Pool Ordering")]
+    public List<UserPool> PoolOrder;
 
-    public DayDefinition(string DirectoryIn, string DateIn, List<UserDefinition> UserIn)
+    public DayDefinition()
     {
-        Directory = DirectoryIn;
-        Users = UserIn;
-        Date = DateIn;
+        Directory = "daynull";
+        Date = "null";
+        PoolDefinitions = new List<UserPoolDefinition>();
+        PoolOrder = new List<UserPool>();
     }
 }
