@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23371fee024398047a0349154ecd2b69, type: 3}
+  m_Name: MainAudioLibrary
+  m_EditorClassIdentifier: 
+  sounds:
+  - key: Spring
+    clip: {fileID: 8300000, guid: 23fc50b5f8b2ea644975beef15afd593, type: 3}
+    defaultVolume: 0.372
+    defaultPitch: 0
+    spatialBlend: 0
+  - key: Confirm_SFX
+    clip: {fileID: 8300000, guid: aac5951b3faebf34ab01b21f77d601dd, type: 3}
+    defaultVolume: 0.186
+    defaultPitch: 0
+    spatialBlend: 0
+  - key: Cancel_SFX
+    clip: {fileID: 8300000, guid: 98cc2a23db7ea4a449d178335273a148, type: 3}
+    defaultVolume: 0.155
+    defaultPitch: 0
+    spatialBlend: 0
+  - key: Comfort_Game
+    clip: {fileID: 8300000, guid: ab46fe688f5ba5e4aa4ae5342768e61e, type: 3}
+    defaultVolume: 0.326
+    defaultPitch: 0
+    spatialBlend: 0
