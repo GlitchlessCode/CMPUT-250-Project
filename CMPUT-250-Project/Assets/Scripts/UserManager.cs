@@ -118,6 +118,9 @@ public class UserManager : Subscriber
 
     // `true` implies player chose correctly, `false` implies player chose incorrectly
     public BoolGameEvent AfterAppeal;
+    public UnitGameEvent DayFinished; //For EOD
+    private bool dayAlreadyFinished = false;
+
 
     protected override void Subscribe()
     {
@@ -150,6 +153,7 @@ public class UserManager : Subscriber
         if (users == null || users.Count == 0)
         {
             currentUser = null;
+            SignalDayFinishedOnce();
             return false;
         }
 
@@ -161,6 +165,7 @@ public class UserManager : Subscriber
         else
         {
             currentUser = null;
+            SignalDayFinishedOnce();
             return false;
         }
 
@@ -168,6 +173,12 @@ public class UserManager : Subscriber
 
         // return true if successful
         return true;
+    }
+    private void SignalDayFinishedOnce()
+    {
+        if (dayAlreadyFinished) return;
+        dayAlreadyFinished = true;
+        DayFinished?.Emit();
     }
 
     private void OnResolveAppeal(bool decision)
