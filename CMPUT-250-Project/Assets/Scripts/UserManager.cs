@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.IO;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 class InternalDayDefinition
@@ -191,24 +191,45 @@ public class UserManager : Subscriber
         UserEntry? user = currentUser;
         if (user != null)
         {
-            bool success = true;
-            int numMsg=0;
-            
+            bool passes = true;
+            int numMsg = 0;
+
             foreach (string message in user.Value.messages)
             {
-                if (message.Length> 50){success = false;}
+                if (message.Length > 50)
+                {
+                    passes = false;
+                }
                 numMsg++;
-                if(Regex.IsMatch(message.ToLower(),@".*cat.*")){success=false;}
-                if(Regex.IsMatch(message.ToLower(),@".*(.)\1{2,}.*")){success=false;}
+                if (Regex.IsMatch(message.ToLower(), @".*cat.*"))
+                {
+                    passes = false;
+                }
+                if (Regex.IsMatch(message.ToLower(), @".*(.)\1{2,}.*"))
+                {
+                    passes = false;
+                }
             }
 
-            if(user.Value.appeal_message == ""){success=false;}
-            if(user.Value.name.Length > 12){success=false;}
-            if(user.Value.bio.Split(' ').Length<4){success=false;}
+            if (user.Value.appeal_message == "")
+            {
+                passes = false;
+            }
+            if (user.Value.name.Length > 12)
+            {
+                passes = false;
+            }
+            if (user.Value.bio.Split(' ').Length < 4)
+            {
+                passes = false;
+            }
 
-            if(numMsg<5){success=false;}
+            if (numMsg < 5)
+            {
+                passes = false;
+            }
 
-            AfterAppeal?.Emit(success);
+            AfterAppeal?.Emit(passes == decision);
         }
 
         MoveToNextUser();

@@ -1,7 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System;
 using System.Linq;
 using UnityEngine;
 
@@ -22,13 +22,15 @@ public class ScoreManager : Subscriber
     [Header("Events")]
     public UnitGameEvent DayFinished;
 
-    // only stored seperately for now in case we want to do a fun 
+    // only stored seperately for now in case we want to do a fun
     // little user by user score summing animation at end of day
     // will probably also need to reformat this for multiple days
     private List<int> currentDayScores = new List<int>();
     private List<int> currentDayTimes = new List<int>();
     private List<bool> currentDayAccuracies = new List<bool>();
-    [SerializeField] private int currentDayIndex = 1;
+
+    [SerializeField]
+    private int currentDayIndex = 1;
     public int CurrentDayIndex => currentDayIndex;
 
     protected override void Subscribe()
@@ -49,7 +51,6 @@ public class ScoreManager : Subscriber
         DontDestroyOnLoad(gameObject);
     }
 
-
     private void Update()
     {
         if (timerStarted)
@@ -69,29 +70,36 @@ public class ScoreManager : Subscriber
 
     private void OnUserLoaded(UserEntry user)
     {
-        timer = (timerStarted ? 1 : 0)*timer;
+        timer = (timerStarted ? 1 : 0) * timer;
         timerStarted = true;
     }
 
     private int ComputeScore(bool accuracy, float time)
     {
+        if (!accuracy)
+        {
+            return 0;
+        }
+
         if (time <= perfectAppealTime)
         {
-            return 200*(accuracy ? 1 : 0);
-        } 
-        if (time >= worstTime) 
-        {
-            return 100*(accuracy ? 1 : 0);
+            return 200;
         }
-        return (100+(int)(200/(1+Math.Exp(perfectAppealTime*(time-perfectAppealTime)/(worstTime)))))*(accuracy ? 1 : 0);
+        if (time >= worstTime)
+        {
+            return 100;
+        }
+        return 100
+            + (int)(
+                200 / (1 + Math.Exp(perfectAppealTime * (time - perfectAppealTime) / (worstTime)))
+            );
     }
 
     public int GetDayScore()
     {
         return currentDayScores.Sum();
     }
-    
-    
+
     [System.Serializable]
     public class DaySummary
     {
@@ -101,20 +109,24 @@ public class ScoreManager : Subscriber
         public float totalSeconds; // optional
     }
 
-    [SerializeField] private List<DaySummary> runSummaries = new List<DaySummary>();
-
+    [SerializeField]
+    private List<DaySummary> runSummaries = new List<DaySummary>();
 
     public int GetAppealsProcessed() => currentDayTimes.Count;
+
     public int GetTotalScoreSoFar()
     {
         int sum = 0;
-        foreach (var s in runSummaries) sum += s.dayScore;
+        foreach (var s in runSummaries)
+            sum += s.dayScore;
         return sum;
     }
+
     public int GetTotalAppealsSoFar()
     {
         int sum = 0;
-        foreach (var s in runSummaries) sum += s.appealsProcessed;
+        foreach (var s in runSummaries)
+            sum += s.appealsProcessed;
         return sum;
     }
 
@@ -125,7 +137,7 @@ public class ScoreManager : Subscriber
             dayIndex = currentDayIndex,
             appealsProcessed = GetAppealsProcessed(),
             dayScore = GetDayScore(),
-            totalSeconds = currentDayTimes.Sum()  // optional, since we store int seconds
+            totalSeconds = currentDayTimes.Sum(), // optional, since we store int seconds
         };
 
         runSummaries.Add(summary);
@@ -144,6 +156,4 @@ public class ScoreManager : Subscriber
         time = 0f;
         timerStarted = false;
     }
-
-
 }
