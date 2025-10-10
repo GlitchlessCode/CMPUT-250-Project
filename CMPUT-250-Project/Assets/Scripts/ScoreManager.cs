@@ -19,6 +19,9 @@ public class ScoreManager : Subscriber
     private float time = 0;
     private bool timerStarted = false;
 
+    [Header("Events")]
+    public UnitGameEvent DayFinished;
+
     // only stored seperately for now in case we want to do a fun 
     // little user by user score summing animation at end of day
     // will probably also need to reformat this for multiple days
@@ -30,12 +33,20 @@ public class ScoreManager : Subscriber
     {
         AfterAppeal?.Subscribe(OnAfterAppeal);
         UserLoaded?.Subscribe(OnUserLoaded);
+        DayFinished?.Subscribe(OnDayFinished);
     }
 
     protected override void AfterSubscribe()
     {
 
     }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        DontDestroyOnLoad(gameObject);
+    }
+
 
     private void Update()
     {
@@ -62,19 +73,76 @@ public class ScoreManager : Subscriber
 
     private int ComputeScore(bool accuracy, float time)
     {
-        if (timer <= perfectAppealTime)
+        if (time <= perfectAppealTime)
         {
             return 200*(accuracy ? 1 : 0);
         } 
-        if (timer >= worstTime) 
+        if (time >= worstTime) 
         {
             return 100*(accuracy ? 1 : 0);
         }
-        return (100+(int)(200/(1+Math.Exp(perfectAppealTime*(timer-perfectAppealTime)/(worstTime)))))*(accuracy ? 1 : 0);
+        return (100+(int)(200/(1+Math.Exp(perfectAppealTime*(time-perfectAppealTime)/(worstTime)))))*(accuracy ? 1 : 0);
     }
 
-    public int GetDayScore(){
+    public int GetDayScore()
+    {
         return currentDayScores.Sum();
     }
+    
+    
+    [System.Serializable]
+    public class DaySummary
+    {
+        public int dayIndex;
+        public int appealsProcessed;
+        public int dayScore;
+        public float totalSeconds; // optional
+    }
+
+    [SerializeField] private List<DaySummary> runSummaries = new List<DaySummary>();
+    [SerializeField] private int currentDayIndex = 1;
+
+
+    public int GetAppealsProcessed() => currentDayTimes.Count;
+    public int GetTotalScoreSoFar()
+    {
+        int sum = 0;
+        foreach (var s in runSummaries) sum += s.dayScore;
+        return sum;
+    }
+    public int GetTotalAppealsSoFar()
+    {
+        int sum = 0;
+        foreach (var s in runSummaries) sum += s.appealsProcessed;
+        return sum;
+    }
+
+    private void OnDayFinished()
+    {
+        var summary = new DaySummary
+        {
+            dayIndex = currentDayIndex,
+            appealsProcessed = GetAppealsProcessed(),
+            dayScore = GetDayScore(),
+            totalSeconds = currentDayTimes.Sum()  // optional, since you store int seconds
+        };
+
+        runSummaries.Add(summary);
+    }
+
+    public void StartNewDay(int newDayIndex)
+    {
+        currentDayIndex = newDayIndex;
+
+        // clear per-day only
+        currentDayScores.Clear();
+        currentDayTimes.Clear();
+        currentDayAccuracies.Clear();
+
+        timer = 0f;
+        time = 0f;
+        timerStarted = false;
+    }
+
 
 }
