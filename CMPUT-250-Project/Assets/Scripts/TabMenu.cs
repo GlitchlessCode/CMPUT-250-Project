@@ -4,50 +4,40 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class TabMenu : MonoBehaviour
 {
     public Toggle appealTab;
     public Toggle rulesTab;
     public Toggle dmsTab;
+    public Toggle settingsTab;
     public GameObject appealPanel;
     public GameObject rulesPanel;
     public GameObject dmsPanel;
+    public GameObject settingsPanel;
+    private Dictionary <Toggle, GameObject> tabsDictionary;
 
     void Start()
     {
         rulesTab.isOn = true;
-        appealTab.onValueChanged.AddListener(appealActive);
-        rulesTab.onValueChanged.AddListener(rulesActive);
-        dmsTab.onValueChanged.AddListener(dmsActive);
+        appealTab.onValueChanged.AddListener(ActiveTab);
+        rulesTab.onValueChanged.AddListener(ActiveTab);
+        dmsTab.onValueChanged.AddListener(ActiveTab);
+        settingsTab.onValueChanged.AddListener(ActiveTab);
+        
+        tabsDictionary = new Dictionary<Toggle, GameObject>();
+        tabsDictionary.Add(appealTab, appealPanel);
+        tabsDictionary.Add(rulesTab, rulesPanel);
+        tabsDictionary.Add(dmsTab, dmsPanel);
+        tabsDictionary.Add(settingsTab, settingsPanel);
+
     }
 
-    private void appealActive(bool arg0)
+    private void ActiveTab(bool arg0)
     {
-        if (appealTab.isOn)
-        {
-            appealPanel.gameObject.SetActive(true);
-            rulesPanel.gameObject.SetActive(false);
-            dmsPanel.gameObject.SetActive(false);
-        }
+        TabSwap(tabsDictionary);
     }
-    private void rulesActive(bool arg0)
-    {
-        if (rulesTab.isOn)
-        {
-            appealPanel.gameObject.SetActive(false);
-            rulesPanel.gameObject.SetActive(true);
-            dmsPanel.gameObject.SetActive(false);
-        }
-    }
-    private void dmsActive(bool arg0)
-    {
-        if (dmsTab.isOn)
-        {
-            appealPanel.gameObject.SetActive(false);
-            rulesPanel.gameObject.SetActive(false);
-            dmsPanel.gameObject.SetActive(true);
-        }
-    }
+
     void Update(){
 
         if(Input.GetKey(KeyCode.Alpha1) || Input.GetKey(KeyCode.Keypad1))
@@ -62,6 +52,21 @@ public class TabMenu : MonoBehaviour
         {
             dmsTab.isOn = !dmsTab.isOn;
         }
+        else if (Input.GetKey(KeyCode.O))
+        {
+            settingsTab.isOn = !settingsTab.isOn;
+        }
     }
 
+    void TabSwap(Dictionary<Toggle, GameObject> tabsDictionary){
+        foreach (KeyValuePair<Toggle, GameObject> tab in tabsDictionary){
+            if (tab.Key.isOn)
+            {
+                tab.Value.gameObject.SetActive(true);
+            }
+            else{
+                tab.Value.gameObject.SetActive(false);
+            }
+        }
+    }
 }
