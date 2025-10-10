@@ -119,6 +119,8 @@ public class UserManager : Subscriber
 
     // `true` implies player chose correctly, `false` implies player chose incorrectly
     public BoolGameEvent AfterAppeal;
+    public UnitGameEvent DayFinished; //For EOD
+    private bool dayAlreadyFinished = false;
 
     protected override void Subscribe()
     {
@@ -153,6 +155,7 @@ public class UserManager : Subscriber
         if (users == null || users.Count == 0)
         {
             currentUser = null;
+            SignalDayFinishedOnce();
             return false;
         }
 
@@ -164,6 +167,7 @@ public class UserManager : Subscriber
         else
         {
             currentUser = null;
+            SignalDayFinishedOnce();
             return false;
         }
 
@@ -171,6 +175,15 @@ public class UserManager : Subscriber
 
         // return true if successful
         return true;
+    }
+
+    private void SignalDayFinishedOnce()
+    {
+        if (dayAlreadyFinished)
+            return;
+        dayAlreadyFinished = true;
+        DayFinished?.Emit();
+        UserLoaded?.Emit(new UserEntry());
     }
 
     private void OnResolveAppeal(bool decision)
@@ -214,9 +227,7 @@ public class UserManager : Subscriber
         UserEntry? user = currentUser;
         if (user != null)
         {
-            UserLoaded.Emit(user.Value);
+            UserLoaded?.Emit(user.Value);
         }
     }
-
-    // will make a method to generate random times later - for prototype we can just use dates
 }
