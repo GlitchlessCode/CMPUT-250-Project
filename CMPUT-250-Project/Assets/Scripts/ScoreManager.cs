@@ -28,6 +28,8 @@ public class ScoreManager : Subscriber
     private List<int> currentDayScores = new List<int>();
     private List<int> currentDayTimes = new List<int>();
     private List<bool> currentDayAccuracies = new List<bool>();
+    [SerializeField] private int currentDayIndex = 1;
+    public int CurrentDayIndex => currentDayIndex;
 
     protected override void Subscribe()
     {
@@ -38,7 +40,7 @@ public class ScoreManager : Subscriber
 
     protected override void AfterSubscribe()
     {
-
+        // is there supposed to be something here? CMT
     }
 
     protected override void Awake()
@@ -100,7 +102,6 @@ public class ScoreManager : Subscriber
     }
 
     [SerializeField] private List<DaySummary> runSummaries = new List<DaySummary>();
-    [SerializeField] private int currentDayIndex = 1;
 
 
     public int GetAppealsProcessed() => currentDayTimes.Count;
@@ -124,7 +125,7 @@ public class ScoreManager : Subscriber
             dayIndex = currentDayIndex,
             appealsProcessed = GetAppealsProcessed(),
             dayScore = GetDayScore(),
-            totalSeconds = currentDayTimes.Sum()  // optional, since you store int seconds
+            totalSeconds = currentDayTimes.Sum()  // optional, since we store int seconds
         };
 
         runSummaries.Add(summary);
