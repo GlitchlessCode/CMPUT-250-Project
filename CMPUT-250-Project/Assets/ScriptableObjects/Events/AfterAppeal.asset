@@ -9,15 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ae3ad5ed19f8e064af2e3cb234c606e, type: 3}
-  m_Name: Day One
+  m_Script: {fileID: 11500000, guid: 5b8653079f27210b1a549926ba710dbf, type: 3}
+  m_Name: AfterAppeal
   m_EditorClassIdentifier: 
-  Directory: day1
-  Date: 2025-10-03
-  Users:
-  - filename: user1
-    before: []
-    after: []
-  - filename: user2
-    before: []
-    after: []

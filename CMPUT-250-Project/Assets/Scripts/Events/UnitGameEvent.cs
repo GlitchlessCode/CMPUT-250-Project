@@ -4,14 +4,14 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Game Events/GameEvent")]
 public class UnitGameEvent : GameEvent<System.ValueTuple>
 {
-    private event Action listeners;
+    private event Action unit_listeners;
 
     /// <summary>
     /// Emit the chosen event
     /// </summary>
     public void Emit()
     {
-        listeners?.Invoke();
+        unit_listeners?.Invoke();
     }
 
     /// <summary>
@@ -19,7 +19,7 @@ public class UnitGameEvent : GameEvent<System.ValueTuple>
     /// </summary>
     public void Subscribe(Action listener)
     {
-        listeners += listener;
+        unit_listeners += listener;
     }
 
     /// <summary>
@@ -27,6 +27,11 @@ public class UnitGameEvent : GameEvent<System.ValueTuple>
     /// </summary>
     public void Unsubscribe(Action listener)
     {
-        listeners -= listener;
+        unit_listeners -= listener;
+    }
+
+    void OnEnable()
+    {
+        unit_listeners = null;
     }
 }

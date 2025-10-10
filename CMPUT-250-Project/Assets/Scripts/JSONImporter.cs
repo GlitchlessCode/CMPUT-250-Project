@@ -16,7 +16,10 @@ public struct UserEntry
 }
 
 [System.Serializable]
-public struct DirectMessage { }
+public struct DirectMessage
+{
+    public string message;
+}
 
 public static class JSONImporter
 {
