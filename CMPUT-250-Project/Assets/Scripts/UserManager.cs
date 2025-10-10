@@ -175,7 +175,7 @@ public class UserManager : Subscriber
         UserEntry? user = currentUser;
         if (user != null)
         {
-            bool success = decision == user.Value.should_approve;
+            bool success = true; // FIXME: Add rule checks
 
             AfterAppeal?.Emit(success);
         }

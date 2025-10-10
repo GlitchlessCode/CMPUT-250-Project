@@ -12,7 +12,6 @@ public struct UserEntry
     public int image_index;
     public string[] messages;
     public string appeal_message;
-    public bool should_approve;
 }
 
 [System.Serializable]
