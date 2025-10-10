@@ -82,7 +82,13 @@ public class AudioManager : Subscriber
         sources.Enqueue(source);
     }
 
-    void OnDestroy() { }
+    void OnDestroy()
+    {
+        foreach (AudioBus bus in buses)
+        {
+            bus.Cleanup();
+        }
+    }
 }
 
 struct ActiveAudio
