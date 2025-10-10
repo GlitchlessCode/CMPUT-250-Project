@@ -7,14 +7,18 @@ using UnityEngine.UI;
 
 public class TabMenu : MonoBehaviour
 {
+    [Header("Tabs")]
     public Toggle appealTab;
     public Toggle rulesTab;
     public Toggle dmsTab;
     public Toggle settingsTab;
+
+    [Header("Panels")]
     public GameObject appealPanel;
     public GameObject rulesPanel;
     public GameObject dmsPanel;
     public GameObject settingsPanel;
+    
     private Dictionary <Toggle, GameObject> tabsDictionary;
 
     void Start()

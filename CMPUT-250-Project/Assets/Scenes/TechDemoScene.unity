@@ -767,6 +767,10 @@ MonoBehaviour:
   musicSliderText: {fileID: 885686500}
   soundSliderText: {fileID: 1039832465}
   maxSliderAmount: 100
+  musicSlider: {fileID: 1669219244}
+  soundSlider: {fileID: 673353339}
+  ChangeMusic: {fileID: 0}
+  ChangeSound: {fileID: 0}
 --- !u!4 &347043725
 Transform:
   m_ObjectHideFlags: 0
@@ -1523,7 +1527,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 347043724}
-        m_MethodName: SoundSliderChange
+        m_MethodName: SoundSliderTextChange
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3449,7 +3453,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 347043724}
-        m_MethodName: MusicSliderChange
+        m_MethodName: MusicSliderTextChange
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
