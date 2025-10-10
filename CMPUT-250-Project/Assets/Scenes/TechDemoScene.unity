@@ -1618,8 +1618,8 @@ MonoBehaviour:
     BusVolume: {fileID: 11400000, guid: bb9e88c84f39f8d5fb9cb238de2fac02, type: 2}
   PlayOnStart:
   - audio:
-      clip: {fileID: 8300000, guid: dbaebce5c9bfcb889bef80e42e3de196, type: 3}
-      volume: 0.5
+      clip: {fileID: 8300000, guid: a2bc15a40c25683e5aa245ff0e510324, type: 3}
+      volume: 0.1
       pitchVariance: 0
       loop: 1
     bus: {fileID: 11400000, guid: f97ee7e7c74d23614abb2b688e692319, type: 2}
