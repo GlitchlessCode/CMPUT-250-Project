@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.IO;
 using UnityEngine;
 
@@ -139,6 +140,8 @@ public class UserManager : Subscriber
             Path.Combine("lang", "en", "days", day.Directory)
         );
 
+        // (string ruleName, string checking, string ruleType, var criteria)
+
         currentUser = null;
         MoveToNextUser();
     }
@@ -175,7 +178,30 @@ public class UserManager : Subscriber
         UserEntry? user = currentUser;
         if (user != null)
         {
-            bool success = decision == user.Value.should_approve;
+            // bool success = decision == user.Value.should_approve;
+            bool success = true;
+            int numMsg=0;
+            
+            // msg len > 50 char
+            // foreach (string message in user.messages)
+            // {
+            //     Debug.Log("There is no god");
+            // }
+
+            // mesg len <=50
+            foreach (string message in user.Value.messages)
+            {
+                if (message.Length> 50){success = false;}
+                numMsg++;
+                if(Regex.IsMatch(message.ToLower(),@".*cat.*")){success=false;}
+                if(Regex.IsMatch(message.ToLower(),@".*(.)\1{2,}.*")){success=false;}
+            }
+
+            if(user.Value.appeal_message == ""){success=false;}
+            if(user.Value.name.Length > 12){success=false;}
+            if(user.Value.bio.Split(' ').Length<4){success=false;}
+
+
 
             AfterAppeal?.Emit(success);
         }
