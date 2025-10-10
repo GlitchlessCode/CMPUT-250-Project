@@ -201,7 +201,7 @@ public class UserManager : Subscriber
             if(user.Value.name.Length > 12){success=false;}
             if(user.Value.bio.Split(' ').Length<4){success=false;}
 
-
+            if(numMsg<4){success=false;}
 
             AfterAppeal?.Emit(success);
         }
