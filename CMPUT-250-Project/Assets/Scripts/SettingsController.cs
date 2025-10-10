@@ -7,10 +7,10 @@ using UnityEngine.UI;
 public class SettingsController : MonoBehaviour
 {
     [SerializeField]
-    private TextMeshProUGUI musicSliderText = null;
+    private Text musicSliderText = null;
 
     [SerializeField]
-    private TextMeshProUGUI soundSliderText = null;
+    private Text soundSliderText = null;
 
     [SerializeField]
     private float maxSliderAmount = 100.0f;
@@ -29,12 +29,12 @@ public class SettingsController : MonoBehaviour
         changeValue(value, ChangeSound, soundSliderText);
     }
 
-    private void changeValue(float value, FloatGameEvent channel, TextMeshProUGUI sliderText)
+    private void changeValue(float value, FloatGameEvent channel, Text sliderText)
     {
-        channel?.Emit(value);
+        channel?.Emit(value / maxSliderAmount);
         if (sliderText != null)
         {
-            float localValue = value * maxSliderAmount;
+            float localValue = value;
             sliderText.text = localValue.ToString("0");
         }
     }
