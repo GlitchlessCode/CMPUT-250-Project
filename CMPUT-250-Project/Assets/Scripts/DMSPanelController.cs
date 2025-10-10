@@ -14,10 +14,12 @@ public class DMSPanelController : Subscriber
 
     public GameObject container;
     public Transform DMPanel;
-    private GameObject currentContainer;
-    private GameObject lastContainer;
-    private RectTransform lastTransform;
+    private List<GameObject> containers = new List<GameObject>();
+    private List<RectTransform> transforms = new List<RectTransform>();
     private float height = 0;
+    private float lastHeight =0;
+
+    int o = 1;
     
 
     void Start ()
@@ -45,28 +47,60 @@ public class DMSPanelController : Subscriber
 
     void AddDM()
     {
+
         if (container != null && DMPanel != null)
         { 
+            GameObject instantiatedObject = Instantiate(container, DMPanel);
+            textComponent = instantiatedObject.GetComponentInChildren<TextMeshProUGUI>();
+            textComponent.text = ""+o;
 
-            currentContainer = Instantiate(container,DMPanel);
-            LayoutElement currentLayout = currentContainer.GetComponent<LayoutElement>();
-
-            textComponent = currentContainer.GetComponentInChildren<TextMeshProUGUI>();
-            textComponent.text = "Hello world" + height;
-
-            lastTransform = currentContainer.GetComponent<RectTransform>();
+            containers.Add(instantiatedObject);
             
-            Canvas.ForceUpdateCanvases(); 
-            height += lastTransform.rect.height;
+            transforms.Add(instantiatedObject.GetComponent<RectTransform>());
 
-            Vector2 currentPosition = lastTransform.anchoredPosition;
-            if (lastContainer != null){
-                lastTransform.anchoredPosition = new Vector2(currentPosition.x, currentPosition.y + height+20);
+            foreach (GameObject con in containers)
+            {
+                height = 0;
+                int currentIndex = containers.IndexOf(con); 
+                Canvas.ForceUpdateCanvases();
+                 
+                 for (int i = 0; i <= currentIndex; i++)
+                 {
+                    height += transforms[currentIndex].rect.height;
+
+                    Vector2 currentPosition = transforms[currentIndex].anchoredPosition;
+
+                    currentPosition = new Vector2(currentPosition.x, currentPosition.y - height + 20);
+
+                    Debug.Log(""+height);
+
+                    transforms[i].anchoredPosition = currentPosition;
+
+                    lastHeight = transforms[currentIndex].rect.height;
+
+                 }
+
+                if (transforms.Count == 1)
+                {
+                    Vector2 currentPosition = transforms[0].anchoredPosition;
+                    currentPosition = new Vector2(currentPosition.x, currentPosition.y+height - 20);
+                    transforms[0].anchoredPosition = currentPosition;
+                    
+                }
+
+                for (int i = 0; i < transforms.Count-1; i++)
+                {
+                    Vector2 currentPosition = transforms[i].anchoredPosition;
+                    currentPosition = new Vector2(currentPosition.x, currentPosition.y+height-lastHeight-20);
+                    transforms[i].anchoredPosition = currentPosition;
+                }
+
+                
             }
+            o++;
 
-            lastContainer = currentContainer;
             
-            Debug.Log(height);
+
         }
     }
 
