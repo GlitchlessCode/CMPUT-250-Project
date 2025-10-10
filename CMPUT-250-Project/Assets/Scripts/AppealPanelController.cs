@@ -15,6 +15,10 @@ public class AppealPanelController : Subscriber
     public Text ChatLogText; // ← NEW
     public ScrollRect ChatScroll; // ← optional: auto-scroll
 
+    [Header("Sounds")]
+    public Audio HoverSound;
+    public Audio PressSound;
+
     [Header("Delay Time")]
     public float delayTime = 1f;
 
@@ -26,6 +30,7 @@ public class AppealPanelController : Subscriber
     [Header("Events")]
     public BoolGameEvent ResolveAppeal;
     public UnitGameEvent RequestUser;
+    public AudioGameEvent SoundBus;
 
     protected override void Subscribe()
     {
@@ -82,6 +87,19 @@ public class AppealPanelController : Subscriber
     public void OnDecision(bool decision)
     {
         ResolveAppeal?.Emit(decision);
+
+        if (PressSound.clip != null)
+        {
+            SoundBus?.Emit(PressSound);
+        }
+    }
+
+    public void OnHover()
+    {
+        if (HoverSound.clip != null)
+        {
+            SoundBus?.Emit(HoverSound);
+        }
     }
 
     void Update()
