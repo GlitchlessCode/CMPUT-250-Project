@@ -735,56 +735,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 278689213}
   m_CullTransparentMesh: 0
---- !u!1 &347043723
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 347043725}
-  - component: {fileID: 347043724}
-  m_Layer: 0
-  m_Name: UISettingsController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &347043724
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 347043723}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc6162ea134a36540a99fd76ea10b027, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  musicSliderText: {fileID: 885686500}
-  soundSliderText: {fileID: 1039832465}
-  maxSliderAmount: 100
-  musicSlider: {fileID: 1669219244}
-  soundSlider: {fileID: 673353339}
-  ChangeMusic: {fileID: 0}
-  ChangeSound: {fileID: 0}
---- !u!4 &347043725
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 347043723}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 948.632, y: 628.78564, z: -2263.558}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &428176971
 GameObject:
   m_ObjectHideFlags: 0
@@ -1526,8 +1476,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 347043724}
-        m_MethodName: SoundSliderTextChange
+      - m_Target: {fileID: 697209360}
+        m_MethodName: SoundValueChange
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1776,6 +1726,7 @@ GameObject:
   - component: {fileID: 697209357}
   - component: {fileID: 697209359}
   - component: {fileID: 697209358}
+  - component: {fileID: 697209360}
   m_Layer: 5
   m_Name: SettingsPanel
   m_TagString: Untagged
@@ -1843,6 +1794,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 697209356}
   m_CullTransparentMesh: 0
+--- !u!114 &697209360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 697209356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc6162ea134a36540a99fd76ea10b027, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicSliderText: {fileID: 885686500}
+  soundSliderText: {fileID: 1039832465}
+  maxSliderAmount: 100
+  ChangeMusic: {fileID: 11400000, guid: 6d7be0cfc460dd6799588174304447b9, type: 2}
+  ChangeSound: {fileID: 11400000, guid: 6d7be0cfc460dd6799588174304447b9, type: 2}
 --- !u!1 &715183058
 GameObject:
   m_ObjectHideFlags: 0
@@ -3487,8 +3455,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 347043724}
-        m_MethodName: MusicSliderTextChange
+      - m_Target: {fileID: 697209360}
+        m_MethodName: MusicValueChange
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
