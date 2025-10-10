@@ -1025,6 +1025,7 @@ GameObject:
   - component: {fileID: 676759490}
   - component: {fileID: 676759489}
   - component: {fileID: 676759492}
+  - component: {fileID: 676759493}
   m_Layer: 5
   m_Name: DenyButton
   m_TagString: Untagged
@@ -1162,6 +1163,34 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &676759493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 676759487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1239063810}
+          m_MethodName: OnHover
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &687340372
 GameObject:
   m_ObjectHideFlags: 0
@@ -1551,6 +1580,63 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 0
+--- !u!1 &1118106060
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1118106062}
+  - component: {fileID: 1118106061}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1118106061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1118106060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfcff691432074b37afde72d66427451, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AudioSourcePrefab: {fileID: 3467107008018029944, guid: 50fbcd556e7de85b790c86bb3cf9520f,
+    type: 3}
+  Buses:
+  - AudioClipBus: {fileID: 11400000, guid: f97ee7e7c74d23614abb2b688e692319, type: 2}
+    BusVolume: {fileID: 11400000, guid: 50ceba6f3c991b4deb83d07f7c4cc3ab, type: 2}
+  - AudioClipBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
+    BusVolume: {fileID: 11400000, guid: bb9e88c84f39f8d5fb9cb238de2fac02, type: 2}
+  PlayOnStart:
+  - audio:
+      clip: {fileID: 8300000, guid: dbaebce5c9bfcb889bef80e42e3de196, type: 3}
+      volume: 0.5
+      pitchVariance: 0
+      loop: 1
+    bus: {fileID: 11400000, guid: f97ee7e7c74d23614abb2b688e692319, type: 2}
+--- !u!4 &1118106062
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1118106060}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 958.20465, y: 497.4, z: -82.5625}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1129313387
 GameObject:
   m_ObjectHideFlags: 0
@@ -1783,10 +1869,21 @@ MonoBehaviour:
   AppealText: {fileID: 558936790}
   ChatLogText: {fileID: 1146844095}
   ChatScroll: {fileID: 0}
+  HoverSound:
+    clip: {fileID: 8300000, guid: 5eb527ccfaa0529beaced9f1d441570e, type: 3}
+    volume: 0.15
+    pitchVariance: 0.14
+    loop: 0
+  PressSound:
+    clip: {fileID: 8300000, guid: 6286ce95a4cdd79d2b2c43af07da8e5b, type: 3}
+    volume: 0.4
+    pitchVariance: 0.14
+    loop: 0
   delayTime: 1
   RefreshUserInfo: {fileID: 11400000, guid: 2e23c26185f87442795df3f94db57909, type: 2}
   ResolveAppeal: {fileID: 11400000, guid: 4c381b5a82e316b71a52ad513c65bbb5, type: 2}
   RequestUser: {fileID: 11400000, guid: bd767a99f22ae800b90886e07da843ce, type: 2}
+  SoundBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
 --- !u!1 &1457516533
 GameObject:
   m_ObjectHideFlags: 0
@@ -2085,6 +2182,7 @@ GameObject:
   - component: {fileID: 1744924065}
   - component: {fileID: 1744924064}
   - component: {fileID: 1744924067}
+  - component: {fileID: 1744924068}
   m_Layer: 5
   m_Name: AcceptButton
   m_TagString: Untagged
@@ -2222,6 +2320,34 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1744924068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1744924062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1239063810}
+          m_MethodName: OnHover
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1852667166
 GameObject:
   m_ObjectHideFlags: 0
