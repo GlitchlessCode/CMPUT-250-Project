@@ -36,10 +36,8 @@ public class DMSPanelController : Subscriber
 
     public void OnDMSent(DirectMessage DM)
     {
-
         AddDM(DM);
         killDM();
-
     }
 
     void Update()
@@ -54,7 +52,7 @@ public class DMSPanelController : Subscriber
         { 
             GameObject instantiatedObject = Instantiate(container, DMPanel);
             textComponent = instantiatedObject.GetComponentInChildren<TextMeshProUGUI>();
-            textComponent.text = "HIFHEGAIIHGENBVENVERNFWRINJNFCISDIANVIKDNSVNSDNFNSDKFNISKDNFINSDIFNISD";
+            textComponent.text = DM.message;
             
 
             containers.Add(instantiatedObject);
@@ -112,7 +110,7 @@ public class DMSPanelController : Subscriber
     {
         foreach (GameObject con in containers)
         {
-            if(con.transform.position.y > 700)
+            if(con.transform.position.y > 600)
             {
                 Image image = con.GetComponentInChildren<Image>();
                 textComponent = con.GetComponentInChildren<TextMeshProUGUI>();

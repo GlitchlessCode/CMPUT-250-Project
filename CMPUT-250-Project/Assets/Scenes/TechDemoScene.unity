@@ -1379,7 +1379,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &588095247
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1449,9 +1449,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DMSent: {fileID: 11400000, guid: 97ebe09952f655c42b984331ad049f6d, type: 2}
+  textComponent: {fileID: 0}
+  image: {fileID: 0}
   container: {fileID: 8781017535051074199, guid: 1e9803137db81244293d380ba2c318ed,
     type: 3}
-  DMPanel: {fileID: 91922221}
+  DMPanel: {fileID: 588095247}
 --- !u!1 &673353337
 GameObject:
   m_ObjectHideFlags: 0
