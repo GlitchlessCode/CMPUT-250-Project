@@ -50,19 +50,22 @@ public class TabMenu : MonoBehaviour
         if(Input.GetKey(KeyCode.Alpha1) || Input.GetKey(KeyCode.Keypad1))
         {
             rulesTab.isOn = !rulesTab.isOn;
+            DMTabClick?.Emit(false);
         }
         else if(Input.GetKey(KeyCode.Alpha2) || Input.GetKey(KeyCode.Keypad2))
         {
             appealTab.isOn = !appealTab.isOn;
+            DMTabClick?.Emit(false);
         }
         else if(Input.GetKey(KeyCode.Alpha3) || Input.GetKey(KeyCode.Keypad3))
         {
             dmsTab.isOn = !dmsTab.isOn;
-            DMTabClick?.Emit(false);
+            DMTabClick?.Emit(true);
         }
         else if (Input.GetKey(KeyCode.O))
         {
             settingsTab.isOn = !settingsTab.isOn;
+            DMTabClick?.Emit(false);
         }
     }
 
@@ -76,7 +79,8 @@ public class TabMenu : MonoBehaviour
                 tab.Value.gameObject.SetActive(false);
             }
 
-            if (tab.Key == dmsTab && tab.Key.isOn){DMTabClick?.Emit(false);}
+            if (tab.Key == dmsTab && tab.Key.isOn){DMTabClick?.Emit(true);}
+            else {DMTabClick?.Emit(false);}
         }
     }
 }
