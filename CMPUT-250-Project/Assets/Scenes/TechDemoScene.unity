@@ -2522,6 +2522,7 @@ MonoBehaviour:
   rulesPanel: {fileID: 428176971}
   dmsPanel: {fileID: 588095246}
   settingsPanel: {fileID: 697209356}
+  DMTabClick: {fileID: 11400000, guid: 074e5403052471449b841afb3e4f8100, type: 2}
 --- !u!1 &1146844093
 GameObject:
   m_ObjectHideFlags: 0
@@ -2811,7 +2812,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 753612de8a5b0584db79a0d4878bb9e0, type: 3}
   - {fileID: 21300000, guid: 5a36363e72a5db94db9fb5a3dacbd8b3, type: 3}
   frameRate: 0.5
-  DMSent: {fileID: 0}
+  DMSent: {fileID: 11400000, guid: 97ebe09952f655c42b984331ad049f6d, type: 2}
+  DMTabClick: {fileID: 11400000, guid: 074e5403052471449b841afb3e4f8100, type: 2}
 --- !u!114 &1368834074
 MonoBehaviour:
   m_ObjectHideFlags: 0
