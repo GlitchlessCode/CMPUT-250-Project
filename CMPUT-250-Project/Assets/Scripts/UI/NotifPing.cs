@@ -10,9 +10,9 @@ public class NotifPing : Subscriber
     public Sprite[] images;
     public float frameRate = 0.5f;
     private float timer = 0f;
-    private bool active = true;
+    private bool active = false;
     private bool alreadyDMTab = false;
-    private bool dm = true;
+    private bool dm = false;
 
     [Header("Event Listeners")]
     public DirectMessageGameEvent DMSent;
@@ -26,15 +26,16 @@ public class NotifPing : Subscriber
 
     void OnDMSent(DirectMessage DM)
     {
-        // pretty sure my logic here is sound - but no good way to test this rn
+
         dm = !alreadyDMTab;
+        active = dm && !alreadyDMTab;
     }
 
     void OnDMTabClick(bool value)
     {
         alreadyDMTab = value;
-        active = dm && !alreadyDMTab;
         if (alreadyDMTab){dm=false;}
+        active = dm && !alreadyDMTab;
         Debug.Log("dm"+dm+"val"+alreadyDMTab);
         Debug.Log(""+active);
     }

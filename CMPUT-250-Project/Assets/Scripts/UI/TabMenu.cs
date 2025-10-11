@@ -70,6 +70,8 @@ public class TabMenu : MonoBehaviour
     }
 
     void TabSwap(Dictionary<Toggle, GameObject> tabsDictionary){
+        bool OnDMTab = false;
+
         foreach (KeyValuePair<Toggle, GameObject> tab in tabsDictionary){
             if (tab.Key.isOn)
             {
@@ -79,8 +81,9 @@ public class TabMenu : MonoBehaviour
                 tab.Value.gameObject.SetActive(false);
             }
 
-            if (tab.Key == dmsTab && tab.Key.isOn){DMTabClick?.Emit(true);}
-            else {DMTabClick?.Emit(false);}
+            if (tab.Key == dmsTab && tab.Key.isOn){OnDMTab=true;}
         }
+
+        DMTabClick?.Emit(OnDMTab);
     }
 }
