@@ -36,26 +36,25 @@ public class DMSPanelController : Subscriber
 
     public void OnDMSent(DirectMessage DM)
     {
-        AddDM();
+
+        AddDM(DM);
+        killDM();
+
     }
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.A))
-        {
-            AddDM();
-            killDM();
-        }
+
     }
 
-    void AddDM()
+    void AddDM(DirectMessage DM)
     {
 
         if (container != null && DMPanel != null)
         { 
             GameObject instantiatedObject = Instantiate(container, DMPanel);
             textComponent = instantiatedObject.GetComponentInChildren<TextMeshProUGUI>();
-            textComponent.text = ""+o;
+            textComponent.text = "HIFHEGAIIHGENBVENVERNFWRINJNFCISDIANVIKDNSVNSDNFNSDKFNISKDNFINSDIFNISD";
             
 
             containers.Add(instantiatedObject);
