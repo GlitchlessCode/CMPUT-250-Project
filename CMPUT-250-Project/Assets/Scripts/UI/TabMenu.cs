@@ -18,6 +18,9 @@ public class TabMenu : MonoBehaviour
     public GameObject rulesPanel;
     public GameObject dmsPanel;
     public GameObject settingsPanel;
+
+    [Header("Events")]  
+    public BoolGameEvent DMTabClick;
     
     private Dictionary <Toggle, GameObject> tabsDictionary;
 
@@ -55,6 +58,7 @@ public class TabMenu : MonoBehaviour
         else if(Input.GetKey(KeyCode.Alpha3) || Input.GetKey(KeyCode.Keypad3))
         {
             dmsTab.isOn = !dmsTab.isOn;
+            DMTabClick?.Emit(false);
         }
         else if (Input.GetKey(KeyCode.O))
         {
@@ -71,6 +75,8 @@ public class TabMenu : MonoBehaviour
             else{
                 tab.Value.gameObject.SetActive(false);
             }
+
+            if (tab.Key == dmsTab && tab.Key.isOn){DMTabClick?.Emit(false);}
         }
     }
 }
