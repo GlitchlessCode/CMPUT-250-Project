@@ -49,7 +49,7 @@ public static class JSONImporter
         // }
     }
 
-    private static T ImportFile<T>(string filename)
+    public static T ImportFile<T>(string filename)
     {
         // try
         // {
