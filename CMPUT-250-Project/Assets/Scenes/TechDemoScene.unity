@@ -1373,7 +1373,6 @@ GameObject:
   - component: {fileID: 588095247}
   - component: {fileID: 588095249}
   - component: {fileID: 588095248}
-  - component: {fileID: 588095250}
   m_Layer: 5
   m_Name: DMSPanel
   m_TagString: Untagged
@@ -1437,24 +1436,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 588095246}
   m_CullTransparentMesh: 0
---- !u!114 &588095250
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 588095246}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98c1d915b33068545a7e20e73bb1be49, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DMSent: {fileID: 11400000, guid: 97ebe09952f655c42b984331ad049f6d, type: 2}
-  textComponent: {fileID: 0}
-  image: {fileID: 0}
-  container: {fileID: 8781017535051074199, guid: 1e9803137db81244293d380ba2c318ed,
-    type: 3}
-  DMPanel: {fileID: 588095247}
 --- !u!1 &673353337
 GameObject:
   m_ObjectHideFlags: 0
@@ -4152,6 +4133,7 @@ GameObject:
   - component: {fileID: 1987603603}
   - component: {fileID: 1987603602}
   - component: {fileID: 1987603601}
+  - component: {fileID: 1987603605}
   m_Layer: 0
   m_Name: UIController
   m_TagString: Untagged
@@ -4236,6 +4218,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1987603605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1987603600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98c1d915b33068545a7e20e73bb1be49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DMSent: {fileID: 11400000, guid: 97ebe09952f655c42b984331ad049f6d, type: 2}
+  textComponent: {fileID: 0}
+  image: {fileID: 0}
+  container: {fileID: 8781017535051074199, guid: 1e9803137db81244293d380ba2c318ed,
+    type: 3}
+  DMPanel: {fileID: 588095247}
 --- !u!1 &2019163311
 GameObject:
   m_ObjectHideFlags: 0
