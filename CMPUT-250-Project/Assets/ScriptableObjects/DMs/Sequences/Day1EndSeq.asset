@@ -9,6 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c71eea102e6c094d96661f1581f0c4b, type: 3}
-  m_Name: DMSent
-  m_EditorClassIdentifier: Assembly-CSharp::DirectMessageGameEvent
+  m_Script: {fileID: 11500000, guid: 620341e864e4947c6991814d23d83297, type: 3}
+  m_Name: Day1EndSeq
+  m_EditorClassIdentifier: 
+  directory: day1
+  dmFiles:
+  - endseq1
