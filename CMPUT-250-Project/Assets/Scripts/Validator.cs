@@ -26,22 +26,147 @@ public class Validator
             }
         }
         return true;
+    } 
+
+    // Method to remove a condition based on its description
+    public bool RemoveCondition(string description)
+    {
+        return _conditions.Remove(description);
     }
+
+    // message checks
 
     public bool messagesContain(UserEntry? user, string text)
     {
-        bool pass = true;
         text = @".*" + text + ".*";
 
         foreach (string message in user.Value.messages)
         {
             if (Regex.IsMatch(message.ToLower(), text))
             {
-                pass = false; 
+                return false; 
             }
         }
 
-        return pass;
+        return true;
+    }
+
+    public bool messageRepeats(UserEntry? user, int reps)
+    {
+        string text = @".*(.)\1{"+(reps-1)+",}.*";
+
+        foreach (string message in user.Value.messages)
+        {
+            if (Regex.IsMatch(message.ToLower(), text))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public bool messageLengthCheck(UserEntry? user, string check, int length)
+    {
+        foreach (string message in user.Value.messages)
+        {
+            switch (check)
+            {
+                case "<=":
+                    if (message.Length > length) {return false;}
+                    break;
+                case "<":
+                    if (message.Length >= length) {return false;}    
+                    break;
+                case ">=":
+                    if (message.Length < length) {return false;}
+                    break;
+                case ">":
+                    if (message.Length <= length) {return false;}
+                    break;
+                case "==":
+                    if (message.Length != length) {return false;}
+                    break;
+                default:
+                    break;
+
+            }
+        }
+
+        return true;
+
+    }
+
+    public bool numberMessages(UserEntry? user, string check ,int num)
+    {
+        int n = 0;
+        foreach (string message in user.Value.messages)
+        {
+            n++;
+        }
+
+        switch (check)
+        {
+            case "<=":
+                if (n > num) {return false;}
+                break;
+            case "<":
+                if (n >= num) {return false;}    
+                break;
+            case ">=":
+                if (n < num) {return false;}
+                break;
+            case ">":
+                if (n <= num) {return false;}
+                break;
+            case "==":
+                if (n != num) {return false;}
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+    
+    // general string checks
+
+    public bool stringContains(string s, string text)
+    {
+        return (Regex.IsMatch(s.ToLower(), @".*" + text + ".*"));
+    }
+
+    public bool stringRepeats(string s, int reps)
+    {
+        return (Regex.IsMatch(s.ToLower(),  @".*(.)\1{"+(reps-1)+",}.*"));
+    }
+
+    public bool stringLengthCheck(string s, string check, int length)
+    {
+
+        switch (check)
+        {
+            case "<=":
+                if (s.Length > length) {return false;}
+                break;
+            case "<":
+                if (s.Length >= length) {return false;}    
+                break;
+            case ">=":
+                if (s.Length < length) {return false;}
+                break;
+            case ">":
+                if (s.Length <= length) {return false;}
+                break;
+            case "==":
+                if (s.Length != length) {return false;}
+                break;
+            default:
+                break;
+
+        }
+
+        return true;
+
     }
 
 }

@@ -150,12 +150,44 @@ public class UserManager : Subscriber
         MoveToNextUser();
     }
 
-    private void addRules()
+    private void addRules() // examples within
     {
-        validator.AddCondition("Messages should not contain 'bear'", (currentUser) => 
+        validator.AddCondition("Messages should not contain 'cat'", (currentUser) => 
         {
-            return validator.messagesContain(currentUser, "bear");
+            return validator.messagesContain(currentUser, "cat");
         });
+
+        validator.AddCondition("Bio cannot contain 'x'", (currentUser) =>
+        {
+            return validator.stringContains(currentUser.Value.bio,"x");
+        });
+
+        validator.AddCondition( "Message cannot repeat any char 3 times", (currentUser) =>
+        {
+            return validator.messageRepeats(currentUser, 3);
+        });
+
+        validator.AddCondition( "Name cannot repeat any char 4 times", (currentUser) =>
+        {
+            return validator.stringRepeats(currentUser.Value.name, 4);
+        });
+
+        validator.AddCondition("No message can be longer than 50 characters", (currentUser) =>
+        {
+            return validator.messageLengthCheck(currentUser,"<=",50);
+        });
+
+        validator.AddCondition("Appeal message must exist", (currentUser) =>
+        {
+            return validator.stringLengthCheck(currentUser.Value.appeal_message, ">", 0);
+        });
+
+        validator.AddCondition("need at least 3 messages.", (currentUser) =>
+        {
+            return validator.numberMessages(currentUser, ">", 2);
+        });
+
+
     }
 
     // moves to next user index
@@ -201,7 +233,7 @@ public class UserManager : Subscriber
         UserEntry? user = currentUser;
         if (user != null)
         {
-            bool passes = true;
+            // bool passes = true;
             // int numMsg = 0;
 
             // foreach (string message in user.Value.messages)
