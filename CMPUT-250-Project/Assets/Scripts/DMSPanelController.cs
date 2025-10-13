@@ -40,12 +40,12 @@ public class DMSPanelController : Subscriber
 
     public void OnDMTabClick(bool clicked)
     {
-        LayoutRebuilder.ForceRebuildLayoutImmediate(DMPanel.GetComponent<RectTransform>());
+        
     }
 
     void Update()
     {
-
+        LayoutRebuilder.ForceRebuildLayoutImmediate(DMPanel.GetComponent<RectTransform>());
     }
 
     void AddDM(DirectMessage DM)
