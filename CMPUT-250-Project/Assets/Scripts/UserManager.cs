@@ -107,6 +107,7 @@ public class UserManager : Subscriber
     private InternalDayDefinition day;
 
     private UserEntry? currentUser;
+    Validator validator = new Validator();
 
     private Dictionary<string, UserEntry> users;
 
@@ -145,7 +146,16 @@ public class UserManager : Subscriber
         // (string ruleName, string checking, string ruleType, var criteria)
 
         currentUser = null;
+        addRules();
         MoveToNextUser();
+    }
+
+    private void addRules()
+    {
+        validator.AddCondition("Messages should not contain 'bear'", (currentUser) => 
+        {
+            return validator.messagesContain(currentUser, "bear");
+        });
     }
 
     // moves to next user index
@@ -192,44 +202,43 @@ public class UserManager : Subscriber
         if (user != null)
         {
             bool passes = true;
-            int numMsg = 0;
+            // int numMsg = 0;
 
-            foreach (string message in user.Value.messages)
-            {
-                if (message.Length > 50)
-                {
-                    passes = false;
-                }
-                numMsg++;
-                if (Regex.IsMatch(message.ToLower(), @".*cat.*"))
-                {
-                    passes = false;
-                }
-                if (Regex.IsMatch(message.ToLower(), @".*(.)\1{2,}.*"))
-                {
-                    passes = false;
-                }
-            }
+            // foreach (string message in user.Value.messages)
+            // {
+            //     if (message.Length > 50)
+            //     {
+            //         passes = false;
+            //     }
+            //     numMsg++;
+            //     if (Regex.IsMatch(message.ToLower(), @".*cat.*"))
+            //     {
+            //         passes = false;
+            //     }
+            //     if (Regex.IsMatch(message.ToLower(), @".*(.)\1{2,}.*"))
+            //     {
+            //         passes = false;
+            //     }
+            // }
 
-            if (user.Value.appeal_message == "")
-            {
-                passes = false;
-            }
-            if (user.Value.name.Length > 12)
-            {
-                passes = false;
-            }
-            if (user.Value.bio.Split(' ').Length < 4)
-            {
-                passes = false;
-            }
+            // if (user.Value.appeal_message == "")
+            // {
+            //     passes = false;
+            // }
+            // if (user.Value.name.Length > 12)
+            // {
+            //     passes = false;
+            // }
+            // if (user.Value.bio.Split(' ').Length < 4)
+            // {
+            //     passes = false;
+            // }
 
-            if (numMsg < 5)
-            {
-                passes = false;
-            }
-
-            AfterAppeal?.Emit(passes == decision);
+            // if (numMsg < 5)
+            // {
+            //     passes = false;
+            // }
+            AfterAppeal?.Emit(validator.Validate(user));
         }
 
         MoveToNextUser();
