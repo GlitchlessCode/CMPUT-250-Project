@@ -13,6 +13,8 @@ public class NotifPing : Subscriber
     private bool active = false;
     private bool alreadyDMTab = false;
     private bool dm = false;
+    public float updateTime = 1f;
+    private float baseTime = 0f;
 
     [Header("Event Listeners")]
     public DirectMessageGameEvent DMSent;
@@ -26,7 +28,6 @@ public class NotifPing : Subscriber
 
     void OnDMSent(DirectMessage DM)
     {
-
         dm = !alreadyDMTab;
         active = dm && !alreadyDMTab;
     }
@@ -34,10 +35,8 @@ public class NotifPing : Subscriber
     void OnDMTabClick(bool value)
     {
         alreadyDMTab = value;
-        if (alreadyDMTab){dm=false;}
+        if (alreadyDMTab && (baseTime <= updateTime)){dm=false;}
         active = dm && !alreadyDMTab;
-        Debug.Log("dm"+dm+"val"+alreadyDMTab);
-        Debug.Log(""+active);
     }
 
     void Start()
@@ -51,7 +50,8 @@ public class NotifPing : Subscriber
         if (active)
         {
             timer += Time.deltaTime;
-            if (timer >= frameRate)
+            baseTime += Time.deltaTime;
+            if (timer >= frameRate && baseTime >= updateTime)
             {
                 if (targetImage.sprite == images[0]){targetImage.sprite = images[1];}
                 else {targetImage.sprite = images[0];}
@@ -61,6 +61,7 @@ public class NotifPing : Subscriber
         }
         else
         {
+            baseTime = 0;
             targetImage.sprite = images[2];
         }
         

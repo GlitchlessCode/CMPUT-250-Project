@@ -9,6 +9,7 @@ public class DMSPanelController : Subscriber
 
     [Header("Event Listeners")]
     public DirectMessageGameEvent DMSent;
+    public BoolGameEvent DMTabClick;
 
     [SerializeField] private TextMeshProUGUI textComponent;
     [SerializeField] private Image image;
@@ -28,13 +29,18 @@ public class DMSPanelController : Subscriber
     protected override void Subscribe()
     {
         DMSent?.Subscribe(OnDMSent);
+        DMTabClick?.Subscribe(OnDMTabClick);
     }
 
     public void OnDMSent(DirectMessage DM)
     {
         AddDM(DM);
-        Canvas.ForceUpdateCanvases();
         // killDM();
+    }
+
+    public void OnDMTabClick(bool clicked)
+    {
+        LayoutRebuilder.ForceRebuildLayoutImmediate(DMPanel.GetComponent<RectTransform>());
     }
 
     void Update()
