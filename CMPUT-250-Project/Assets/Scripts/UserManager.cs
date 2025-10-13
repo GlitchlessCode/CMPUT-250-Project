@@ -108,6 +108,7 @@ public class UserManager : Subscriber
 
     private UserEntry? currentUser;
     Validator validator = new Validator();
+    public RulePanelController rulePanelController;
 
     private Dictionary<string, UserEntry> users;
 
@@ -131,6 +132,10 @@ public class UserManager : Subscriber
 
     protected override void AfterSubscribe()
     {
+        addRules();
+        rulePanelController.SetValidator(validator);
+        rulePanelController.RefreshUI();
+
         if (Day == null)
         {
             Day = new DayDefinition();
@@ -146,7 +151,6 @@ public class UserManager : Subscriber
         // (string ruleName, string checking, string ruleType, var criteria)
 
         currentUser = null;
-        addRules();
         MoveToNextUser();
     }
 

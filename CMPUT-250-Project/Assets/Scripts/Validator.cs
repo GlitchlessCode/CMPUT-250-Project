@@ -169,4 +169,11 @@ public class Validator
 
     }
 
+    // combine rule text
+    public string GetConditionText()
+    {
+        // Join all condition descriptions into one string, separated by commas or any other separator you prefer
+        return string.Join("\n", _conditions.Keys);
+    }
+
 }
