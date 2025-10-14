@@ -8,34 +8,24 @@ public class RulePanelController : Subscriber
     [Header("UI")]
     public Text RulesText;
 
-    private Validator validator;
+    [Header("Event Listeners")]
+    public StringGameEvent RuleText;
 
-    void OnEnable()
+    protected override void Subscribe()
     {
-        RefreshUI();
+        RuleText?.Subscribe(OnRuleText);
+        OnRuleText("");
     }
 
-    public void RefreshUI()
+    public void OnRuleText(string text)
     {
-        if (validator != null)
+        if (text != "")
         {
-            RulesText.text = validator.GetConditionText();
+            RulesText.text = text;
         }
         else
         {
             RulesText.text = "No conditions available.";
         }
     }
-
-    void Update()
-    {
-
-    }
-
-    public void SetValidator(Validator validator)
-    {
-        this.validator = validator;
-        RefreshUI();
-    }
-
 }

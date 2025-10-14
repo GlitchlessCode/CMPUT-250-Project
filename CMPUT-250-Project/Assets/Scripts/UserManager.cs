@@ -108,7 +108,6 @@ public class UserManager : Subscriber
 
     private UserEntry? currentUser;
     Validator validator = new Validator();
-    public RulePanelController rulePanelController;
 
     private Dictionary<string, UserEntry> users;
 
@@ -118,6 +117,7 @@ public class UserManager : Subscriber
 
     [Header("Events")]
     public UserEntryGameEvent UserLoaded;
+    public StringGameEvent ValidatorLoaded;
 
     // `true` implies player chose correctly, `false` implies player chose incorrectly
     public BoolGameEvent AfterAppeal;
@@ -133,8 +133,6 @@ public class UserManager : Subscriber
     protected override void AfterSubscribe()
     {
         addRules();
-        rulePanelController.SetValidator(validator);
-        rulePanelController.RefreshUI();
 
         if (Day == null)
         {
@@ -211,6 +209,8 @@ public class UserManager : Subscriber
                 return validator.numberMessages(currentUser, ">", 2);
             }
         );
+
+        ValidatorLoaded?.Emit(validator.GetConditionText());
     }
 
     // moves to next user index
@@ -256,43 +256,6 @@ public class UserManager : Subscriber
         UserEntry? user = currentUser;
         if (user != null)
         {
-            // bool passes = true;
-            // int numMsg = 0;
-
-            // foreach (string message in user.Value.messages)
-            // {
-            //     if (message.Length > 50)
-            //     {
-            //         passes = false;
-            //     }
-            //     numMsg++;
-            //     if (Regex.IsMatch(message.ToLower(), @".*cat.*"))
-            //     {
-            //         passes = false;
-            //     }
-            //     if (Regex.IsMatch(message.ToLower(), @".*(.)\1{2,}.*"))
-            //     {
-            //         passes = false;
-            //     }
-            // }
-
-            // if (user.Value.appeal_message == "")
-            // {
-            //     passes = false;
-            // }
-            // if (user.Value.name.Length > 12)
-            // {
-            //     passes = false;
-            // }
-            // if (user.Value.bio.Split(' ').Length < 4)
-            // {
-            //     passes = false;
-            // }
-
-            // if (numMsg < 5)
-            // {
-            //     passes = false;
-            // }
             AfterAppeal?.Emit(validator.Validate(user) == decision);
         }
 
