@@ -107,6 +107,7 @@ public class UserManager : Subscriber
     private InternalDayDefinition day;
 
     private UserEntry? currentUser;
+    Validator validator = new Validator();
 
     private Dictionary<string, UserEntry> users;
 
@@ -116,6 +117,7 @@ public class UserManager : Subscriber
 
     [Header("Events")]
     public UserEntryGameEvent UserLoaded;
+    public StringGameEvent ValidatorLoaded;
 
     // `true` implies player chose correctly, `false` implies player chose incorrectly
     public BoolGameEvent AfterAppeal;
@@ -130,6 +132,8 @@ public class UserManager : Subscriber
 
     protected override void AfterSubscribe()
     {
+        addRules();
+
         if (Day == null)
         {
             Day = new DayDefinition();
@@ -146,6 +150,67 @@ public class UserManager : Subscriber
 
         currentUser = null;
         MoveToNextUser();
+    }
+
+    private void addRules() // examples within
+    {
+        validator.AddCondition(
+            "Messages should not contain 'cat'",
+            (currentUser) =>
+            {
+                return !validator.messagesContain(currentUser, "cat");
+            }
+        );
+
+        validator.AddCondition(
+            "Bio cannot contain 'x'",
+            (currentUser) =>
+            {
+                return !validator.stringContains(currentUser.Value.bio, "x");
+            }
+        );
+
+        validator.AddCondition(
+            "Message cannot repeat any char 3 times",
+            (currentUser) =>
+            {
+                return validator.messageRepeats(currentUser, 3);
+            }
+        );
+
+        validator.AddCondition(
+            "Name cannot repeat any char 4 times",
+            (currentUser) =>
+            {
+                return !validator.stringRepeats(currentUser.Value.name, 4);
+            }
+        );
+
+        validator.AddCondition(
+            "No message can be longer than 50 characters",
+            (currentUser) =>
+            {
+                return validator.messageLengthCheck(currentUser, "<=", 50);
+            }
+        );
+
+        validator.AddCondition(
+            "Appeal message must exist",
+            (currentUser) =>
+            {
+                return validator.stringLengthCheck(currentUser.Value.appeal_message, ">", 0);
+            }
+        );
+
+        validator.AddCondition(
+            "need at least 3 messages.",
+            (currentUser) =>
+            {
+                return validator.numberMessages(currentUser, ">", 2);
+            }
+        );
+
+        ValidatorLoaded?.Emit(validator.GetConditionText());
     }
 
     // moves to next user index
@@ -191,45 +256,7 @@ public class UserManager : Subscriber
         UserEntry? user = currentUser;
         if (user != null)
         {
-            bool passes = true;
-            int numMsg = 0;
-
-            foreach (string message in user.Value.messages)
-            {
-                if (message.Length > 50)
-                {
-                    passes = false;
-                }
-                numMsg++;
-                if (Regex.IsMatch(message.ToLower(), @".*cat.*"))
-                {
-                    passes = false;
-                }
-                if (Regex.IsMatch(message.ToLower(), @".*(.)\1{2,}.*"))
-                {
-                    passes = false;
-                }
-            }
-
-            if (user.Value.appeal_message == "")
-            {
-                passes = false;
-            }
-            if (user.Value.name.Length > 12)
-            {
-                passes = false;
-            }
-            if (user.Value.bio.Split(' ').Length < 4)
-            {
-                passes = false;
-            }
-
-            if (numMsg < 5)
-            {
-                passes = false;
-            }
-
-            AfterAppeal?.Emit(passes == decision);
+            AfterAppeal?.Emit(validator.Validate(user) == decision);
         }
 
         MoveToNextUser();
