@@ -10,28 +10,21 @@ public class DirectMessagePoolDefinition : ScriptableObject
     public string directory;
     public List<string> dmFiles;
 
-    public List<DirectMessage> GetMessages()
+    public IEnumerator GetMessages(Action<List<DirectMessage>> callback)
     {
-        try
-        {
-            System.Random rand = new System.Random();
-
-            Dictionary<string, DirectMessage> files = JSONImporter.ImportDirectory<DirectMessage>(
-                Path.Combine("lang", "en", "messages", directory)
-            );
-
-            List<DirectMessage> messages = new List<DirectMessage>();
-            foreach (string filename in dmFiles)
+        yield return JSONImporter.ImportFiles<DirectMessage>(
+            Path.Combine("lang", "en", "messages", directory),
+            dmFiles,
+            (files) =>
             {
-                messages.Add(files[filename]);
-            }
+                List<DirectMessage> messagesOut = new List<DirectMessage>();
+                foreach (string filename in dmFiles)
+                {
+                    messagesOut.Add(files[filename]);
+                }
 
-            return messages;
-        }
-        catch (Exception err)
-        {
-            Debug.LogWarning("Failed to load DirectMessagePool " + directory + " due to " + err);
-            return new List<DirectMessage>();
-        }
+                callback(messagesOut);
+            }
+        );
     }
 }

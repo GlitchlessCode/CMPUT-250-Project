@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.Networking;
 
 [System.Serializable]
 public struct UserEntry
@@ -22,60 +24,71 @@ public struct DirectMessage
 
 public static class JSONImporter
 {
-    /// <summary>
-    /// Import all .json files in a directory as type T
-    /// </summary>
-    public static Dictionary<string, T> ImportDirectory<T>(string dir_path)
+    // Import all requested .json files as type T
+    //
+    // All filenames should be extension-less, .json is assumed
+    public static System.Collections.IEnumerator ImportFiles<T>(
+        string dir_path,
+        IEnumerable<string> files,
+        Action<Dictionary<string, T>> callback
+    )
     {
         string path = Path.Combine(Application.streamingAssetsPath, dir_path);
 
-        // All try-catches are commented for now to imply fallability, even if I haven't taken the time to implement correct error handling
-        // try
-        // {
         Dictionary<string, T> items = new Dictionary<string, T>();
 
-        foreach (string filename in Directory.EnumerateFiles(path))
+        foreach (string filename in files)
         {
-            if (filename.EndsWith(".json"))
+            T loaded_content = default(T);
+            yield return ImportFile<T>(
+                Path.ChangeExtension(Path.Combine(path, filename), "json"),
+                (content) =>
+                {
+                    loaded_content = content;
+                }
+            );
+            items.Add(filename, loaded_content);
+        }
+
+        callback.Invoke(items);
+    }
+
+    private static System.Collections.IEnumerator ImportFile<T>(string filename, Action<T> callback)
+    {
+        yield return ReadFileToString(
+            filename,
+            (file_contents) =>
             {
-                string simple_name = Path.GetFileNameWithoutExtension(filename);
-                items.Add(simple_name, ImportFile<T>(filename));
+                callback(JsonUtility.FromJson<T>(file_contents));
+            }
+        );
+    }
+
+    private static System.Collections.IEnumerator ReadFileToString(
+        string path,
+        Action<string> callback
+    )
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        using (UnityWebRequest request = UnityWebRequest.Get(path))
+        {
+            yield return request.SendWebRequest();
+            if (!request.isNetworkError)
+            {
+                callback(request.downloadHandler.text);
+            }
+            else
+            {
+                Debug.LogError("Failed to load file, UnityWebRequest returned network error");
+                callback("{}");
             }
         }
-        return items;
-        // }
-        // catch (Exception err)
-        // {
-        // }
-    }
-
-    public static T ImportFile<T>(string filename)
-    {
-        // try
-        // {
-        string file_contents = ReadFileToString(filename);
-
-        T type = JsonUtility.FromJson<T>(file_contents);
-        return type;
-        // }
-        // catch (Exception err)
-        // {
-        // }
-    }
-
-    private static string ReadFileToString(string path)
-    {
-        // try
-        // {
-        // Ensures the reader is disposed of automatically at the end of scope.
+#else
         using (StreamReader reader = new StreamReader(path))
         {
-            string contents = reader.ReadToEnd();
-            return contents;
+            callback(reader.ReadToEnd());
         }
-        // }
-        // catch (Exception err)
-        // {
-        // }
+        yield return null;
+#endif
     }
 }
