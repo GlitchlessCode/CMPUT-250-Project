@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,28 +25,71 @@ public class DirectMessageManager : Subscriber
     [Header("Events")]
     public DirectMessageGameEvent MessageTarget;
 
+    private bool loadedSuccessMessages = false;
     private InternalDirectMessagePool successMessages;
+    private bool loadedFailureMessages = false;
     private InternalDirectMessagePool failureMessages;
     private List<InternalDirectMessageSequence> messageSequences;
 
+    private Queue<bool> queuedAppeals;
+    private Dictionary<Guid, int> queuedSequences;
+
     protected override void Subscribe()
     {
-        successMessages = new InternalDirectMessagePool(SuccessMessages);
-        failureMessages = new InternalDirectMessagePool(FailureMessages);
+        AfterAppeal?.Subscribe(OnAfterAppealQueued);
+
+        queuedAppeals = new Queue<bool>();
+        StartCoroutine(
+            SuccessMessages.GetMessages(
+                (messages) =>
+                {
+                    successMessages = new InternalDirectMessagePool(messages);
+                    loadedSuccessMessages = true;
+                    catchUpAppeals();
+                }
+            )
+        );
+        StartCoroutine(
+            FailureMessages.GetMessages(
+                (messages) =>
+                {
+                    failureMessages = new InternalDirectMessagePool(messages);
+                    loadedFailureMessages = true;
+                    catchUpAppeals();
+                }
+            )
+        );
+
+        queuedSequences = new Dictionary<Guid, int>();
         messageSequences = new List<InternalDirectMessageSequence>();
         foreach (CoupledEventSequence coupled in MessageSequences)
         {
             if (coupled.sequence != null && coupled.trigger != null)
             {
-                InternalDirectMessageSequence seq = new InternalDirectMessageSequence(
-                    coupled.sequence
+                Guid id = Guid.NewGuid();
+                Action action = CreateOnSequenceTriggerQueued(id);
+                StartCoroutine(
+                    coupled.sequence.GetMessages(
+                        (messages) =>
+                        {
+                            InternalDirectMessageSequence seq = new InternalDirectMessageSequence(
+                                messages
+                            );
+                            messageSequences.Add(seq);
+                            catchUpSequence(id, seq, action, coupled.trigger);
+                        }
+                    )
                 );
-                messageSequences.Add(seq);
-                coupled.trigger.Subscribe(CreateOnSequenceTrigger(seq));
+                queuedSequences[id] = 0;
+
+                coupled.trigger.Subscribe(action);
             }
         }
+    }
 
-        AfterAppeal?.Subscribe(OnAfterAppeal);
+    void OnAfterAppealQueued(bool success)
+    {
+        queuedAppeals.Enqueue(success);
     }
 
     void OnAfterAppeal(bool success)
@@ -60,7 +104,35 @@ public class DirectMessageManager : Subscriber
         }
     }
 
-    System.Action CreateOnSequenceTrigger(InternalDirectMessageSequence seq)
+    void catchUpAppeals()
+    {
+        if (loadedSuccessMessages && loadedFailureMessages)
+        {
+            if (queuedAppeals.Count > 0)
+            {
+                foreach (bool success in queuedAppeals)
+                {
+                    OnAfterAppeal(success);
+                }
+                queuedAppeals.Clear();
+            }
+
+            AfterAppeal?.Subscribe(OnAfterAppeal);
+            AfterAppeal?.Unsubscribe(OnAfterAppealQueued);
+        }
+    }
+
+    Action CreateOnSequenceTriggerQueued(Guid id)
+    {
+        void OnSequenceTriggerQueued()
+        {
+            queuedSequences[id] += 1;
+        }
+
+        return OnSequenceTriggerQueued;
+    }
+
+    Action CreateOnSequence(InternalDirectMessageSequence seq)
     {
         void OnSequenceTrigger()
         {
@@ -69,7 +141,23 @@ public class DirectMessageManager : Subscriber
                 MessageTarget?.Emit(msg);
             }
         }
+
         return OnSequenceTrigger;
+    }
+
+    void catchUpSequence(
+        Guid id,
+        InternalDirectMessageSequence seq,
+        Action old_action,
+        UnitGameEvent trigger
+    )
+    {
+        Action action = CreateOnSequence(seq);
+        for (int count = 0; count < queuedSequences[id]; count++)
+            action();
+        queuedSequences[id] = -1;
+        trigger.Subscribe(action);
+        trigger.Unsubscribe(old_action);
     }
 }
 
@@ -77,9 +165,9 @@ class InternalDirectMessagePool
 {
     List<DirectMessage> messages;
 
-    public InternalDirectMessagePool(DirectMessagePoolDefinition def)
+    public InternalDirectMessagePool(List<DirectMessage> messagesIn)
     {
-        messages = def.GetMessages();
+        messages = messagesIn;
     }
 
     public DirectMessage GetRandomMessage()
@@ -93,9 +181,9 @@ class InternalDirectMessageSequence
 {
     List<DirectMessage> messages;
 
-    public InternalDirectMessageSequence(DirectMessageSequenceDefinition def)
+    public InternalDirectMessageSequence(List<DirectMessage> messagesIn)
     {
-        messages = def.GetMessages();
+        messages = messagesIn;
     }
 
     public List<DirectMessage> GetMessages()

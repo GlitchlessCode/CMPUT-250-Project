@@ -13,6 +13,21 @@ class InternalDayDefinition
     private int currentOrder;
     private int currentCountInOrder;
 
+    public HashSet<string> UserFiles
+    {
+        get
+        {
+            HashSet<string> files = new HashSet<string>();
+
+            foreach (UserPoolDefinition pool in PoolDefinitions)
+            {
+                pool.UserFiles.ForEach((item) => files.Add(item));
+            }
+
+            return files;
+        }
+    }
+
     public InternalDayDefinition(DayDefinition day)
     {
         Directory = day.Directory;
@@ -142,14 +157,21 @@ public class UserManager : Subscriber
         day = new InternalDayDefinition(Day);
 
         // load users
-        users = JSONImporter.ImportDirectory<UserEntry>(
-            Path.Combine("lang", "en", "days", day.Directory)
+        StartCoroutine(
+            JSONImporter.ImportFiles<UserEntry>(
+                Path.Combine("lang", "en", "days", day.Directory),
+                day.UserFiles,
+                (usersOut) =>
+                {
+                    users = usersOut;
+                    MoveToNextUser();
+                }
+            )
         );
 
         // (string ruleName, string checking, string ruleType, var criteria)
 
         currentUser = null;
-        MoveToNextUser();
     }
 
     private void addRules() // examples within

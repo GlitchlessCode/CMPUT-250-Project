@@ -20,11 +20,10 @@ public class Validator
     // Method to check if a UserEntry satisfies all conditions
     public bool Validate(UserEntry? user)
     {
-        foreach (var condition in _conditions)
+        foreach (var condition in _conditions.Values)
         {
-            if (!condition.Value(user))
+            if (!condition(user))
             {
-                Debug.Log("Failed " + condition.Key);
                 return false;
             }
         }
