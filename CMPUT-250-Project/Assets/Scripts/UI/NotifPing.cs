@@ -11,7 +11,7 @@ public class NotifPing : Subscriber
     public float frameRate = 0.5f;
     private float timer = 0f;
     private bool active = false;
-    private bool alreadyDMTab = false;
+    private bool alreadyDMTab = true; // Need to adjust this based on starting state of day
     private bool dm = false;
     public float updateTime = 1f;
     private float baseTime = 0f;
@@ -30,13 +30,15 @@ public class NotifPing : Subscriber
     {
         dm = !alreadyDMTab;
         active = dm && !alreadyDMTab;
+        Debug.Log("sent+"+active);
     }
 
     void OnDMTabClick(bool value)
     {
         alreadyDMTab = value;
-        if (alreadyDMTab && (baseTime <= updateTime)){dm=false;}
+        if (alreadyDMTab){dm=false;}
         active = dm && !alreadyDMTab;
+        Debug.Log("click+"+active);
     }
 
     void Start()
