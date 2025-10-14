@@ -30,7 +30,6 @@ public class NotifPing : Subscriber
     {
         dm = !alreadyDMTab;
         active = dm && !alreadyDMTab;
-        Debug.Log("sent+"+active);
     }
 
     void OnDMTabClick(bool value)
@@ -38,7 +37,6 @@ public class NotifPing : Subscriber
         alreadyDMTab = value;
         if (alreadyDMTab){dm=false;}
         active = dm && !alreadyDMTab;
-        Debug.Log("click+"+active);
     }
 
     void Start()
