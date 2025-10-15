@@ -3383,8 +3383,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -21.7, y: 492.52}
-  m_SizeDelta: {x: 33.389862, y: 32.8078}
+  m_AnchoredPosition: {x: 227.2, y: 493.51}
+  m_SizeDelta: {x: 49.482742, y: 48.620148}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1368834072
 MonoBehaviour:
@@ -3404,6 +3404,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 753612de8a5b0584db79a0d4878bb9e0, type: 3}
   - {fileID: 21300000, guid: 5a36363e72a5db94db9fb5a3dacbd8b3, type: 3}
   frameRate: 0.5
+  updateTime: 1
   DMSent: {fileID: 11400000, guid: 97ebe09952f655c42b984331ad049f6d, type: 2}
   DMTabClick: {fileID: 11400000, guid: 074e5403052471449b841afb3e4f8100, type: 2}
 --- !u!114 &1368834074
@@ -5124,6 +5125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DMSent: {fileID: 11400000, guid: 97ebe09952f655c42b984331ad049f6d, type: 2}
+  DMTabClick: {fileID: 0}
   textComponent: {fileID: 0}
   image: {fileID: 0}
   container: {fileID: 364561899323518073, guid: 1e9803137db81244293d380ba2c318ed,
