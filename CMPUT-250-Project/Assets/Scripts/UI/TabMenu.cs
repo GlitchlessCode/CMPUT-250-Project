@@ -81,11 +81,9 @@ public class TabMenu : MonoBehaviour
         foreach (KeyValuePair<Toggle, GameObject> tab in tabsDictionary){
             if (tab.Key.isOn)
             {
-                Debug.Log("Is on: " + tab.Key);
                 tab.Value.gameObject.SetActive(true);
             }
             else{
-                Debug.Log("Isn't on: " + tab.Key);
                 tab.Value.gameObject.SetActive(false);
             }
 

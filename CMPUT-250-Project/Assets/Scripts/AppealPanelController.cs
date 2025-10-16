@@ -10,6 +10,8 @@ public class AppealPanelController : Subscriber
     public Text DateText;
     public Text BioText;
     public Text AppealText;
+    public Button AcceptButton;
+    public Button DenyButton;
 
     [Header("Chat")]
     public Text ChatLogText; // ← NEW
@@ -47,11 +49,16 @@ public class AppealPanelController : Subscriber
     }
 
     void OnAppealTabClick(bool clicked){
+        Debug.Log("Is it even getting in here?")
         if (clicked){
-            OnDecision(true);
+            Debug.Log("Should be true: " + clicked);
+            AcceptButton.gameObject.SetActive(true);
+            DenyButton.gameObject.SetActive(true);
         }
         else{
-            OnDecision(false);
+            Debug.Log("Should be false: " + clicked);
+            AcceptButton.gameObject.SetActive(false);
+            DenyButton.gameObject.SetActive(false);
         }
     }
 
