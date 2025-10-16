@@ -26,6 +26,7 @@ public class AppealPanelController : Subscriber
 
     [Header("Event Listeners")]
     public UserEntryGameEvent RefreshUserInfo;
+    public BoolGameEvent AppealTabClick;
 
     [Header("Events")]
     public BoolGameEvent ResolveAppeal;
@@ -35,6 +36,7 @@ public class AppealPanelController : Subscriber
     protected override void Subscribe()
     {
         RefreshUserInfo?.Subscribe(OnRefreshUserInfo);
+        AppealTabClick?.Subscribe(OnAppealTabClick);
     }
 
     void OnEnable()
@@ -42,6 +44,15 @@ public class AppealPanelController : Subscriber
         RefreshUI(null);
         RequestUser?.Emit();
         canUpdate = true;
+    }
+
+    void OnAppealTabClick(bool clicked){
+        if (clicked){
+            OnDecision(true);
+        }
+        else{
+            OnDecision(false);
+        }
     }
 
     void RefreshUI(UserEntry? userOption)
