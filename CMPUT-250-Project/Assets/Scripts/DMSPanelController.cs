@@ -27,7 +27,6 @@ public class DMSPanelController : Subscriber
 
     void Start ()
     {
-        initialPosition = content.transform.position; 
     }
 
     protected override void Subscribe()
@@ -44,7 +43,6 @@ public class DMSPanelController : Subscriber
 
     public void OnDMTabClick(bool clicked)
     {
-        initialPosition = content.transform.position; 
     }
 
     void Update()
