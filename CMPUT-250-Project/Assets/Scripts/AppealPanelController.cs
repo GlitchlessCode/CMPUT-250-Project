@@ -12,6 +12,7 @@ public class AppealPanelController : Subscriber
     public Text AppealText;
     public Button AcceptButton;
     public Button DenyButton;
+    public GameObject appealPanel; 
 
     [Header("Chat")]
     public Text ChatLogText; // ← NEW
@@ -24,11 +25,11 @@ public class AppealPanelController : Subscriber
     [Header("Delay Time")]
     public float delayTime = 1f;
 
-    private bool canUpdate = true;
+    private bool canUpdate = false;
 
     [Header("Event Listeners")]
     public UserEntryGameEvent RefreshUserInfo;
-    public BoolGameEvent AppealTabClick;
+    public GameObjectGameEvent AppealPanelActive;
 
     [Header("Events")]
     public BoolGameEvent ResolveAppeal;
@@ -38,7 +39,7 @@ public class AppealPanelController : Subscriber
     protected override void Subscribe()
     {
         RefreshUserInfo?.Subscribe(OnRefreshUserInfo);
-        AppealTabClick?.Subscribe(OnAppealTabClick);
+        AppealPanelActive?.Subscribe(OnAppealPanelActive);
     }
 
     void OnEnable()
@@ -48,17 +49,14 @@ public class AppealPanelController : Subscriber
         canUpdate = true;
     }
 
-    void OnAppealTabClick(bool clicked){
-        Debug.Log("Is it even getting in here?")
-        if (clicked){
-            Debug.Log("Should be true: " + clicked);
-            AcceptButton.gameObject.SetActive(true);
-            DenyButton.gameObject.SetActive(true);
+    void OnAppealPanelActive(GameObject appealPanel){
+        if (appealPanel.activeSelf == true){
+            AcceptButton.enabled = true;
+            DenyButton.enabled = true;
         }
         else{
-            Debug.Log("Should be false: " + clicked);
-            AcceptButton.gameObject.SetActive(false);
-            DenyButton.gameObject.SetActive(false);
+            AcceptButton.enabled = false;
+            DenyButton.enabled = false;
         }
     }
 
@@ -124,7 +122,7 @@ public class AppealPanelController : Subscriber
     {
         if (Input.GetKey(KeyCode.A))
         {
-            if (canUpdate == true)
+            if (canUpdate == true && AcceptButton.enabled)
             {
                 OnDecision(false);
                 StartCoroutine(DelayAction(delayTime));
@@ -132,7 +130,7 @@ public class AppealPanelController : Subscriber
         }
         if (Input.GetKey(KeyCode.D))
         {
-            if (canUpdate == true)
+            if (canUpdate == true && DenyButton.enabled)
             {
                 OnDecision(false);
                 StartCoroutine(DelayAction(delayTime));

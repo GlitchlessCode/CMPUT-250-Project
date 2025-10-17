@@ -2921,6 +2921,7 @@ MonoBehaviour:
   dmsPanel: {fileID: 588095246}
   settingsPanel: {fileID: 697209356}
   DMTabClick: {fileID: 11400000, guid: 074e5403052471449b841afb3e4f8100, type: 2}
+  AppealPanelActive: {fileID: 11400000, guid: 8a411edaf2864054185493aae14f6d0c, type: 2}
 --- !u!1 &1146844093
 GameObject:
   m_ObjectHideFlags: 0
@@ -5157,6 +5158,9 @@ MonoBehaviour:
   DateText: {fileID: 1852667167}
   BioText: {fileID: 1907957896}
   AppealText: {fileID: 558936790}
+  AcceptButton: {fileID: 1744924064}
+  DenyButton: {fileID: 676759489}
+  appealPanel: {fileID: 1239063806}
   ChatLogText: {fileID: 1146844095}
   ChatScroll: {fileID: 0}
   HoverSound:
@@ -5171,6 +5175,7 @@ MonoBehaviour:
     loop: 0
   delayTime: 1
   RefreshUserInfo: {fileID: 11400000, guid: 2e23c26185f87442795df3f94db57909, type: 2}
+  AppealPanelActive: {fileID: 11400000, guid: 8a411edaf2864054185493aae14f6d0c, type: 2}
   ResolveAppeal: {fileID: 11400000, guid: 4c381b5a82e316b71a52ad513c65bbb5, type: 2}
   RequestUser: {fileID: 11400000, guid: bd767a99f22ae800b90886e07da843ce, type: 2}
   SoundBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}

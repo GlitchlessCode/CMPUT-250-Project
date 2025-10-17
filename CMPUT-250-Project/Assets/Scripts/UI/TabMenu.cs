@@ -21,7 +21,7 @@ public class TabMenu : MonoBehaviour
 
     [Header("Events")]  
     public BoolGameEvent DMTabClick;
-    public BoolGameEvent AppealTabClick;
+    public GameObjectGameEvent AppealPanelActive;
     
     private Dictionary <Toggle, GameObject> tabsDictionary;
 
@@ -51,32 +51,28 @@ public class TabMenu : MonoBehaviour
         if(Input.GetKey(KeyCode.Alpha1) || Input.GetKey(KeyCode.Keypad1))
         {
             rulesTab.isOn = !rulesTab.isOn;
-            AppealTabClick?.Emit(false);
             DMTabClick?.Emit(false);
         }
         else if(Input.GetKey(KeyCode.Alpha2) || Input.GetKey(KeyCode.Keypad2))
         {
             appealTab.isOn = !appealTab.isOn;
-            AppealTabClick?.Emit(true);
             DMTabClick?.Emit(false);
         }
         else if(Input.GetKey(KeyCode.Alpha3) || Input.GetKey(KeyCode.Keypad3))
         {
             dmsTab.isOn = !dmsTab.isOn;
-            AppealTabClick?.Emit(false);
             DMTabClick?.Emit(true);
         }
         else if (Input.GetKey(KeyCode.O))
         {
             settingsTab.isOn = !settingsTab.isOn;
-            AppealTabClick?.Emit(false);
             DMTabClick?.Emit(false);
         }
+
     }
     void TabSwap(Dictionary<Toggle, GameObject> tabsDictionary)
     {
         bool OnDMTab = false;
-        bool OnAppealTab = true;
 
         foreach (KeyValuePair<Toggle, GameObject> tab in tabsDictionary){
             if (tab.Key.isOn)
@@ -88,11 +84,10 @@ public class TabMenu : MonoBehaviour
             }
 
             if (tab.Key == dmsTab && tab.Key.isOn){OnDMTab=true;}
-            if (tab.Key == appealTab & tab.Key.isOn){OnAppealTab=true;}
         }
 
         DMTabClick?.Emit(OnDMTab);
-        AppealTabClick?.Emit(OnAppealTab);
+        AppealPanelActive?.Emit(appealPanel);
     }
 
 }
