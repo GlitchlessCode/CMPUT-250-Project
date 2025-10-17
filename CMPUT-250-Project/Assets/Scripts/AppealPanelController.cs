@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class AppealPanelController : Subscriber
 {
@@ -14,6 +15,12 @@ public class AppealPanelController : Subscriber
     [Header("Chat")]
     public Text ChatLogText; // ← NEW
     public ScrollRect ChatScroll; // ← optional: auto-scroll
+
+    [SerializeField] private TextMeshProUGUI textComponent;
+    public GameObject container;
+    public Transform Panel;
+    private List<GameObject> containers = new List<GameObject>();
+    private List<RectTransform> transforms = new List<RectTransform>();
 
     [Header("Sounds")]
     public Audio HoverSound;
@@ -61,26 +68,58 @@ public class AppealPanelController : Subscriber
         BioText.text = user.bio;
         AppealText.text = user.appeal_message;
 
-        // Build chat log from messages[]
-        if (ChatLogText)
-        {
-            var msgs = user.messages;
-            ChatLogText.text =
-                (msgs != null && msgs.Length > 0)
-                    ? string.Join("\n\n", msgs) // blank line between messages
-                    : "";
+        // // Build chat log from messages[]
+        // if (ChatLogText)
+        // {
+        //     var msgs = user.messages;
+        //     ChatLogText.text =
+        //         (msgs != null && msgs.Length > 0)
+        //             ? string.Join("\n\n", msgs) // blank line between messages
+        //             : "";
 
-            // optional: scroll to bottom after layout updates
-            if (ChatScroll)
-            {
-                Canvas.ForceUpdateCanvases();
-                ChatScroll.verticalNormalizedPosition = 0f; // 0 = bottom, 1 = top
-            }
+        //     // optional: scroll to bottom after layout updates
+        //     if (ChatScroll)
+        //     {
+        //         Canvas.ForceUpdateCanvases();
+        //         ChatScroll.verticalNormalizedPosition = 0f; // 0 = bottom, 1 = top
+        //     }
+        // }
+
+        updateMessages(userOption);
+        
+    }
+
+    void updateMessages (UserEntry? user)
+    {
+        foreach (string msg in user.Value.messages)
+        {
+            GameObject instantiatedObject = Instantiate(container, Panel);
+            textComponent = instantiatedObject.GetComponentInChildren<TextMeshProUGUI>();
+            textComponent.text = msg;
+
+            containers.Add(instantiatedObject);
+
+            RectTransform trans = instantiatedObject.GetComponent<RectTransform>();
+
+            Canvas.ForceUpdateCanvases();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(Panel.GetComponent<RectTransform>());
+            transforms.Add(trans);
         }
+    }
+    
+    void killChat()
+    {
+        foreach (GameObject con in containers)
+        {
+            Destroy(con);
+        }
+        containers.Clear();
+        transforms.Clear();
     }
 
     void OnRefreshUserInfo(UserEntry user)
     {
+        killChat();
         RefreshUI(user);
     }
 
