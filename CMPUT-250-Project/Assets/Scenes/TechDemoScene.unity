@@ -1052,7 +1052,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1404,7 +1404,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_IsOn: 0
+  m_IsOn: 1
 --- !u!1 &528793964
 GameObject:
   m_ObjectHideFlags: 0
@@ -1765,7 +1765,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &588095247
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3033,6 +3033,8 @@ MonoBehaviour:
   dmsPanel: {fileID: 588095246}
   settingsPanel: {fileID: 697209356}
   DMTabClick: {fileID: 11400000, guid: 074e5403052471449b841afb3e4f8100, type: 2}
+  AppealPanelActive: {fileID: 11400000, guid: 8a411edaf2864054185493aae14f6d0c, type: 2}
+  AsyncComplete: {fileID: 11400000, guid: c371d16b7454de745adfa5f1e67ebd48, type: 2}
 --- !u!1 &1146844093
 GameObject:
   m_ObjectHideFlags: 0
@@ -3326,7 +3328,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1239063807
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4191,6 +4193,7 @@ MonoBehaviour:
   UserInfoRequest: {fileID: 11400000, guid: bd767a99f22ae800b90886e07da843ce, type: 2}
   UserLoaded: {fileID: 11400000, guid: 2e23c26185f87442795df3f94db57909, type: 2}
   ValidatorLoaded: {fileID: 11400000, guid: a7beb5f51cad79fa6a4f62610bddb8c7, type: 2}
+  AsyncComplete: {fileID: 11400000, guid: c371d16b7454de745adfa5f1e67ebd48, type: 2}
   AfterAppeal: {fileID: 11400000, guid: 3415a55705509574ba2326867d1369be, type: 2}
   DayFinished: {fileID: 11400000, guid: 39445b5451252904ab3289bc94759e3f, type: 2}
 --- !u!114 &1539020979
@@ -5666,7 +5669,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -649.8094}
-  m_SizeDelta: {x: 0, y: 40}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1945987484
 MonoBehaviour:
@@ -5899,6 +5902,9 @@ MonoBehaviour:
   DateText: {fileID: 1852667167}
   BioText: {fileID: 1907957896}
   AppealText: {fileID: 558936790}
+  AcceptButton: {fileID: 1744924064}
+  DenyButton: {fileID: 676759489}
+  AppealPanel: {fileID: 1239063806}
   ChatLogText: {fileID: 1146844095}
   ChatScroll: {fileID: 0}
   textComponent: {fileID: 0}
@@ -5915,8 +5921,9 @@ MonoBehaviour:
     volume: 0.4
     pitchVariance: 0.14
     loop: 0
-  delayTime: 1
+  DelayTime: 1
   RefreshUserInfo: {fileID: 11400000, guid: 2e23c26185f87442795df3f94db57909, type: 2}
+  AppealPanelActive: {fileID: 11400000, guid: 8a411edaf2864054185493aae14f6d0c, type: 2}
   ResolveAppeal: {fileID: 11400000, guid: 4c381b5a82e316b71a52ad513c65bbb5, type: 2}
   RequestUser: {fileID: 11400000, guid: bd767a99f22ae800b90886e07da843ce, type: 2}
   SoundBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
@@ -5947,7 +5954,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DMSent: {fileID: 11400000, guid: 97ebe09952f655c42b984331ad049f6d, type: 2}
-  DMTabClick: {fileID: 0}
+  DMTabClick: {fileID: 11400000, guid: 074e5403052471449b841afb3e4f8100, type: 2}
   textComponent: {fileID: 0}
   image: {fileID: 0}
   container: {fileID: 364561899323518073, guid: 1e9803137db81244293d380ba2c318ed,

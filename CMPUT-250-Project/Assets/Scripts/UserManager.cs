@@ -133,6 +133,7 @@ public class UserManager : Subscriber
     [Header("Events")]
     public UserEntryGameEvent UserLoaded;
     public StringGameEvent ValidatorLoaded;
+    public UnitGameEvent AsyncComplete;
 
     // `true` implies player chose correctly, `false` implies player chose incorrectly
     public BoolGameEvent AfterAppeal;
@@ -165,6 +166,7 @@ public class UserManager : Subscriber
                 {
                     users = usersOut;
                     MoveToNextUser();
+                    AsyncComplete?.Emit();
                 }
             )
         );
