@@ -107,9 +107,19 @@ public class AppealPanelController : Subscriber
         }
     }
     
+    void killChat()
+    {
+        foreach (GameObject con in containers)
+        {
+            Destroy(con);
+        }
+        containers.Clear();
+        transforms.Clear();
+    }
 
     void OnRefreshUserInfo(UserEntry user)
     {
+        killChat();
         RefreshUI(user);
     }
 
