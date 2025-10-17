@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TabMenu : MonoBehaviour
+public class TabMenu : Subscriber
 {
     [Header("Tabs")]
     public Toggle appealTab;
@@ -21,13 +21,21 @@ public class TabMenu : MonoBehaviour
 
     [Header("Events")]  
     public BoolGameEvent DMTabClick;
-    public GameObjectGameEvent AppealPanelActive;
+    public BoolGameEvent AppealPanelActive;
+
+    [Header("Event Listeners")]
+    public UnitGameEvent AsyncComplete;
     
     private Dictionary <Toggle, GameObject> tabsDictionary;
+    private bool asyncComplete;
 
-    void Start()
+    protected override void Subscribe()
     {
-        rulesTab.isOn = true;
+        AsyncComplete?.Subscribe(OnAsyncComplete);
+    }
+
+    protected override void AfterSubscribe()
+    {
         appealTab.onValueChanged.AddListener(ActiveTab);
         rulesTab.onValueChanged.AddListener(ActiveTab);
         dmsTab.onValueChanged.AddListener(ActiveTab);
@@ -50,26 +58,34 @@ public class TabMenu : MonoBehaviour
 
         if(Input.GetKey(KeyCode.Alpha1) || Input.GetKey(KeyCode.Keypad1))
         {
-            rulesTab.isOn = !rulesTab.isOn;
+            rulesTab.isOn = true;
             DMTabClick?.Emit(false);
         }
         else if(Input.GetKey(KeyCode.Alpha2) || Input.GetKey(KeyCode.Keypad2))
         {
-            appealTab.isOn = !appealTab.isOn;
+            appealTab.isOn = true;
             DMTabClick?.Emit(false);
         }
         else if(Input.GetKey(KeyCode.Alpha3) || Input.GetKey(KeyCode.Keypad3))
         {
-            dmsTab.isOn = !dmsTab.isOn;
+            dmsTab.isOn = true;
             DMTabClick?.Emit(true);
         }
         else if (Input.GetKey(KeyCode.O))
         {
-            settingsTab.isOn = !settingsTab.isOn;
+            settingsTab.isOn = true;
             DMTabClick?.Emit(false);
         }
 
     }
+
+    void OnAsyncComplete(){
+        asyncComplete = true;
+        if(appealPanel.activeSelf){
+            AppealPanelActive?.Emit(true);
+        }
+    }
+
     void TabSwap(Dictionary<Toggle, GameObject> tabsDictionary)
     {
         bool OnDMTab = false;
@@ -87,7 +103,9 @@ public class TabMenu : MonoBehaviour
         }
 
         DMTabClick?.Emit(OnDMTab);
-        AppealPanelActive?.Emit(appealPanel);
+        if (asyncComplete)
+        {
+            AppealPanelActive?.Emit(appealPanel.activeSelf);
+        }    
     }
-
 }

@@ -1368,7 +1368,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_IsOn: 0
+  m_IsOn: 1
 --- !u!1 &528793964
 GameObject:
   m_ObjectHideFlags: 0
@@ -2922,6 +2922,7 @@ MonoBehaviour:
   settingsPanel: {fileID: 697209356}
   DMTabClick: {fileID: 11400000, guid: 074e5403052471449b841afb3e4f8100, type: 2}
   AppealPanelActive: {fileID: 11400000, guid: 8a411edaf2864054185493aae14f6d0c, type: 2}
+  AsyncComplete: {fileID: 11400000, guid: c371d16b7454de745adfa5f1e67ebd48, type: 2}
 --- !u!1 &1146844093
 GameObject:
   m_ObjectHideFlags: 0
@@ -3773,6 +3774,7 @@ MonoBehaviour:
   UserInfoRequest: {fileID: 11400000, guid: bd767a99f22ae800b90886e07da843ce, type: 2}
   UserLoaded: {fileID: 11400000, guid: 2e23c26185f87442795df3f94db57909, type: 2}
   ValidatorLoaded: {fileID: 11400000, guid: a7beb5f51cad79fa6a4f62610bddb8c7, type: 2}
+  AsyncComplete: {fileID: 11400000, guid: c371d16b7454de745adfa5f1e67ebd48, type: 2}
   AfterAppeal: {fileID: 11400000, guid: 3415a55705509574ba2326867d1369be, type: 2}
   DayFinished: {fileID: 11400000, guid: 39445b5451252904ab3289bc94759e3f, type: 2}
 --- !u!114 &1539020979
@@ -5160,7 +5162,7 @@ MonoBehaviour:
   AppealText: {fileID: 558936790}
   AcceptButton: {fileID: 1744924064}
   DenyButton: {fileID: 676759489}
-  appealPanel: {fileID: 1239063806}
+  AppealPanel: {fileID: 1239063806}
   ChatLogText: {fileID: 1146844095}
   ChatScroll: {fileID: 0}
   HoverSound:
@@ -5173,7 +5175,7 @@ MonoBehaviour:
     volume: 0.4
     pitchVariance: 0.14
     loop: 0
-  delayTime: 1
+  DelayTime: 1
   RefreshUserInfo: {fileID: 11400000, guid: 2e23c26185f87442795df3f94db57909, type: 2}
   AppealPanelActive: {fileID: 11400000, guid: 8a411edaf2864054185493aae14f6d0c, type: 2}
   ResolveAppeal: {fileID: 11400000, guid: 4c381b5a82e316b71a52ad513c65bbb5, type: 2}
@@ -5206,7 +5208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DMSent: {fileID: 11400000, guid: 97ebe09952f655c42b984331ad049f6d, type: 2}
-  DMTabClick: {fileID: 0}
+  DMTabClick: {fileID: 11400000, guid: 074e5403052471449b841afb3e4f8100, type: 2}
   textComponent: {fileID: 0}
   image: {fileID: 0}
   container: {fileID: 364561899323518073, guid: 1e9803137db81244293d380ba2c318ed,

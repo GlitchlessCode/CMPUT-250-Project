@@ -12,7 +12,7 @@ public class AppealPanelController : Subscriber
     public Text AppealText;
     public Button AcceptButton;
     public Button DenyButton;
-    public GameObject appealPanel; 
+    public GameObject AppealPanel; 
 
     [Header("Chat")]
     public Text ChatLogText; // ← NEW
@@ -23,13 +23,13 @@ public class AppealPanelController : Subscriber
     public Audio PressSound;
 
     [Header("Delay Time")]
-    public float delayTime = 1f;
+    public float DelayTime = 1f;
 
     private bool canUpdate = false;
 
     [Header("Event Listeners")]
     public UserEntryGameEvent RefreshUserInfo;
-    public GameObjectGameEvent AppealPanelActive;
+    public BoolGameEvent AppealPanelActive;
 
     [Header("Events")]
     public BoolGameEvent ResolveAppeal;
@@ -40,6 +40,13 @@ public class AppealPanelController : Subscriber
     {
         RefreshUserInfo?.Subscribe(OnRefreshUserInfo);
         AppealPanelActive?.Subscribe(OnAppealPanelActive);
+
+    }
+
+    protected override void AfterSubscribe()
+    {
+        AcceptButton.enabled = false;
+        DenyButton.enabled = false;
     }
 
     void OnEnable()
@@ -49,8 +56,8 @@ public class AppealPanelController : Subscriber
         canUpdate = true;
     }
 
-    void OnAppealPanelActive(GameObject appealPanel){
-        if (appealPanel.activeSelf == true){
+    void OnAppealPanelActive(bool isActive){
+        if (isActive){
             AcceptButton.enabled = true;
             DenyButton.enabled = true;
         }
@@ -125,7 +132,7 @@ public class AppealPanelController : Subscriber
             if (canUpdate == true && AcceptButton.enabled)
             {
                 OnDecision(false);
-                StartCoroutine(DelayAction(delayTime));
+                StartCoroutine(DelayAction(DelayTime));
             }
         }
         if (Input.GetKey(KeyCode.D))
@@ -133,7 +140,7 @@ public class AppealPanelController : Subscriber
             if (canUpdate == true && DenyButton.enabled)
             {
                 OnDecision(false);
-                StartCoroutine(DelayAction(delayTime));
+                StartCoroutine(DelayAction(DelayTime));
             }
         }
     }
