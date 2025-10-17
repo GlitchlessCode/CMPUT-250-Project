@@ -131,6 +131,7 @@ public class AppealPanelController : Subscriber
         {
             if (canUpdate == true && AcceptButton.enabled)
             {
+                AcceptButton.GetComponent<Animator>().Play("ButtonPress");
                 OnDecision(false);
                 StartCoroutine(DelayAction(DelayTime));
             }
@@ -139,6 +140,7 @@ public class AppealPanelController : Subscriber
         {
             if (canUpdate == true && DenyButton.enabled)
             {
+                DenyButton.GetComponent<Animator>().Play("ButtonPress");
                 OnDecision(false);
                 StartCoroutine(DelayAction(DelayTime));
             }

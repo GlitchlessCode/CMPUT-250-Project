@@ -101,7 +101,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DenyButtonHightlighted
+  m_Name: ButtonHover
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -128,7 +128,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DenyButtonPressed
+  m_Name: ButtonPress
   m_Speed: 0.7
   m_CycleOffset: 0
   m_Transitions:
@@ -242,7 +242,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DenyButtonSelected
+  m_Name: ButtonSelected
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -313,7 +313,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DenyButtonIdle
+  m_Name: ButtonIdle
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
