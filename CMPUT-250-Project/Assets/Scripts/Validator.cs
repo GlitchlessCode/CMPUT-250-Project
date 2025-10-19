@@ -38,20 +38,43 @@ public class Validator
                 int.Parse(todayMatch.Groups["day"].Value)
             );
 
-            if (parsedBanDate.Year < parsedTodayDate.Year || parsedBanDate.Month < parsedTodayDate.Month)
+            // if more than a year has passed
+            if (parsedBanDate.Year < (parsedTodayDate.Year-1))
             {
                 return true;
             } 
-            else
+            // if the ban was last year
+            else if (parsedBanDate.Year == (parsedTodayDate.Year-1))
             {
-                foreach (var condition in _conditions.Values)
+                // check if the ban was like end of december and we are in january
+                if (!((parsedBanDate.Month == 12) && (parsedTodayDate.Month == 1) && (parsedBanDate.Day < parsedTodayDate.Day)))
                 {
-                    if (!condition(user))
-                    {
-                        return false;
-                    }
+                    return true;
                 }
             }
+            // if we are in the same year
+            else if (parsedBanDate.Year == parsedTodayDate.Year)
+            {
+                // check if more than a month has passed
+                if (parsedBanDate.Month < (parsedTodayDate.Month-1))
+                {
+                    return true;
+                }
+                // check if exactly one month has passed - make sure the days work out, too
+                if ((parsedBanDate.Month == (parsedTodayDate.Month-1))&& (parsedBanDate.Day >= parsedTodayDate.Day))
+                {
+                    return true;
+                }
+            }
+
+            foreach (var condition in _conditions.Values)
+            {
+                if (!condition(user))
+                {
+                    return false;
+                }
+            }
+
             return true;
         }
         catch (FormatException ex)
