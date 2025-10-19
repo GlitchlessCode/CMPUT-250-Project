@@ -169,63 +169,22 @@ public class UserManager : Subscriber
             )
         );
 
-        // (string ruleName, string checking, string ruleType, var criteria)
-
         currentUser = null;
     }
 
     private void addRules() // examples within
     {
+
         validator.AddCondition(
-            "Messages should not contain 'cat'",
+            "1. NO swearing allowed!!",
             (currentUser) =>
             {
-                return !validator.messagesContain(currentUser, "cat");
+                return validator.numberMessages(currentUser, ">", 2);
             }
         );
 
         validator.AddCondition(
-            "Bio cannot contain 'x'",
-            (currentUser) =>
-            {
-                return !validator.stringContains(currentUser.Value.bio, "x");
-            }
-        );
-
-        validator.AddCondition(
-            "Message cannot repeat any char 3 times",
-            (currentUser) =>
-            {
-                return validator.messageRepeats(currentUser, 3);
-            }
-        );
-
-        validator.AddCondition(
-            "Name cannot repeat any char 4 times",
-            (currentUser) =>
-            {
-                return !validator.stringRepeats(currentUser.Value.name, 4);
-            }
-        );
-
-        validator.AddCondition(
-            "No message can be longer than 50 characters",
-            (currentUser) =>
-            {
-                return validator.messageLengthCheck(currentUser, "<=", 50);
-            }
-        );
-
-        validator.AddCondition(
-            "Appeal message must exist",
-            (currentUser) =>
-            {
-                return validator.stringLengthCheck(currentUser.Value.appeal_message, ">", 0);
-            }
-        );
-
-        validator.AddCondition(
-            "need at least 3 messages.",
+            "2. NO swearing allowed!!",
             (currentUser) =>
             {
                 return validator.numberMessages(currentUser, ">", 2);

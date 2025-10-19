@@ -207,6 +207,6 @@ public class Validator
     public string GetConditionText()
     {
         // Join all condition descriptions into one string, separated by commas or any other separator you prefer
-        return string.Join("\n", _conditions.Keys);
+        return string.Join("\n\n", _conditions.Keys);
     }
 }
