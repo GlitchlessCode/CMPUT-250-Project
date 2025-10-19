@@ -60,6 +60,21 @@ public class Validator
         return true;
     }
 
+        public bool messageRepeatsSpecific(UserEntry? user, int reps, string character)
+    {
+        string text = @".*("+character+@")\1{" + (reps - 1) + ",}.*";
+
+        foreach (string message in user.Value.messages)
+        {
+            if (Regex.IsMatch(message.ToLower(), text))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public bool messageLengthCheck(UserEntry? user, string check, int length)
     {
         foreach (string message in user.Value.messages)
@@ -150,6 +165,51 @@ public class Validator
         return true;
     }
 
+    public bool wordsPerMessage(UserEntry? user, string check, int num)
+    {
+        foreach (string message in user.Value.messages)
+        {
+            int length = (message.Split(' ')).Length;
+
+            switch (check)
+            {
+                case "<=":
+                    if (length > num)
+                    {
+                        return false;
+                    }
+                    break;
+                case "<":
+                    if (length >= num)
+                    {
+                        return false;
+                    }
+                    break;
+                case ">=":
+                    if (length < num)
+                    {
+                        return false;
+                    }
+                    break;
+                case ">":
+                    if (length <= num)
+                    {
+                        return false;
+                    }
+                    break;
+                case "==":
+                    if (length != num)
+                    {
+                        return false;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        return true;
+    }
+
     // general string checks
 
     public bool stringContains(string s, string text)
@@ -206,7 +266,7 @@ public class Validator
     // combine rule text
     public string GetConditionText()
     {
-        // Join all condition descriptions into one string, separated by commas or any other separator you prefer
+
         return string.Join("\n\n", _conditions.Keys);
     }
 }

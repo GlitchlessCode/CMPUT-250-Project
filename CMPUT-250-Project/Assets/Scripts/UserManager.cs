@@ -169,27 +169,52 @@ public class UserManager : Subscriber
             )
         );
 
+        // (string ruleName, string checking, string ruleType, var criteria)
+
         currentUser = null;
     }
 
     private void addRules() // examples within
     {
-
         validator.AddCondition(
             "1. NO swearing allowed!!",
             (currentUser) =>
             {
-                return validator.numberMessages(currentUser, ">", 2);
+                return validator.messageRepeatsSpecific(currentUser, 2, @"\*");
             }
         );
 
         validator.AddCondition(
-            "2. NO swearing allowed!!",
+            "2. Appeal message must exist",
             (currentUser) =>
             {
-                return validator.numberMessages(currentUser, ">", 2);
+                return validator.stringLengthCheck(currentUser.Value.appeal_message, ">", 0);
             }
         );
+
+        validator.AddCondition(
+            "3. No more than 15 words per message!!",
+            (currentUser) =>
+            {
+                return validator.wordsPerMessage(currentUser, "<=", 15);
+            }
+        );
+
+         validator.AddCondition(
+            "4. Do NOT send messages in ALL CAPITALS!!",
+            (currentUser) =>
+            {
+                return validator.messagesContain(currentUser, "[a-z]");
+            }
+        );
+
+        validator.AddCondition(
+            "5. Plz unban users who have been banned for longer than 2 months!!",
+            (currentUser) =>
+            {
+                return validator.wordsPerMessage(currentUser, "<=", 15);
+            }
+        );           
 
         ValidatorLoaded?.Emit(validator.GetConditionText());
     }
