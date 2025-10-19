@@ -5952,7 +5952,9 @@ MonoBehaviour:
   image: {fileID: 0}
   container: {fileID: 364561899323518073, guid: 1e9803137db81244293d380ba2c318ed,
     type: 3}
+  content: {fileID: 1945987483}
   DMPanel: {fileID: 1945987483}
+  scrollSpeed: 5
 --- !u!114 &1987603606
 MonoBehaviour:
   m_ObjectHideFlags: 0

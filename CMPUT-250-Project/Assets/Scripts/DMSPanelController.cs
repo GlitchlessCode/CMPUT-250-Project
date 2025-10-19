@@ -15,15 +15,18 @@ public class DMSPanelController : Subscriber
     [SerializeField] private Image image;
 
     public GameObject container;
+    public RectTransform content;
     public Transform DMPanel;
     private List<GameObject> containers = new List<GameObject>();
     private List<RectTransform> transforms = new List<RectTransform>();
     private List<float> heights = new List<float>();
+
+    public float scrollSpeed = 5000000f;  
+    private Vector3 initialPosition;
     
 
     void Start ()
     {
-        
     }
 
     protected override void Subscribe()
@@ -40,19 +43,16 @@ public class DMSPanelController : Subscriber
 
     public void OnDMTabClick(bool clicked)
     {
-        
     }
 
     void Update()
     {
         LayoutRebuilder.ForceRebuildLayoutImmediate(DMPanel.GetComponent<RectTransform>());
+        scroll();
     }
 
     void AddDM(DirectMessage DM)
     {
-
-        // if (container != null && DMPanel != null)
-        // { 
             GameObject instantiatedObject = Instantiate(container, DMPanel);
             textComponent = instantiatedObject.GetComponentInChildren<TextMeshProUGUI>();
             textComponent.text = DM.message;
@@ -67,24 +67,17 @@ public class DMSPanelController : Subscriber
             Canvas.ForceUpdateCanvases();
             LayoutRebuilder.ForceRebuildLayoutImmediate(DMPanel.GetComponent<RectTransform>());
             transforms.Add(trans);
-            // heights.Add(trans.rect.height);
+    }
 
-            // foreach (GameObject con in containers)
-            // {
-            //     int currentIndex = containers.IndexOf(con);
-
-            //     if (currentIndex != 0){
-            //         transforms[currentIndex].anchoredPosition = new Vector2( 
-            //             transforms[currentIndex].anchoredPosition.x,
-            //             transforms[currentIndex].anchoredPosition.y + transforms[currentIndex-1].sizeDelta.y
-            //         );
-
-            //         Debug.Log(""+transforms[currentIndex-1].sizeDelta.y);
-            //     }
-            // }
-            
-
-        // }
+    void scroll(){
+        if(Input.GetKey(KeyCode.UpArrow))
+        {
+            content.anchoredPosition -= new Vector2(0, scrollSpeed); 
+        } 
+        else if(Input.GetKey(KeyCode.DownArrow))
+        {
+            content.anchoredPosition += new Vector2(0, scrollSpeed);
+        }
     }
 
     // void killDM()
