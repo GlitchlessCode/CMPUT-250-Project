@@ -209,10 +209,10 @@ public class UserManager : Subscriber
         );
 
         validator.AddCondition(
-            "5. Plz unban users who have been banned for longer than 2 months!!",
+            "5. Plz unban ALL users who have been banned for at least a month!!",
             (currentUser) =>
             {
-                return validator.wordsPerMessage(currentUser, "<=", 15);
+                return true;
             }
         );           
 
@@ -262,7 +262,7 @@ public class UserManager : Subscriber
         UserEntry? user = currentUser;
         if (user != null)
         {
-            AfterAppeal?.Emit(validator.Validate(user) == decision);
+            AfterAppeal?.Emit(validator.Validate(user, day.Date) == decision);
         }
 
         MoveToNextUser();

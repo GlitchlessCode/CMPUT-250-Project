@@ -18,16 +18,49 @@ public class Validator
     }
 
     // Method to check if a UserEntry satisfies all conditions
-    public bool Validate(UserEntry? user)
+    public bool Validate(UserEntry? user, string Date)
     {
-        foreach (var condition in _conditions.Values)
+        Regex regex = new Regex(@"(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})");
+        Match banMatch = regex.Match(user.Value.date);
+        Match todayMatch = regex.Match(Date);
+
+        try
         {
-            if (!condition(user))
+            DateTime parsedBanDate = new DateTime(
+                int.Parse(banMatch.Groups["year"].Value),
+                int.Parse(banMatch.Groups["month"].Value),
+                int.Parse(banMatch.Groups["day"].Value)
+            );
+
+            DateTime parsedTodayDate = new DateTime(
+                int.Parse(todayMatch.Groups["year"].Value),
+                int.Parse(todayMatch.Groups["month"].Value),
+                int.Parse(todayMatch.Groups["day"].Value)
+            );
+
+            if (parsedBanDate.Year < parsedTodayDate.Year || parsedBanDate.Month < parsedTodayDate.Month)
             {
-                return false;
+                return true;
+            } 
+            else
+            {
+                foreach (var condition in _conditions.Values)
+                {
+                    if (!condition(user))
+                    {
+                        return false;
+                    }
+                }
             }
+            return true;
         }
-        return true;
+        catch (FormatException ex)
+        {
+            Debug.LogError("Error parsing date: " + ex.Message);
+            return false;
+        }
+
+        
     }
 
     // Method to remove a condition based on its description
@@ -269,4 +302,6 @@ public class Validator
 
         return string.Join("\n\n", _conditions.Keys);
     }
+
+    // public 
 }
