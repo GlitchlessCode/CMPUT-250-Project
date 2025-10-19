@@ -11,6 +11,9 @@ public class AppealPanelController : Subscriber
     public Text DateText;
     public Text BioText;
     public Text AppealText;
+    public Button AcceptButton;
+    public Button DenyButton;
+    public GameObject AppealPanel; 
 
     [Header("Chat")]
     public Text ChatLogText; // ← NEW
@@ -27,12 +30,13 @@ public class AppealPanelController : Subscriber
     public Audio PressSound;
 
     [Header("Delay Time")]
-    public float delayTime = 1f;
+    public float DelayTime = 1f;
 
-    private bool canUpdate = true;
+    private bool canUpdate = false;
 
     [Header("Event Listeners")]
     public UserEntryGameEvent RefreshUserInfo;
+    public BoolGameEvent AppealPanelActive;
 
     [Header("Events")]
     public BoolGameEvent ResolveAppeal;
@@ -42,6 +46,14 @@ public class AppealPanelController : Subscriber
     protected override void Subscribe()
     {
         RefreshUserInfo?.Subscribe(OnRefreshUserInfo);
+        AppealPanelActive?.Subscribe(OnAppealPanelActive);
+
+    }
+
+    protected override void AfterSubscribe()
+    {
+        AcceptButton.enabled = false;
+        DenyButton.enabled = false;
     }
 
     void OnEnable()
@@ -49,6 +61,17 @@ public class AppealPanelController : Subscriber
         RefreshUI(null);
         RequestUser?.Emit();
         canUpdate = true;
+    }
+
+    void OnAppealPanelActive(bool isActive){
+        if (isActive){
+            AcceptButton.enabled = true;
+            DenyButton.enabled = true;
+        }
+        else{
+            AcceptButton.enabled = false;
+            DenyButton.enabled = false;
+        }
     }
 
     void RefreshUI(UserEntry? userOption)
@@ -145,18 +168,20 @@ public class AppealPanelController : Subscriber
     {
         if (Input.GetKey(KeyCode.A))
         {
-            if (canUpdate == true)
+            if (canUpdate == true && AcceptButton.enabled)
             {
+                AcceptButton.GetComponent<Animator>().Play("ButtonPress");
                 OnDecision(false);
-                StartCoroutine(DelayAction(delayTime));
+                StartCoroutine(DelayAction(DelayTime));
             }
         }
         if (Input.GetKey(KeyCode.D))
         {
-            if (canUpdate == true)
+            if (canUpdate == true && DenyButton.enabled)
             {
+                DenyButton.GetComponent<Animator>().Play("ButtonPress");
                 OnDecision(false);
-                StartCoroutine(DelayAction(delayTime));
+                StartCoroutine(DelayAction(DelayTime));
             }
         }
     }
