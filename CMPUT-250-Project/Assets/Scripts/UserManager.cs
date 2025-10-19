@@ -133,6 +133,7 @@ public class UserManager : Subscriber
     [Header("Events")]
     public UserEntryGameEvent UserLoaded;
     public StringGameEvent ValidatorLoaded;
+    public StringGameEvent DayDate;
     public UnitGameEvent AsyncComplete;
 
     // `true` implies player chose correctly, `false` implies player chose incorrectly
@@ -157,6 +158,8 @@ public class UserManager : Subscriber
 
         day = new InternalDayDefinition(Day);
 
+        sendDayData(day);
+
         // load users
         StartCoroutine(
             JSONImporter.ImportFiles<UserEntry>(
@@ -174,6 +177,11 @@ public class UserManager : Subscriber
         // (string ruleName, string checking, string ruleType, var criteria)
 
         currentUser = null;
+    }
+
+    private void sendDayData(InternalDayDefinition day)
+    {
+        DayDate?.Emit(day.Date);
     }
 
     private void addRules() // examples within
