@@ -18,16 +18,72 @@ public class Validator
     }
 
     // Method to check if a UserEntry satisfies all conditions
-    public bool Validate(UserEntry? user)
+    public bool Validate(UserEntry? user, string Date)
     {
-        foreach (var condition in _conditions.Values)
+        Regex regex = new Regex(@"(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})");
+        Match banMatch = regex.Match(user.Value.date);
+        Match todayMatch = regex.Match(Date);
+
+        try
         {
-            if (!condition(user))
+            DateTime parsedBanDate = new DateTime(
+                int.Parse(banMatch.Groups["year"].Value),
+                int.Parse(banMatch.Groups["month"].Value),
+                int.Parse(banMatch.Groups["day"].Value)
+            );
+
+            DateTime parsedTodayDate = new DateTime(
+                int.Parse(todayMatch.Groups["year"].Value),
+                int.Parse(todayMatch.Groups["month"].Value),
+                int.Parse(todayMatch.Groups["day"].Value)
+            );
+
+            // if more than a year has passed
+            if (parsedBanDate.Year < (parsedTodayDate.Year-1))
             {
-                return false;
+                return true;
+            } 
+            // if the ban was last year
+            else if (parsedBanDate.Year == (parsedTodayDate.Year-1))
+            {
+                // check if the ban was like end of december and we are in january
+                if (!((parsedBanDate.Month == 12) && (parsedTodayDate.Month == 1) && (parsedBanDate.Day < parsedTodayDate.Day)))
+                {
+                    return true;
+                }
             }
+            // if we are in the same year
+            else if (parsedBanDate.Year == parsedTodayDate.Year)
+            {
+                // check if more than a month has passed
+                if (parsedBanDate.Month < (parsedTodayDate.Month-1))
+                {
+                    return true;
+                }
+                // check if exactly one month has passed - make sure the days work out, too
+                if ((parsedBanDate.Month == (parsedTodayDate.Month-1))&& (parsedBanDate.Day >= parsedTodayDate.Day))
+                {
+                    return true;
+                }
+            }
+
+            foreach (var condition in _conditions.Values)
+            {
+                if (!condition(user))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
-        return true;
+        catch (FormatException ex)
+        {
+            Debug.LogError("Error parsing date: " + ex.Message);
+            return false;
+        }
+
+        
     }
 
     // Method to remove a condition based on its description
@@ -48,6 +104,21 @@ public class Validator
     public bool messageRepeats(UserEntry? user, int reps)
     {
         string text = @".*(.)\1{" + (reps - 1) + ",}.*";
+
+        foreach (string message in user.Value.messages)
+        {
+            if (Regex.IsMatch(message.ToLower(), text))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+        public bool messageRepeatsSpecific(UserEntry? user, int reps, string character)
+    {
+        string text = @".*("+character+@")\1{" + (reps - 1) + ",}.*";
 
         foreach (string message in user.Value.messages)
         {
@@ -150,6 +221,51 @@ public class Validator
         return true;
     }
 
+    public bool wordsPerMessage(UserEntry? user, string check, int num)
+    {
+        foreach (string message in user.Value.messages)
+        {
+            int length = (message.Split(' ')).Length;
+
+            switch (check)
+            {
+                case "<=":
+                    if (length > num)
+                    {
+                        return false;
+                    }
+                    break;
+                case "<":
+                    if (length >= num)
+                    {
+                        return false;
+                    }
+                    break;
+                case ">=":
+                    if (length < num)
+                    {
+                        return false;
+                    }
+                    break;
+                case ">":
+                    if (length <= num)
+                    {
+                        return false;
+                    }
+                    break;
+                case "==":
+                    if (length != num)
+                    {
+                        return false;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        return true;
+    }
+
     // general string checks
 
     public bool stringContains(string s, string text)
@@ -206,7 +322,9 @@ public class Validator
     // combine rule text
     public string GetConditionText()
     {
-        // Join all condition descriptions into one string, separated by commas or any other separator you prefer
-        return string.Join("\n", _conditions.Keys);
+
+        return string.Join("\n\n", _conditions.Keys);
     }
+
+    // public 
 }

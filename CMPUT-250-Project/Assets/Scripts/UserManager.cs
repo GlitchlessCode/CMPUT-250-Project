@@ -187,47 +187,15 @@ public class UserManager : Subscriber
     private void addRules() // examples within
     {
         validator.AddCondition(
-            "Messages should not contain 'cat'",
+            "1. NO swearing allowed!!",
             (currentUser) =>
             {
-                return !validator.messagesContain(currentUser, "cat");
+                return validator.messageRepeatsSpecific(currentUser, 2, @"\*");
             }
         );
 
         validator.AddCondition(
-            "Bio cannot contain 'x'",
-            (currentUser) =>
-            {
-                return !validator.stringContains(currentUser.Value.bio, "x");
-            }
-        );
-
-        validator.AddCondition(
-            "Message cannot repeat any char 3 times",
-            (currentUser) =>
-            {
-                return validator.messageRepeats(currentUser, 3);
-            }
-        );
-
-        validator.AddCondition(
-            "Name cannot repeat any char 4 times",
-            (currentUser) =>
-            {
-                return !validator.stringRepeats(currentUser.Value.name, 4);
-            }
-        );
-
-        validator.AddCondition(
-            "No message can be longer than 50 characters",
-            (currentUser) =>
-            {
-                return validator.messageLengthCheck(currentUser, "<=", 50);
-            }
-        );
-
-        validator.AddCondition(
-            "Appeal message must exist",
+            "2. Appeal message must exist",
             (currentUser) =>
             {
                 return validator.stringLengthCheck(currentUser.Value.appeal_message, ">", 0);
@@ -235,12 +203,28 @@ public class UserManager : Subscriber
         );
 
         validator.AddCondition(
-            "need at least 3 messages.",
+            "3. No more than 15 words per message!!",
             (currentUser) =>
             {
-                return validator.numberMessages(currentUser, ">", 2);
+                return validator.wordsPerMessage(currentUser, "<=", 15);
             }
         );
+
+         validator.AddCondition(
+            "4. Do NOT send messages in ALL CAPITALS!!",
+            (currentUser) =>
+            {
+                return validator.messagesContain(currentUser, "[a-z]");
+            }
+        );
+
+        validator.AddCondition(
+            "5. Plz unban ALL users who have been banned for at least a month!!",
+            (currentUser) =>
+            {
+                return true;
+            }
+        );           
 
         ValidatorLoaded?.Emit(validator.GetConditionText());
     }
@@ -288,7 +272,7 @@ public class UserManager : Subscriber
         UserEntry? user = currentUser;
         if (user != null)
         {
-            AfterAppeal?.Emit(validator.Validate(user) == decision);
+            AfterAppeal?.Emit(validator.Validate(user, day.Date) == decision);
         }
 
         MoveToNextUser();
