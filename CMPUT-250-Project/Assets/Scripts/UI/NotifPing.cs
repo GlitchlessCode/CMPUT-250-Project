@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class NotifPing : Subscriber
 {
@@ -20,7 +20,7 @@ public class NotifPing : Subscriber
     public DirectMessageGameEvent DMSent;
     public BoolGameEvent DMTabClick;
 
-    protected override void Subscribe()
+    public override void Subscribe()
     {
         DMSent?.Subscribe(OnDMSent);
         DMTabClick?.Subscribe(OnDMTabClick);
@@ -35,14 +35,14 @@ public class NotifPing : Subscriber
     void OnDMTabClick(bool value)
     {
         alreadyDMTab = value;
-        if (alreadyDMTab){dm=false;}
+        if (alreadyDMTab)
+        {
+            dm = false;
+        }
         active = dm && !alreadyDMTab;
     }
 
-    void Start()
-    {
-
-    } 
+    void Start() { }
 
     void Update()
     {
@@ -53,9 +53,15 @@ public class NotifPing : Subscriber
             baseTime += Time.deltaTime;
             if (timer >= frameRate && baseTime >= updateTime)
             {
-                if (targetImage.sprite == images[0]){targetImage.sprite = images[1];}
-                else {targetImage.sprite = images[0];}
-                
+                if (targetImage.sprite == images[0])
+                {
+                    targetImage.sprite = images[1];
+                }
+                else
+                {
+                    targetImage.sprite = images[0];
+                }
+
                 timer = 0f;
             }
         }
@@ -64,7 +70,5 @@ public class NotifPing : Subscriber
             baseTime = 0;
             targetImage.sprite = images[2];
         }
-        
     }
-
 }

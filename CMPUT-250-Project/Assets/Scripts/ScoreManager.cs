@@ -33,21 +33,20 @@ public class ScoreManager : Subscriber
     private int currentDayIndex = 1;
     public int CurrentDayIndex => currentDayIndex;
 
-    protected override void Subscribe()
+    public override void Subscribe()
     {
         AfterAppeal?.Subscribe(OnAfterAppeal);
         UserLoaded?.Subscribe(OnUserLoaded);
         DayFinished?.Subscribe(OnDayFinished);
     }
 
-    protected override void AfterSubscribe()
+    public override void AfterSubscribe()
     {
         // is there supposed to be something here? CMT
     }
 
-    protected override void Awake()
+    void Awake()
     {
-        base.Awake();
         DontDestroyOnLoad(gameObject);
     }
 

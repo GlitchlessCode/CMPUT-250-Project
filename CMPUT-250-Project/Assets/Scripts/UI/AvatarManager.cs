@@ -12,7 +12,7 @@ public class AvatarManager : Subscriber
     [Header("Event Listeners")]
     public UserEntryGameEvent UserLoaded;
 
-    protected override void Subscribe()
+    public override void Subscribe()
     {
         UserLoaded?.Subscribe(OnUserLoaded);
     }

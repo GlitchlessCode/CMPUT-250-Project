@@ -34,7 +34,7 @@ public class DirectMessageManager : Subscriber
     private Queue<bool> queuedAppeals;
     private Dictionary<Guid, int> queuedSequences;
 
-    protected override void Subscribe()
+    public override void Subscribe()
     {
         AfterAppeal?.Subscribe(OnAfterAppealQueued);
 

@@ -11,7 +11,7 @@ public class RulePanelController : Subscriber
     [Header("Event Listeners")]
     public StringGameEvent RuleText;
 
-    protected override void Subscribe()
+    public override void Subscribe()
     {
         RuleText?.Subscribe(OnRuleText);
         OnRuleText("");
