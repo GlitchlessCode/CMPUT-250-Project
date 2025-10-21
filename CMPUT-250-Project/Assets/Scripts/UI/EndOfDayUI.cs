@@ -1,33 +1,80 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class EndOfDayUI : MonoBehaviour
+public class EndOfDayUI : Subscriber
 {
-    [SerializeField] private Text dayScoreText;
-    [SerializeField] private Text appealsText;
-    [SerializeField] private Text totalScoreText;
+    [SerializeField]
+    private Text dayText;
 
-    void Start()
+    [SerializeField]
+    private Text appealsText;
+
+    [SerializeField]
+    private Text quotaText;
+
+    [SerializeField]
+    private Text totalScoreText;
+
+    [SerializeField]
+    private Button nextButton;
+
+    [Header("Event Listeners")]
+    public DaySummaryGameEvent DisplayDaySummary;
+
+    [Header("Events")]
+    public UnitGameEvent RequestDaySummary;
+
+    public override void Subscribe()
     {
-        var sm = FindObjectOfType<ScoreManager>();
-        if (sm == null)
+        if (dayText)
+            dayText.text = "Loading...";
+        if (appealsText)
+            appealsText.text = "Loading...";
+        if (quotaText)
+            quotaText.text = "Loading...";
+        if (totalScoreText)
+            totalScoreText.text = "Loading...";
+        DisplayDaySummary?.Subscribe(OnDisplayDaySummary);
+    }
+
+    public override void AfterSubscribe()
+    {
+        RequestDaySummary?.Emit();
+    }
+
+    private void OnDisplayDaySummary((DaySummary, int, bool, int) summaryTuple)
+    {
+        DaySummary summary;
+        int quota;
+        bool passedQuota;
+        int totalScore;
+        (summary, quota, passedQuota, totalScore) = summaryTuple;
+
+        if (dayText)
+            dayText.text = $"Day {summary.DayIndex}";
+        if (appealsText)
+            appealsText.text =
+                $"Appeals Correct: {summary.correctAppeals} / {summary.completedAppeals}";
+        if (quotaText)
+            quotaText.text = $"Score: {summary.TotalScore} / {quota}";
+        if (totalScoreText)
+            totalScoreText.text = $"Total Score: {totalScore}";
+        if (nextButton)
+            nextButton.onClick.AddListener(() => OnNextButton(summary.DayIndex, passedQuota));
+    }
+
+    private void OnNextButton(int completedDay, bool passedQuota)
+    {
+        if (passedQuota)
         {
-            if (dayScoreText) dayScoreText.text = "Score: N/A";
-            if (appealsText) appealsText.text = "Appeals: N/A";
-            if (totalScoreText) totalScoreText.text = "Total Score: N/A";
-            Debug.LogWarning("EndOfDayUI: ScoreManager not found. Is it marked DontDestroyOnLoad?");
-            return;
+            SceneManager.LoadScene(completedDay, LoadSceneMode.Single);
         }
-
-        int dayScore = sm.GetDayScore();
-        int appeals = sm.GetAppealsProcessed();
-        int totalScore = sm.GetTotalScoreSoFar();
-
-        if (dayScoreText) dayScoreText.text = $"Day {sm.CurrentDayIndex} Score: {dayScore}";
-        if (appealsText) appealsText.text = $"Appeals Processed: {appeals}";
-        if (totalScoreText) totalScoreText.text = $"Total Score (So Far): {totalScore}";
+        else
+        {
+            SceneManager.LoadScene("Failscreen");
+        }
     }
 }
-
