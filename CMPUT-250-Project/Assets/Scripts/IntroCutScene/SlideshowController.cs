@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 [DisallowMultipleComponent]
 public class SlideshowController : MonoBehaviour
@@ -29,17 +29,18 @@ public class SlideshowController : MonoBehaviour
     [Header("Scene Transition")]
     [Tooltip("Name of the scene to load after the slideshow.")]
     public string nextSceneName = "";
+
     [Tooltip("If true, pressing Next on the last slide will fade+load the scene.")]
     public bool loadSceneAtEnd = false;
 
     [Header("Fade To Black")]
     [Tooltip("Full-screen black Image with alpha 0 at start.")]
-    public Image fadeOverlay;        // assign your FadeOverlay image
+    public Image fadeOverlay; // assign your FadeOverlay image
     public float fadeDuration = 0.75f;
 
     [Header("Final Slide UI")]
     [Tooltip("Button shown only on the last slide.")]
-    public Button beginButton;       // assign your BeginButton
+    public Button beginButton; // assign your BeginButton
 
     private int _index = -1;
     private bool _isFading = false;
@@ -57,9 +58,12 @@ public class SlideshowController : MonoBehaviour
             Debug.LogWarning("[SlideshowController] No slides provided.");
         }
 
-        if (nextButton) nextButton.onClick.AddListener(Next);
-        if (prevButton) prevButton.onClick.AddListener(Prev);
-        if (beginButton) beginButton.onClick.AddListener(Begin);
+        if (nextButton)
+            nextButton.onClick.AddListener(Next);
+        if (prevButton)
+            prevButton.onClick.AddListener(Prev);
+        if (beginButton)
+            beginButton.onClick.AddListener(Begin);
     }
 
     void Start()
@@ -75,7 +79,9 @@ public class SlideshowController : MonoBehaviour
         // Ensure overlay starts transparent
         if (fadeOverlay)
         {
-            var c = fadeOverlay.color; c.a = 0f; fadeOverlay.color = c;
+            var c = fadeOverlay.color;
+            c.a = 0f;
+            fadeOverlay.color = c;
             // Keep it active so it can block clicks during fade
             fadeOverlay.raycastTarget = true;
         }
@@ -84,16 +90,24 @@ public class SlideshowController : MonoBehaviour
 
     void OnDestroy()
     {
-        if (nextButton) nextButton.onClick.RemoveListener(Next);
-        if (prevButton) prevButton.onClick.RemoveListener(Prev);
-        if (beginButton) beginButton.onClick.RemoveListener(Begin);
+        if (nextButton)
+            nextButton.onClick.RemoveListener(Next);
+        if (prevButton)
+            prevButton.onClick.RemoveListener(Prev);
+        if (beginButton)
+            beginButton.onClick.RemoveListener(Begin);
     }
 
     void Update()
     {
-        if (_isFading) return; // lock input during fade
+        if (_isFading)
+            return; // lock input during fade
 
-        if (Input.GetKeyDown(nextKey) || Input.GetKeyDown(alsoNextKey) || Input.GetButtonDown("Submit"))
+        if (
+            Input.GetKeyDown(nextKey)
+            || Input.GetKeyDown(alsoNextKey)
+            || Input.GetButtonDown("Submit")
+        )
             Next();
 
         if (Input.GetKeyDown(prevKey))
@@ -102,7 +116,8 @@ public class SlideshowController : MonoBehaviour
 
     public void Next()
     {
-        if (slides == null || slides.Count == 0) return;
+        if (slides == null || slides.Count == 0)
+            return;
 
         // If currently last slide:
         if (_index >= slides.Count - 1)
@@ -125,7 +140,8 @@ public class SlideshowController : MonoBehaviour
 
     public void Prev()
     {
-        if (slides == null || slides.Count == 0) return;
+        if (slides == null || slides.Count == 0)
+            return;
 
         if (_index <= 0 && !wrapAround)
         {
@@ -139,13 +155,15 @@ public class SlideshowController : MonoBehaviour
 
     public void GoTo(int index)
     {
-        if (slides == null || slides.Count == 0) return;
+        if (slides == null || slides.Count == 0)
+            return;
         Show(Mathf.Clamp(index, 0, slides.Count - 1));
     }
 
     public void Begin()
     {
-        if (_isFading) return;
+        if (_isFading)
+            return;
         if (string.IsNullOrEmpty(nextSceneName))
         {
             Debug.LogWarning("[SlideshowController] nextSceneName is empty; cannot load scene.");
@@ -156,7 +174,8 @@ public class SlideshowController : MonoBehaviour
 
     private void Show(int index)
     {
-        if (index == _index) return;
+        if (index == _index)
+            return;
         _index = index;
 
         var s = slides[_index];
@@ -169,14 +188,17 @@ public class SlideshowController : MonoBehaviour
         targetImage.sprite = s;
 
         // Ensure fully visible (in case something faded it elsewhere)
-        var c = targetImage.color; c.a = 1f; targetImage.color = c;
+        var c = targetImage.color;
+        c.a = 1f;
+        targetImage.color = c;
 
         UpdateBeginButtonVisibility();
     }
 
     private void UpdateBeginButtonVisibility()
     {
-        if (!beginButton) return;
+        if (!beginButton)
+            return;
         bool isLast = (slides != null && slides.Count > 0 && _index == slides.Count - 1);
         beginButton.gameObject.SetActive(isLast);
     }
@@ -187,7 +209,9 @@ public class SlideshowController : MonoBehaviour
 
         if (fadeOverlay == null)
         {
-            Debug.LogWarning("[SlideshowController] No fadeOverlay assigned; loading scene immediately.");
+            Debug.LogWarning(
+                "[SlideshowController] No fadeOverlay assigned; loading scene immediately."
+            );
             SceneManager.LoadScene(nextSceneName);
             yield break;
         }
