@@ -35,7 +35,7 @@ public class AudioManager : Subscriber
     private List<AudioBus> buses;
     private Queue<AudioSource> sources;
 
-    protected override void Subscribe()
+    public override void Subscribe()
     {
         if (AudioSourcePrefab == null)
         {
@@ -54,7 +54,7 @@ public class AudioManager : Subscriber
         }
     }
 
-    protected override void AfterSubscribe()
+    public override void AfterSubscribe()
     {
         foreach (PlayOnStartAudio audio in PlayOnStart)
         {
@@ -86,7 +86,7 @@ public class AudioManager : Subscriber
     {
         foreach (AudioBus bus in buses)
         {
-            bus.Cleanup();
+            bus.Unsubscribe();
         }
     }
 }
@@ -135,7 +135,7 @@ class AudioBus
         volumeAdjuster.Subscribe(OnSetVolume);
     }
 
-    public void Cleanup()
+    public void Unsubscribe()
     {
         foreach (ActiveAudio active in actives)
         {
@@ -144,6 +144,8 @@ class AudioBus
         executor = null;
         fetcher = null;
         returner = null;
+        clipBus.Unsubscribe(OnRecieveClip);
+        volumeAdjuster.Unsubscribe(OnSetVolume);
     }
 
     private void OnSetVolume(float newVolume)

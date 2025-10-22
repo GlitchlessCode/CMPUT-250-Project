@@ -19,54 +19,53 @@ public class TabMenu : Subscriber
     public GameObject dmsPanel;
     public GameObject settingsPanel;
 
-    [Header("Events")]  
+    [Header("Events")]
     public BoolGameEvent DMTabClick;
     public BoolGameEvent AppealPanelActive;
 
     [Header("Event Listeners")]
     public UnitGameEvent AsyncComplete;
-    
-    private Dictionary <Toggle, GameObject> tabsDictionary;
+
+    private Dictionary<Toggle, GameObject> tabsDictionary;
     private bool asyncComplete;
 
-    protected override void Subscribe()
+    public override void Subscribe()
     {
         AsyncComplete?.Subscribe(OnAsyncComplete);
     }
 
-    protected override void AfterSubscribe()
+    public override void AfterSubscribe()
     {
         appealTab.onValueChanged.AddListener(ActiveTab);
         rulesTab.onValueChanged.AddListener(ActiveTab);
         dmsTab.onValueChanged.AddListener(ActiveTab);
         settingsTab.onValueChanged.AddListener(ActiveTab);
-        
+
         tabsDictionary = new Dictionary<Toggle, GameObject>();
         tabsDictionary.Add(appealTab, appealPanel);
         tabsDictionary.Add(rulesTab, rulesPanel);
         tabsDictionary.Add(dmsTab, dmsPanel);
         tabsDictionary.Add(settingsTab, settingsPanel);
-
     }
 
     private void ActiveTab(bool arg0)
     {
         TabSwap(tabsDictionary);
     }
-    
-    void Update(){
 
-        if(Input.GetKey(KeyCode.Alpha1) || Input.GetKey(KeyCode.Keypad1))
+    void Update()
+    {
+        if (Input.GetKey(KeyCode.Alpha1) || Input.GetKey(KeyCode.Keypad1))
         {
             rulesTab.isOn = true;
             DMTabClick?.Emit(false);
         }
-        else if(Input.GetKey(KeyCode.Alpha2) || Input.GetKey(KeyCode.Keypad2))
+        else if (Input.GetKey(KeyCode.Alpha2) || Input.GetKey(KeyCode.Keypad2))
         {
             appealTab.isOn = true;
             DMTabClick?.Emit(false);
         }
-        else if(Input.GetKey(KeyCode.Alpha3) || Input.GetKey(KeyCode.Keypad3))
+        else if (Input.GetKey(KeyCode.Alpha3) || Input.GetKey(KeyCode.Keypad3))
         {
             dmsTab.isOn = true;
             DMTabClick?.Emit(true);
@@ -76,12 +75,13 @@ public class TabMenu : Subscriber
             settingsTab.isOn = true;
             DMTabClick?.Emit(false);
         }
-
     }
 
-    void OnAsyncComplete(){
+    void OnAsyncComplete()
+    {
         asyncComplete = true;
-        if(appealPanel.activeSelf){
+        if (appealPanel.activeSelf)
+        {
             AppealPanelActive?.Emit(true);
         }
     }
@@ -90,22 +90,27 @@ public class TabMenu : Subscriber
     {
         bool OnDMTab = false;
 
-        foreach (KeyValuePair<Toggle, GameObject> tab in tabsDictionary){
+        foreach (KeyValuePair<Toggle, GameObject> tab in tabsDictionary)
+        {
             if (tab.Key.isOn)
             {
                 tab.Value.gameObject.SetActive(true);
             }
-            else{
+            else
+            {
                 tab.Value.gameObject.SetActive(false);
             }
 
-            if (tab.Key == dmsTab && tab.Key.isOn){OnDMTab=true;}
+            if (tab.Key == dmsTab && tab.Key.isOn)
+            {
+                OnDMTab = true;
+            }
         }
 
         DMTabClick?.Emit(OnDMTab);
         if (asyncComplete)
         {
             AppealPanelActive?.Emit(appealPanel.activeSelf);
-        }    
+        }
     }
 }

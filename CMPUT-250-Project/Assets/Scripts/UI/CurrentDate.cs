@@ -12,12 +12,13 @@ public class CurrentDate : Subscriber
     [Header("Event Listeners")]
     public StringGameEvent DayDate;
 
-    protected override void Subscribe()
+    public override void Subscribe()
     {
         DayDate?.Subscribe(OnDayDate);
     }
 
-    public void OnDayDate(string text){
+    public void OnDayDate(string text)
+    {
         if (text != "")
         {
             DateText.text = text;

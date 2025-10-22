@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class GameEvent<T> : ScriptableObject
+public class GameEvent<T> : ScriptableObject, IGameEvent
 {
     private event Action<T> listeners;
 
@@ -29,8 +29,18 @@ public class GameEvent<T> : ScriptableObject
         listeners -= listener;
     }
 
+    public void ClearAll()
+    {
+        listeners = null;
+    }
+
     void OnEnable()
     {
         listeners = null;
     }
+}
+
+public interface IGameEvent
+{
+    void ClearAll();
 }

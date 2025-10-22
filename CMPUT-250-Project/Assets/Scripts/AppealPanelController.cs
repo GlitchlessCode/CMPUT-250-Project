@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class AppealPanelController : Subscriber
 {
@@ -13,13 +13,14 @@ public class AppealPanelController : Subscriber
     public Text AppealText;
     public Button AcceptButton;
     public Button DenyButton;
-    public GameObject AppealPanel; 
+    public GameObject AppealPanel;
 
     [Header("Chat")]
     public Text ChatLogText; // ← NEW
     public ScrollRect ChatScroll; // ← optional: auto-scroll
 
-    [SerializeField] private TextMeshProUGUI textComponent;
+    [SerializeField]
+    private TextMeshProUGUI textComponent;
     public GameObject container;
     public Transform Panel;
     private List<GameObject> containers = new List<GameObject>();
@@ -43,14 +44,13 @@ public class AppealPanelController : Subscriber
     public UnitGameEvent RequestUser;
     public AudioGameEvent SoundBus;
 
-    protected override void Subscribe()
+    public override void Subscribe()
     {
         RefreshUserInfo?.Subscribe(OnRefreshUserInfo);
         AppealPanelActive?.Subscribe(OnAppealPanelActive);
-
     }
 
-    protected override void AfterSubscribe()
+    public override void AfterSubscribe()
     {
         AcceptButton.enabled = false;
         DenyButton.enabled = false;
@@ -63,12 +63,15 @@ public class AppealPanelController : Subscriber
         canUpdate = true;
     }
 
-    void OnAppealPanelActive(bool isActive){
-        if (isActive){
+    void OnAppealPanelActive(bool isActive)
+    {
+        if (isActive)
+        {
             AcceptButton.enabled = true;
             DenyButton.enabled = true;
         }
-        else{
+        else
+        {
             AcceptButton.enabled = false;
             DenyButton.enabled = false;
         }
@@ -109,10 +112,9 @@ public class AppealPanelController : Subscriber
         // }
 
         updateMessages(userOption);
-        
     }
 
-    void updateMessages (UserEntry? user)
+    void updateMessages(UserEntry? user)
     {
         foreach (string msg in user.Value.messages)
         {
@@ -129,7 +131,7 @@ public class AppealPanelController : Subscriber
             transforms.Add(trans);
         }
     }
-    
+
     void killChat()
     {
         foreach (GameObject con in containers)

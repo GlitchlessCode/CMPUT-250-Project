@@ -141,13 +141,13 @@ public class UserManager : Subscriber
     public UnitGameEvent DayFinished; //For EOD
     private bool dayAlreadyFinished = false;
 
-    protected override void Subscribe()
+    public override void Subscribe()
     {
         ResolveAppeal?.Subscribe(OnResolveAppeal);
         UserInfoRequest?.Subscribe(OnUserInfoRequest);
     }
 
-    protected override void AfterSubscribe()
+    public override void AfterSubscribe()
     {
         addRules();
 
@@ -210,7 +210,7 @@ public class UserManager : Subscriber
             }
         );
 
-         validator.AddCondition(
+        validator.AddCondition(
             "4. Do NOT send messages in ALL CAPITALS!!",
             (currentUser) =>
             {
@@ -224,7 +224,7 @@ public class UserManager : Subscriber
             {
                 return true;
             }
-        );           
+        );
 
         ValidatorLoaded?.Emit(validator.GetConditionText());
     }
