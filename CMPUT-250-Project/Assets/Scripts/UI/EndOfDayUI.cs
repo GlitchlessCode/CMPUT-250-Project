@@ -70,7 +70,7 @@ public class EndOfDayUI : Subscriber
     {
         if (passedQuota)
         {
-            SceneManager.LoadScene(completedDay, LoadSceneMode.Single);
+            SceneManager.LoadScene(completedDay + 1, LoadSceneMode.Single);
         }
         else
         {
