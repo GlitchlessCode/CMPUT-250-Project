@@ -50,6 +50,7 @@ public class UserPool
 [CreateAssetMenu(menuName = "Day Definition")]
 public class DayDefinition : ScriptableObject
 {
+    public int Index;
     public string Directory;
     public string Date;
 

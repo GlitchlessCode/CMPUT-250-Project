@@ -5,6 +5,7 @@ using UnityEngine;
 
 class InternalDayDefinition
 {
+    public int Index;
     public string Directory;
     public string Date;
     public List<UserPoolDefinition> PoolDefinitions;
@@ -30,6 +31,7 @@ class InternalDayDefinition
 
     public InternalDayDefinition(DayDefinition day)
     {
+        Index = day.Index;
         Directory = day.Directory;
         Date = day.Date;
         PoolDefinitions = new List<UserPoolDefinition>();
@@ -138,7 +140,8 @@ public class UserManager : Subscriber
 
     // `true` implies player chose correctly, `false` implies player chose incorrectly
     public BoolGameEvent AfterAppeal;
-    public UnitGameEvent DayFinished; //For EOD
+    public IntGameEvent DayStart;
+    public UnitGameEvent DayFinished;
     private bool dayAlreadyFinished = false;
 
     public override void Subscribe()
@@ -169,6 +172,7 @@ public class UserManager : Subscriber
                 {
                     users = usersOut;
                     MoveToNextUser();
+                    DayStart?.Emit(day.Index);
                     AsyncComplete?.Emit();
                 }
             )
@@ -264,7 +268,9 @@ public class UserManager : Subscriber
             return;
         dayAlreadyFinished = true;
         DayFinished?.Emit();
-        UserLoaded?.Emit(new UserEntry());
+        UserEntry empty = new UserEntry();
+        empty.messages = new string[0];
+        UserLoaded?.Emit(empty);
     }
 
     private void OnResolveAppeal(bool decision)

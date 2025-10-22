@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ae3ad5ed19f8e064af2e3cb234c606e, type: 3}
   m_Name: Day One
   m_EditorClassIdentifier: 
+  Index: 1
   Directory: day1
   Date: 2025-10-03
   PoolDefinitions:
