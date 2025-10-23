@@ -22,7 +22,10 @@ public class AppealPanelController : Subscriber
     [SerializeField]
     private TextMeshProUGUI textComponent;
     public GameObject container;
+    public RectTransform content;
     public Transform Panel;
+    private bool scrollable = false;
+    public float scrollSpeed = 5f;
     private List<GameObject> containers = new List<GameObject>();
     private List<RectTransform> transforms = new List<RectTransform>();
 
@@ -54,6 +57,7 @@ public class AppealPanelController : Subscriber
     {
         AcceptButton.enabled = false;
         DenyButton.enabled = false;
+        scrollable = false;
     }
 
     void OnEnable()
@@ -69,11 +73,13 @@ public class AppealPanelController : Subscriber
         {
             AcceptButton.enabled = true;
             DenyButton.enabled = true;
+            scrollable = true;
         }
         else
         {
             AcceptButton.enabled = false;
             DenyButton.enabled = false;
+            scrollable = false;
         }
     }
 
@@ -94,23 +100,6 @@ public class AppealPanelController : Subscriber
         BioText.text = user.bio;
         AppealText.text = user.appeal_message;
 
-        // // Build chat log from messages[]
-        // if (ChatLogText)
-        // {
-        //     var msgs = user.messages;
-        //     ChatLogText.text =
-        //         (msgs != null && msgs.Length > 0)
-        //             ? string.Join("\n\n", msgs) // blank line between messages
-        //             : "";
-
-        //     // optional: scroll to bottom after layout updates
-        //     if (ChatScroll)
-        //     {
-        //         Canvas.ForceUpdateCanvases();
-        //         ChatScroll.verticalNormalizedPosition = 0f; // 0 = bottom, 1 = top
-        //     }
-        // }
-
         updateMessages(userOption);
     }
 
@@ -129,6 +118,18 @@ public class AppealPanelController : Subscriber
             Canvas.ForceUpdateCanvases();
             LayoutRebuilder.ForceRebuildLayoutImmediate(Panel.GetComponent<RectTransform>());
             transforms.Add(trans);
+        }
+    }
+
+    void scroll()
+    {
+        if (Input.GetKey(KeyCode.UpArrow) && scrollable)
+        {
+            content.anchoredPosition -= new Vector2(0, scrollSpeed);
+        }
+        else if (Input.GetKey(KeyCode.DownArrow) && scrollable)
+        {
+            content.anchoredPosition += new Vector2(0, scrollSpeed);
         }
     }
 
@@ -186,6 +187,8 @@ public class AppealPanelController : Subscriber
                 StartCoroutine(DelayAction(DelayTime));
             }
         }
+        LayoutRebuilder.ForceRebuildLayoutImmediate(Panel.GetComponent<RectTransform>());
+        scroll();
     }
 
     IEnumerator DelayAction(float time)

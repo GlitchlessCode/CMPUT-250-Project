@@ -23,6 +23,7 @@ public class DMSPanelController : Subscriber
     private List<RectTransform> transforms = new List<RectTransform>();
     private List<float> heights = new List<float>();
 
+    private bool scrollable = true;
     public float scrollSpeed = 5000000f;
     private Vector3 initialPosition;
 
@@ -40,7 +41,17 @@ public class DMSPanelController : Subscriber
         // killDM();
     }
 
-    public void OnDMTabClick(bool clicked) { }
+    public void OnDMTabClick(bool clicked) 
+    {
+        if (clicked)
+        {
+            scrollable = true;
+        }
+        else
+        {
+            scrollable = false;
+        }
+    }
 
     void Update()
     {
@@ -65,11 +76,11 @@ public class DMSPanelController : Subscriber
 
     void scroll()
     {
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.UpArrow) && scrollable)
         {
             content.anchoredPosition -= new Vector2(0, scrollSpeed);
         }
-        else if (Input.GetKey(KeyCode.DownArrow))
+        else if (Input.GetKey(KeyCode.DownArrow) && scrollable)
         {
             content.anchoredPosition += new Vector2(0, scrollSpeed);
         }
