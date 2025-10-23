@@ -26,21 +26,22 @@ public class SlideshowController : MonoBehaviour
     public KeyCode prevKey = KeyCode.LeftArrow;
     public KeyCode alsoNextKey = KeyCode.Space;
 
-    [Header("Scene Transition")]
-    [Tooltip("Name of the scene to load after the slideshow.")]
-    public string nextSceneName = "";
-
     [Tooltip("If true, pressing Next on the last slide will fade+load the scene.")]
     public bool loadSceneAtEnd = false;
 
-    [Header("Fade To Black")]
-    [Tooltip("Full-screen black Image with alpha 0 at start.")]
-    public Image fadeOverlay; // assign your FadeOverlay image
-    public float fadeDuration = 0.75f;
+    [Header("Panels")]
+    public GameObject PowerOff;
 
     [Header("Final Slide UI")]
     [Tooltip("Button shown only on the last slide.")]
     public Button beginButton; // assign your BeginButton
+
+    [Header("Audio")]
+    public Audio SlideSwitchAudio;
+    public Audio ShutdownAudio;
+
+    [Header("Events")]
+    public AudioGameEvent AudioBus;
 
     private int _index = -1;
     private bool _isFading = false;
@@ -76,15 +77,6 @@ public class SlideshowController : MonoBehaviour
             Show(startIndex);
         }
 
-        // Ensure overlay starts transparent
-        if (fadeOverlay)
-        {
-            var c = fadeOverlay.color;
-            c.a = 0f;
-            fadeOverlay.color = c;
-            // Keep it active so it can block clicks during fade
-            fadeOverlay.raycastTarget = true;
-        }
         UpdateBeginButtonVisibility();
     }
 
@@ -122,7 +114,7 @@ public class SlideshowController : MonoBehaviour
         // If currently last slide:
         if (_index >= slides.Count - 1)
         {
-            if (loadSceneAtEnd && !string.IsNullOrEmpty(nextSceneName))
+            if (loadSceneAtEnd)
             {
                 Begin(); // reuse same fade+load path
                 return;
@@ -132,6 +124,11 @@ public class SlideshowController : MonoBehaviour
                 // Stay on last slide
                 return;
             }
+        }
+
+        if (SlideSwitchAudio.clip != null)
+        {
+            AudioBus?.Emit(SlideSwitchAudio);
         }
 
         int next = (_index + 1) % Mathf.Max(1, slides.Count);
@@ -149,6 +146,11 @@ public class SlideshowController : MonoBehaviour
             return;
         }
 
+        if (SlideSwitchAudio.clip != null)
+        {
+            AudioBus?.Emit(SlideSwitchAudio);
+        }
+
         int prev = (_index - 1 + slides.Count) % Mathf.Max(1, slides.Count);
         Show(prev);
     }
@@ -164,12 +166,7 @@ public class SlideshowController : MonoBehaviour
     {
         if (_isFading)
             return;
-        if (string.IsNullOrEmpty(nextSceneName))
-        {
-            Debug.LogWarning("[SlideshowController] nextSceneName is empty; cannot load scene.");
-            return;
-        }
-        StartCoroutine(FadeToBlackAndLoad());
+        StartCoroutine(RunPowerOff());
     }
 
     private void Show(int index)
@@ -203,31 +200,15 @@ public class SlideshowController : MonoBehaviour
         beginButton.gameObject.SetActive(isLast);
     }
 
-    private IEnumerator FadeToBlackAndLoad()
+    private IEnumerator RunPowerOff()
     {
         _isFading = true;
-
-        if (fadeOverlay == null)
+        yield return new WaitForSeconds(0.15f);
+        if (ShutdownAudio.clip != null)
         {
-            Debug.LogWarning(
-                "[SlideshowController] No fadeOverlay assigned; loading scene immediately."
-            );
-            SceneManager.LoadScene(nextSceneName);
-            yield break;
+            AudioBus?.Emit(ShutdownAudio);
         }
-
-        float t = 0f;
-        Color c = fadeOverlay.color;
-
-        // Fade alpha 0 -> 1 using unscaled time (works if timeScale = 0)
-        while (t < fadeDuration)
-        {
-            t += Time.unscaledDeltaTime;
-            c.a = Mathf.Clamp01(t / fadeDuration);
-            fadeOverlay.color = c;
-            yield return null;
-        }
-
-        SceneManager.LoadScene(nextSceneName);
+        PowerOff.SetActive(true);
+        PowerOff.GetComponent<Animator>().SetTrigger("PlayPowerOff");
     }
 }
