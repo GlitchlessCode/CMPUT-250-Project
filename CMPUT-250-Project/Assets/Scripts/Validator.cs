@@ -102,9 +102,17 @@ public class Validator
 
     public bool messagesContain(UserEntry? user, string text)
     {
-        return user.Value.messages.Any<string>(
-            (msg) => Regex.IsMatch(msg, $".*{text}.*")
-        );
+        bool res = true;
+
+        foreach (string message in user.Value.messages)
+        {
+            if (Regex.IsMatch(message, text))
+            {
+                res = false;
+            }
+        }
+
+        return res;
     }
 
     public bool messageRepeats(UserEntry? user, int reps)
@@ -276,7 +284,7 @@ public class Validator
 
     public bool stringContains(string s, string text)
     {
-        return (Regex.IsMatch(s.ToLower(), $".*{Regex.Escape(text)}.*"));
+        return (Regex.IsMatch(s.ToLower(), $".*{text}.*"));
     }
 
     public bool stringRepeats(string s, int reps)

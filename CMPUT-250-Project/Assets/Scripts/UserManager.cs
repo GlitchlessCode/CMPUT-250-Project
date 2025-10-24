@@ -218,7 +218,7 @@ public class UserManager : Subscriber
             "4. Do NOT send messages in ALL CAPITALS!!",
             (currentUser) =>
             {
-                return validator.messagesContain(currentUser, @"[a-z]");
+                return validator.messagesContain(currentUser, @"^[^a-z]*$");
             }
         );
 
