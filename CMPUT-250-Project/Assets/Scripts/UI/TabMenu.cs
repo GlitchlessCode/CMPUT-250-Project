@@ -36,6 +36,12 @@ public class TabMenu : Subscriber
 
     public override void AfterSubscribe()
     {
+        dmsTab.isOn = true;
+        appealPanel.gameObject.SetActive(false);
+        rulesPanel.gameObject.SetActive(false);
+        dmsPanel.gameObject.SetActive(true);
+        settingsPanel.gameObject.SetActive(false);
+
         appealTab.onValueChanged.AddListener(ActiveTab);
         rulesTab.onValueChanged.AddListener(ActiveTab);
         dmsTab.onValueChanged.AddListener(ActiveTab);
