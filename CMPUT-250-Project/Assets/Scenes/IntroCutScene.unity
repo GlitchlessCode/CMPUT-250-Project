@@ -660,6 +660,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2443412243350133555, guid: 3ad9d82b17dee5966b3ce6d7643595c3,
         type: 3}
+      propertyPath: AudioSourcePrefab
+      value: 
+      objectReference: {fileID: 3467107008018029944, guid: 50fbcd556e7de85b790c86bb3cf9520f,
+        type: 3}
+    - target: {fileID: 2443412243350133555, guid: 3ad9d82b17dee5966b3ce6d7643595c3,
+        type: 3}
       propertyPath: PlayOnStart.Array.size
       value: 1
       objectReference: {fileID: 0}
