@@ -23,15 +23,11 @@ public class EODPromptController : Subscriber // same base class style as your o
     {
         if (arrowPrompt)
             arrowPrompt.SetActive(false);
-        if (powerButton)
-            powerButton.interactable = false;
     }
 
     private void OnDayFinished()
     {
         if (arrowPrompt)
             arrowPrompt.SetActive(true);
-        if (powerButton)
-            powerButton.interactable = true;
     }
 }

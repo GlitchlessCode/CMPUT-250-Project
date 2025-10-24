@@ -166,7 +166,7 @@ public class ScoreManager : Subscriber
                 totalScore += summary.TotalScore;
             }
             int quota = (int)(current.completedAppeals * SuccessScore * QuotaRatio);
-            bool passedQuota = current.TotalScore > quota;
+            bool passedQuota = current.TotalScore >= quota;
             DisplayCurrentDaySummary?.Emit((current, quota, passedQuota, totalScore));
         }
     }
