@@ -14,4 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   directory: generic
   dmFiles:
-  - failure1
+  - gooddm1
+  - gooddm2
+  - gooddm3
+  - gooddm4
+  - gooddm5
+  - gooddm6
+  - gooddm7
+  - gooddm8
