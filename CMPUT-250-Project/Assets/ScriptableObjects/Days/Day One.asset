@@ -17,8 +17,9 @@ MonoBehaviour:
   Date: 2025-10-03
   PoolDefinitions:
   - UserFiles:
-    - user1
-    - user2
+    - user1_denialintro
+    - user2_acceptintro
+  - UserFiles:
     - user3
     - user4
     - user5
@@ -28,10 +29,18 @@ MonoBehaviour:
     - user9
     - user10
     - user11
+    - user12
+    - user13
+    - user14
+    - user15
   PoolOrder:
   - PoolIndex: 0
-    UserCount: 10
+    UserCount: 2
     Before:
     - {fileID: 11400000, guid: 33d83fdd621ae47188ee41fecc01d67c, type: 2}
+    After: []
+  - PoolIndex: 1
+    UserCount: 13
+    Before: []
     After:
     - {fileID: 11400000, guid: 3d62789954ce30834b1ab74f60732d69, type: 2}

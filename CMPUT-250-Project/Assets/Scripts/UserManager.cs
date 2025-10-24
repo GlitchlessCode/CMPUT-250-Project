@@ -77,7 +77,7 @@ class InternalDayDefinition
             }
 
             // Increment the order and reset the order counter
-            currentCountInOrder = 0;
+            currentCountInOrder = 1;
             currentOrder += 1;
 
             // Check again for an access of an order past the defined count
