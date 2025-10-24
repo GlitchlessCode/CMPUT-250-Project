@@ -19,11 +19,15 @@ public class DirectMessageManager : Subscriber
     [Header("Sequences")]
     public List<CoupledEventSequence> MessageSequences;
 
+    [Header("Audio")]
+    public Audio DMArrivedAudio;
+
     [Header("Event Listeners")]
     public BoolGameEvent AfterAppeal;
 
     [Header("Events")]
     public DirectMessageGameEvent MessageTarget;
+    public AudioGameEvent AudioBus;
 
     private bool loadedSuccessMessages = false;
     private InternalDirectMessagePool successMessages;
@@ -33,6 +37,9 @@ public class DirectMessageManager : Subscriber
 
     private Queue<bool> queuedAppeals;
     private Dictionary<Guid, int> queuedSequences;
+
+    private Queue<DirectMessage> queuedMessages = new Queue<DirectMessage>();
+    private bool isRunningQueue = false;
 
     public override void Subscribe()
     {
@@ -96,11 +103,11 @@ public class DirectMessageManager : Subscriber
     {
         if (success)
         {
-            MessageTarget?.Emit(successMessages.GetRandomMessage());
+            QueueMessage(successMessages.GetRandomMessage());
         }
         else
         {
-            MessageTarget?.Emit(failureMessages.GetRandomMessage());
+            QueueMessage(failureMessages.GetRandomMessage());
         }
     }
 
@@ -138,11 +145,40 @@ public class DirectMessageManager : Subscriber
         {
             foreach (DirectMessage msg in seq.GetMessages())
             {
-                MessageTarget?.Emit(msg);
+                QueueMessage(msg);
             }
         }
 
         return OnSequenceTrigger;
+    }
+
+    void QueueMessage(DirectMessage message)
+    {
+        queuedMessages.Enqueue(message);
+        if (!isRunningQueue)
+        {
+            StartCoroutine(RunQueue());
+        }
+    }
+
+    IEnumerator RunQueue()
+    {
+        isRunningQueue = true;
+
+        yield return new WaitForSeconds(0.7f);
+
+        while (queuedMessages.Count > 0)
+        {
+            DirectMessage message = queuedMessages.Dequeue();
+            MessageTarget?.Emit(message);
+            if (DMArrivedAudio.clip != null)
+            {
+                AudioBus?.Emit(DMArrivedAudio);
+            }
+            yield return new WaitForSeconds(0.7f);
+        }
+
+        isRunningQueue = false;
     }
 
     void catchUpSequence(

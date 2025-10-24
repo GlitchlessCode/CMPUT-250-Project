@@ -48,11 +48,31 @@ public static class SubscriptionManager
         Subscriber[] subscribers = GameObject.FindObjectsOfType<Subscriber>();
         foreach (Subscriber subscriber in subscribers)
         {
-            subscriber.Subscribe();
+            try
+            {
+                subscriber.Subscribe();
+            }
+            catch (Exception err)
+            {
+                Debug.LogError(
+                    $"[SubscriptionManager] Exception during Subscriber.Subscribe() for {subscriber.name}"
+                );
+                Debug.LogException(err);
+            }
         }
         foreach (Subscriber subscriber in subscribers)
         {
-            subscriber.AfterSubscribe();
+            try
+            {
+                subscriber.AfterSubscribe();
+            }
+            catch (Exception err)
+            {
+                Debug.LogError(
+                    $"[SubscriptionManager] Exception during Subscriber.AfterSubscribe() for {subscriber.name}"
+                );
+                Debug.LogException(err);
+            }
         }
     }
 

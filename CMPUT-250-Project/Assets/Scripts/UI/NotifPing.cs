@@ -30,6 +30,10 @@ public class NotifPing : Subscriber
     {
         dm = !alreadyDMTab;
         active = dm && !alreadyDMTab;
+        if (targetImage.sprite == images[2] && !alreadyDMTab)
+        {
+            targetImage.sprite = images[0];
+        }
     }
 
     void OnDMTabClick(bool value)

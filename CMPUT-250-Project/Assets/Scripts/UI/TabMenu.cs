@@ -19,12 +19,16 @@ public class TabMenu : Subscriber
     public GameObject dmsPanel;
     public GameObject settingsPanel;
 
+    [Header("Audio")]
+    public Audio TabSwitch;
+
     [Header("Events")]
     public BoolGameEvent DMTabClick;
     public BoolGameEvent AppealPanelActive;
 
     [Header("Event Listeners")]
     public UnitGameEvent AsyncComplete;
+    public AudioGameEvent AudioBus;
 
     private Dictionary<Toggle, GameObject> tabsDictionary;
     private bool asyncComplete;
@@ -89,6 +93,7 @@ public class TabMenu : Subscriber
     void TabSwap(Dictionary<Toggle, GameObject> tabsDictionary)
     {
         bool OnDMTab = false;
+        AudioBus?.Emit(TabSwitch);
 
         foreach (KeyValuePair<Toggle, GameObject> tab in tabsDictionary)
         {

@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class AppealPanelController : Subscriber
@@ -29,10 +31,6 @@ public class AppealPanelController : Subscriber
     private List<GameObject> containers = new List<GameObject>();
     private List<RectTransform> transforms = new List<RectTransform>();
 
-    [Header("Sounds")]
-    public Audio HoverSound;
-    public Audio PressSound;
-
     [Header("Delay Time")]
     public float DelayTime = 1f;
 
@@ -45,7 +43,6 @@ public class AppealPanelController : Subscriber
     [Header("Events")]
     public BoolGameEvent ResolveAppeal;
     public UnitGameEvent RequestUser;
-    public AudioGameEvent SoundBus;
 
     public override void Subscribe()
     {
@@ -58,6 +55,9 @@ public class AppealPanelController : Subscriber
         AcceptButton.enabled = false;
         DenyButton.enabled = false;
         scrollable = false;
+
+        SetupButton(AcceptButton);
+        SetupButton(DenyButton);
     }
 
     void OnEnable()
@@ -149,22 +149,46 @@ public class AppealPanelController : Subscriber
         RefreshUI(user);
     }
 
-    public void OnDecision(bool decision)
+    public void OnButtonRelease(bool decision)
     {
-        ResolveAppeal?.Emit(decision);
-
-        if (PressSound.clip != null)
+        Animator animator;
+        if (decision)
         {
-            SoundBus?.Emit(PressSound);
+            animator = AcceptButton.GetComponent<Animator>();
+        }
+        else
+        {
+            animator = DenyButton.GetComponent<Animator>();
+        }
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("ButtonPressed"))
+        {
+            ResolveAppeal?.Emit(decision);
+
+            animator.SetTrigger("PlayReleased");
         }
     }
 
-    public void OnHover()
+    private void OnButtonClick(Animator animator)
     {
-        if (HoverSound.clip != null)
+        animator.ResetTrigger("PlayReset");
+        animator.ResetTrigger("PlayReleased");
+        animator.SetTrigger("PlayPressed");
+    }
+
+    private void OnButtonReset(Animator animator)
+    {
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("ButtonPressed"))
         {
-            SoundBus?.Emit(HoverSound);
+            if (Input.GetMouseButton(0))
+            {
+                animator.SetTrigger("PlayReset");
+            }
         }
+    }
+
+    private void OnHover(Animator animator)
+    {
+        animator.SetTrigger("PlayHighlighted");
     }
 
     void Update()
@@ -173,8 +197,8 @@ public class AppealPanelController : Subscriber
         {
             if (canUpdate == true && AcceptButton.enabled)
             {
-                AcceptButton.GetComponent<Animator>().Play("ButtonPress");
-                OnDecision(false);
+                AcceptButton.GetComponent<Animator>().SetTrigger("PlayFullPress");
+                ResolveAppeal?.Emit(true);
                 StartCoroutine(DelayAction(DelayTime));
             }
         }
@@ -182,8 +206,8 @@ public class AppealPanelController : Subscriber
         {
             if (canUpdate == true && DenyButton.enabled)
             {
-                DenyButton.GetComponent<Animator>().Play("ButtonPress");
-                OnDecision(false);
+                DenyButton.GetComponent<Animator>().SetTrigger("PlayFullPress");
+                ResolveAppeal?.Emit(false);
                 StartCoroutine(DelayAction(DelayTime));
             }
         }
@@ -197,5 +221,30 @@ public class AppealPanelController : Subscriber
         Debug.Log("Updating...");
         yield return new WaitForSeconds(time);
         canUpdate = true;
+    }
+
+    private void SetupButton(Button button)
+    {
+        button.TryGetComponent<EventTrigger>(out EventTrigger trigger);
+        Animator animator = button.GetComponent<Animator>();
+        if (trigger == null)
+        {
+            trigger = button.gameObject.AddComponent<EventTrigger>();
+        }
+        trigger.triggers.Add(createEntry(EventTriggerType.PointerEnter, (_) => OnHover(animator)));
+        trigger.triggers.Add(
+            createEntry(EventTriggerType.PointerDown, (_) => OnButtonClick(animator))
+        );
+        trigger.triggers.Add(
+            createEntry(EventTriggerType.PointerExit, (_) => OnButtonReset(animator))
+        );
+    }
+
+    private EventTrigger.Entry createEntry(EventTriggerType kind, Action<PointerEventData> callback)
+    {
+        EventTrigger.Entry entry = new EventTrigger.Entry();
+        entry.callback.AddListener((data) => callback((PointerEventData)data));
+        entry.eventID = kind;
+        return entry;
     }
 }
