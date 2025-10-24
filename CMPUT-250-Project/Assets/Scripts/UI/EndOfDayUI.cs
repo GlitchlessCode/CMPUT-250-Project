@@ -57,11 +57,11 @@ public class EndOfDayUI : Subscriber
             dayText.text = $"Day {summary.DayIndex}";
         if (appealsText)
             appealsText.text =
-                $"Appeals Correct: {summary.correctAppeals} / {summary.completedAppeals}";
+                $"{summary.correctAppeals} / {summary.completedAppeals}";
         if (quotaText)
-            quotaText.text = $"Score: {summary.TotalScore} / {quota}";
+            quotaText.text = $"{summary.TotalScore} / {quota}";
         if (totalScoreText)
-            totalScoreText.text = $"Total Score: {totalScore}";
+            totalScoreText.text = $"{totalScore}";
         if (nextButton)
             nextButton.onClick.AddListener(() => OnNextButton(summary.DayIndex, passedQuota));
     }
