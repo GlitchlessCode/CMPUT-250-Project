@@ -56,8 +56,7 @@ public class EndOfDayUI : Subscriber
         if (dayText)
             dayText.text = $"Day {summary.DayIndex}";
         if (appealsText)
-            appealsText.text =
-                $"{summary.correctAppeals} / {summary.completedAppeals}";
+            appealsText.text = $"{summary.correctAppeals} / {summary.completedAppeals}";
         if (quotaText)
             quotaText.text = $"{summary.TotalScore} / {quota}";
         if (totalScoreText)
