@@ -16,6 +16,7 @@ public class AppealPanelController : Subscriber
     public Button AcceptButton;
     public Button DenyButton;
     public GameObject AppealPanel;
+    public GameObject ScrollView;
 
     [Header("Chat")]
     public Text ChatLogText; // ← NEW
@@ -62,6 +63,16 @@ public class AppealPanelController : Subscriber
         SetupButton(DenyButton);
     }
 
+    void OnDayFinished() //FIXME: Should work but does not.
+    {
+        Debug.Log("Day finished");
+        canUpdate = false;
+        AcceptButton.gameObject.SetActive(false);
+        DenyButton.gameObject.SetActive(false);
+        ScrollView.gameObject.SetActive(false);
+        scrollable = false;
+    }
+
     void OnEnable()
     {
         RefreshUI(null);
@@ -83,13 +94,6 @@ public class AppealPanelController : Subscriber
             DenyButton.enabled = false;
             scrollable = false;
         }
-    }
-
-    void OnDayFinished() //FIXME: Should work but does not.
-    {
-        AcceptButton.enabled = false;
-        DenyButton.enabled = false;
-        scrollable = false;
     }
 
     void RefreshUI(UserEntry? userOption)
