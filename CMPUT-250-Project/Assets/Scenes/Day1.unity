@@ -3160,6 +3160,9 @@ MonoBehaviour:
     volume: 1
     pitchVariance: 0.3
     loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
   DMTabClick: {fileID: 11400000, guid: 074e5403052471449b841afb3e4f8100, type: 2}
   AppealPanelActive: {fileID: 11400000, guid: 8a411edaf2864054185493aae14f6d0c, type: 2}
   AsyncComplete: {fileID: 11400000, guid: c371d16b7454de745adfa5f1e67ebd48, type: 2}
@@ -3809,6 +3812,9 @@ MonoBehaviour:
     volume: 0.3
     pitchVariance: 0.3
     loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
   AudioBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
 --- !u!1 &1368834070
 GameObject:
@@ -4106,6 +4112,9 @@ MonoBehaviour:
     volume: 0.3
     pitchVariance: 0.3
     loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
   AudioBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
 --- !u!1 &1457516533
 GameObject:
@@ -4750,21 +4759,33 @@ MonoBehaviour:
     volume: 0.6
     pitchVariance: 0
     loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
   HoverAudio:
     clip: {fileID: 8300000, guid: edc7d894e152736e991fc69fe572b90f, type: 3}
     volume: 1
     pitchVariance: 0.3
     loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
   ClickInvalidAudio:
     clip: {fileID: 8300000, guid: f1ed2d2de8e029d8c96cce31862b46a3, type: 3}
     volume: 1
     pitchVariance: 0.3
     loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
   ClickValidAudio:
     clip: {fileID: 8300000, guid: d11b20e7d2629f368a4d45618b3dcb90, type: 3}
     volume: 1
     pitchVariance: 0.3
     loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
   AudioBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
   DayFinished: {fileID: 11400000, guid: 39445b5451252904ab3289bc94759e3f, type: 2}
 --- !u!114 &1575665153
@@ -5390,6 +5411,9 @@ MonoBehaviour:
     volume: 0.7
     pitchVariance: 0
     loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
   AfterAppeal: {fileID: 11400000, guid: 3415a55705509574ba2326867d1369be, type: 2}
   MessageTarget: {fileID: 11400000, guid: 97ebe09952f655c42b984331ad049f6d, type: 2}
   AudioBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}

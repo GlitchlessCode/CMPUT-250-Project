@@ -216,6 +216,7 @@ GameObject:
   - component: {fileID: 323799116}
   - component: {fileID: 323799115}
   - component: {fileID: 323799114}
+  - component: {fileID: 323799117}
   m_Layer: 5
   m_Name: PlayAgainButton
   m_TagString: Untagged
@@ -323,6 +324,43 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 323799112}
   m_CullTransparentMesh: 1
+--- !u!114 &323799117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 323799112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 297471016e7bd500c99ed76de78a1a1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Hover:
+    clip: {fileID: 8300000, guid: 557fcad7df2fb37b6971b41055f733d7, type: 3}
+    volume: 1
+    pitchVariance: 0.4
+    loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
+  ClickStart:
+    clip: {fileID: 8300000, guid: 44be13caa470762f9bdff29c60c54ee5, type: 3}
+    volume: 1
+    pitchVariance: 0.4
+    loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
+  ClickRelease:
+    clip: {fileID: 8300000, guid: a9f055b497933c748a7decd4ef41bff4, type: 3}
+    volume: 1
+    pitchVariance: 0.4
+    loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
+  AudioBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
 --- !u!1 &391358160
 GameObject:
   m_ObjectHideFlags: 0
@@ -479,7 +517,8 @@ PrefabInstance:
         type: 3}
       propertyPath: Buses.Array.data[0].BusVolume
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: 50ceba6f3c991b4deb83d07f7c4cc3ab,
+        type: 2}
     - target: {fileID: 2443412243350133555, guid: 3ad9d82b17dee5966b3ce6d7643595c3,
         type: 3}
       propertyPath: PlayOnStart.Array.data[0].bus
@@ -490,12 +529,13 @@ PrefabInstance:
         type: 3}
       propertyPath: Buses.Array.data[0].AudioClipBus
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: f97ee7e7c74d23614abb2b688e692319,
+        type: 2}
     - target: {fileID: 2443412243350133555, guid: 3ad9d82b17dee5966b3ce6d7643595c3,
         type: 3}
       propertyPath: PlayOnStart.Array.data[0].audio.clip
       value: 
-      objectReference: {fileID: 8300000, guid: 39d7ab84ec1932073ab421705d0290e0, type: 3}
+      objectReference: {fileID: 8300000, guid: bb4e1c02a8b9342beaa914182b9ae135, type: 3}
     - target: {fileID: 2443412243350133555, guid: 3ad9d82b17dee5966b3ce6d7643595c3,
         type: 3}
       propertyPath: PlayOnStart.Array.data[0].audio.loop
@@ -805,6 +845,9 @@ MonoBehaviour:
     volume: 0.6
     pitchVariance: 0
     loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
   AudioBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
 --- !u!4 &1963868270
 Transform:
