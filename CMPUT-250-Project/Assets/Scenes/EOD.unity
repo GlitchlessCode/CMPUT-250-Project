@@ -294,9 +294,7 @@ RectTransform:
   - {fileID: 1142964827}
   - {fileID: 109518994}
   - {fileID: 1164254733}
-  - {fileID: 299333725}
   - {fileID: 1980102624}
-  - {fileID: 324722777}
   - {fileID: 254976187}
   - {fileID: 1572879049}
   m_Father: {fileID: 0}
@@ -319,6 +317,7 @@ GameObject:
   - component: {fileID: 254976190}
   - component: {fileID: 254976189}
   - component: {fileID: 254976188}
+  - component: {fileID: 254976191}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -338,7 +337,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 110034705}
-  m_RootOrder: 8
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -426,162 +425,43 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 254976186}
   m_CullTransparentMesh: 0
---- !u!1 &299333724
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 299333725}
-  - component: {fileID: 299333727}
-  - component: {fileID: 299333726}
-  m_Layer: 5
-  m_Name: QuotaTxtTitle
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &299333725
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 299333724}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 110034705}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -406.36, y: 14.412}
-  m_SizeDelta: {x: 279.64722, y: 89.82361}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &299333726
+--- !u!114 &254976191
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 299333724}
+  m_GameObject: {fileID: 254976186}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Script: {fileID: 11500000, guid: 297471016e7bd500c99ed76de78a1a1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_RaycastTarget: 1
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: eba22db33ce4f73418dd51ed1734b9c6, type: 3}
-    m_FontSize: 42
-    m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 4
-    m_MaxSize: 42
-    m_Alignment: 6
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: 'QUOTA:'
---- !u!222 &299333727
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 299333724}
-  m_CullTransparentMesh: 0
---- !u!1 &324722776
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 324722777}
-  - component: {fileID: 324722779}
-  - component: {fileID: 324722778}
-  m_Layer: 5
-  m_Name: ScoreTxtTitle
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &324722777
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 324722776}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 110034705}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -405.13, y: -120.4}
-  m_SizeDelta: {x: 282.09766, y: 89.04816}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &324722778
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 324722776}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_RaycastTarget: 1
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: eba22db33ce4f73418dd51ed1734b9c6, type: 3}
-    m_FontSize: 42
-    m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 4
-    m_MaxSize: 42
-    m_Alignment: 3
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: 'SCORE:'
---- !u!222 &324722779
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 324722776}
-  m_CullTransparentMesh: 0
+  Hover:
+    clip: {fileID: 8300000, guid: 557fcad7df2fb37b6971b41055f733d7, type: 3}
+    volume: 1
+    pitchVariance: 0.4
+    loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
+  ClickStart:
+    clip: {fileID: 8300000, guid: 44be13caa470762f9bdff29c60c54ee5, type: 3}
+    volume: 1
+    pitchVariance: 0.4
+    loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
+  ClickRelease:
+    clip: {fileID: 8300000, guid: a9f055b497933c748a7decd4ef41bff4, type: 3}
+    volume: 1
+    pitchVariance: 0.4
+    loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
+  AudioBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
 --- !u!1 &340204208
 GameObject:
   m_ObjectHideFlags: 0
@@ -615,9 +495,9 @@ MonoBehaviour:
   appealsText: {fileID: 1142964828}
   appealsTextTitle: {fileID: 109518995}
   quotaText: {fileID: 1164254734}
-  quotaTextTitle: {fileID: 299333726}
+  quotaTextTitle: {fileID: 0}
   totalScoreText: {fileID: 1980102625}
-  totalScoreTextTitle: {fileID: 324722778}
+  totalScoreTextTitle: {fileID: 0}
   nextButton: {fileID: 254976188}
   powerOnPanel: {fileID: 1572879050}
   TitleAudio:
@@ -1202,7 +1082,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 110034705}
-  m_RootOrder: 9
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -1295,7 +1175,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 110034705}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
