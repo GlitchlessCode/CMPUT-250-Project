@@ -4786,8 +4786,11 @@ MonoBehaviour:
     pitchOverride:
       active: 0
       value: 0
+  PowerButton: {fileID: 1575665149}
+  DelayTime: 1
   AudioBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
   DayFinished: {fileID: 11400000, guid: 39445b5451252904ab3289bc94759e3f, type: 2}
+  canUpdate: 1
 --- !u!114 &1575665153
 MonoBehaviour:
   m_ObjectHideFlags: 0
