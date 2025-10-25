@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PowerButtonController : Subscriber
 {
@@ -13,6 +14,12 @@ public class PowerButtonController : Subscriber
     public Audio ClickInvalidAudio;
     public Audio ClickValidAudio;
 
+    [Header("Buttons")]
+    public Button PowerButton;
+
+    [Header("Delay Time")]
+    public float DelayTime = 0.5f;
+
     [Header("Events")]
     public AudioGameEvent AudioBus;
 
@@ -22,9 +29,16 @@ public class PowerButtonController : Subscriber
     private bool isShuttingDown = false;
     private bool canShutdown = false;
 
+    public bool canUpdate = true;
+
     public override void Subscribe()
     {
         DayFinished?.Subscribe(OnDayFinished);
+    }
+
+    public override void AfterSubscribe()
+    {
+        PowerButton.onClick.AddListener(OnPowerPressed);
     }
 
     private void OnDayFinished()
@@ -59,6 +73,18 @@ public class PowerButtonController : Subscriber
         }
     }
 
+    public void Update()
+    {
+        if (Input.GetKey(KeyCode.P))
+        {
+            if (canUpdate)
+            {
+                PowerButton.onClick.Invoke();
+                StartCoroutine(DelayAction(DelayTime));
+            }
+        }
+    }
+
     private IEnumerator Shutdown()
     {
         isShuttingDown = true;
@@ -69,5 +95,13 @@ public class PowerButtonController : Subscriber
         }
         PowerOffPanel.gameObject.SetActive(true);
         PowerOffPanel.SetTrigger("PlayPowerOff");
+    }
+
+    private IEnumerator DelayAction(float time)
+    {
+        canUpdate = false;
+        Debug.Log("Updating...");
+        yield return new WaitForSeconds(time);
+        canUpdate = true;
     }
 }
