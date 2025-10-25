@@ -166,15 +166,22 @@ class AudioBus
     {
         AudioSource source = fetcher?.Invoke();
 
-        float randPitch = UnityEngine.Random.Range(-0.5f, 2.0f);
-
         ActiveAudio active = new ActiveAudio(source, audio);
 
         actives.Add(active);
+        source.clip = audio.clip;
         source.volume = Mathf.Clamp(audio.volume, 0.0f, 1.0f) * volume;
-        source.pitch = 1.0f + randPitch * audio.pitchVariance;
         source.loop = audio.loop;
-        source.PlayOneShot(audio.clip);
+        if (!audio.pitchOverride.active)
+        {
+            float randPitch = UnityEngine.Random.Range(-0.5f, 2.0f);
+            source.pitch = 1.0f + randPitch * audio.pitchVariance;
+        }
+        else
+        {
+            source.pitch = audio.pitchOverride.value;
+        }
+        source.Play();
 
         if (!audio.loop)
         {
