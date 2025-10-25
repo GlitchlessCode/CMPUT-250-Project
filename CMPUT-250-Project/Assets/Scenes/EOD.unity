@@ -320,6 +320,7 @@ GameObject:
   - component: {fileID: 254976190}
   - component: {fileID: 254976189}
   - component: {fileID: 254976188}
+  - component: {fileID: 254976191}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -427,6 +428,34 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 254976186}
   m_CullTransparentMesh: 0
+--- !u!114 &254976191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 254976186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 297471016e7bd500c99ed76de78a1a1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Hover:
+    clip: {fileID: 8300000, guid: 557fcad7df2fb37b6971b41055f733d7, type: 3}
+    volume: 1
+    pitchVariance: 0.4
+    loop: 0
+  ClickStart:
+    clip: {fileID: 8300000, guid: 44be13caa470762f9bdff29c60c54ee5, type: 3}
+    volume: 1
+    pitchVariance: 0.4
+    loop: 0
+  ClickRelease:
+    clip: {fileID: 8300000, guid: a9f055b497933c748a7decd4ef41bff4, type: 3}
+    volume: 1
+    pitchVariance: 0.4
+    loop: 0
+  AudioBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
 --- !u!1 &340204208
 GameObject:
   m_ObjectHideFlags: 0
