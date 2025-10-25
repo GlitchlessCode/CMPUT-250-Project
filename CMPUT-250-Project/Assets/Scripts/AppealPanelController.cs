@@ -16,6 +16,7 @@ public class AppealPanelController : Subscriber
     public Button AcceptButton;
     public Button DenyButton;
     public GameObject AppealPanel;
+    public GameObject ScrollView;
 
     [Header("Chat")]
     public Text ChatLogText; // ← NEW
@@ -39,6 +40,7 @@ public class AppealPanelController : Subscriber
     [Header("Event Listeners")]
     public UserEntryGameEvent RefreshUserInfo;
     public BoolGameEvent AppealPanelActive;
+    public UnitGameEvent DayFinished;
 
     [Header("Events")]
     public BoolGameEvent ResolveAppeal;
@@ -48,6 +50,7 @@ public class AppealPanelController : Subscriber
     {
         RefreshUserInfo?.Subscribe(OnRefreshUserInfo);
         AppealPanelActive?.Subscribe(OnAppealPanelActive);
+        DayFinished?.Subscribe(OnDayFinished);
     }
 
     public override void AfterSubscribe()
@@ -58,6 +61,16 @@ public class AppealPanelController : Subscriber
 
         SetupButton(AcceptButton);
         SetupButton(DenyButton);
+    }
+
+    void OnDayFinished() //FIXME: Should work but does not.
+    {
+        Debug.Log("Day finished");
+        canUpdate = false;
+        AcceptButton.gameObject.SetActive(false);
+        DenyButton.gameObject.SetActive(false);
+        ScrollView.gameObject.SetActive(false);
+        scrollable = false;
     }
 
     void OnEnable()
