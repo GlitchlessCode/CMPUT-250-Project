@@ -2233,7 +2233,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4251cf7143894054096d9c37176e55e7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 885ac67b49a573e4091e9e6f5ceb5841, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6275,37 +6275,11 @@ MonoBehaviour:
   content: {fileID: 572325564}
   Panel: {fileID: 572325564}
   scrollSpeed: 5
-  HoverSound:
-    clip: {fileID: 8300000, guid: 5eb527ccfaa0529beaced9f1d441570e, type: 3}
-    volume: 0.4
-    pitchVariance: 0.14
-    loop: 0
-  FullPressSound:
-    clip: {fileID: 8300000, guid: 6286ce95a4cdd79d2b2c43af07da8e5b, type: 3}
-    volume: 0.4
-    pitchVariance: 0.14
-    loop: 0
-  PressStartSound:
-    clip: {fileID: 8300000, guid: 9989a9a93e6d19a679f90fc27d392ee6, type: 3}
-    volume: 0.4
-    pitchVariance: 0.14
-    loop: 0
-  PressResetSound:
-    clip: {fileID: 8300000, guid: d6d8ec9ab163d5c139d63938024fe99f, type: 3}
-    volume: 0.4
-    pitchVariance: 0.14
-    loop: 0
-  PressReleaseSound:
-    clip: {fileID: 8300000, guid: 23d6ad392bc74392b9980b047865ccc5, type: 3}
-    volume: 0.4
-    pitchVariance: 0.14
-    loop: 0
   DelayTime: 1
   RefreshUserInfo: {fileID: 11400000, guid: 2e23c26185f87442795df3f94db57909, type: 2}
   AppealPanelActive: {fileID: 11400000, guid: 8a411edaf2864054185493aae14f6d0c, type: 2}
   ResolveAppeal: {fileID: 11400000, guid: 4c381b5a82e316b71a52ad513c65bbb5, type: 2}
   RequestUser: {fileID: 11400000, guid: bd767a99f22ae800b90886e07da843ce, type: 2}
-  SoundBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
 --- !u!4 &1987603604
 Transform:
   m_ObjectHideFlags: 0
