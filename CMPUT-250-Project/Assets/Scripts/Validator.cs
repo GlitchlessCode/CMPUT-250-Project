@@ -41,6 +41,7 @@ public class Validator
             // if more than a year has passed
             if (parsedBanDate.Year < (parsedTodayDate.Year-1))
             {
+                //Debug.Log("Date Override: Today -" +parsedTodayDate+" Banned -"+parsedBanDate);
                 return true;
             } 
             // if the ban was last year
@@ -49,6 +50,7 @@ public class Validator
                 // check if the ban was like end of december and we are in january
                 if (!((parsedBanDate.Month == 12) && (parsedTodayDate.Month == 1) && (parsedBanDate.Day < parsedTodayDate.Day)))
                 {
+                    //Debug.Log("Date Override: Today -" +parsedTodayDate+" Banned -"+parsedBanDate);
                     return true;
                 }
             }
@@ -58,11 +60,13 @@ public class Validator
                 // check if more than a month has passed
                 if (parsedBanDate.Month < (parsedTodayDate.Month-1))
                 {
+                    //Debug.Log("Date Override: Today -" +parsedTodayDate+" Banned -"+parsedBanDate);
                     return true;
                 }
                 // check if exactly one month has passed - make sure the days work out, too
-                if ((parsedBanDate.Month == (parsedTodayDate.Month-1))&& (parsedBanDate.Day >= parsedTodayDate.Day))
+                if ((parsedBanDate.Month == (parsedTodayDate.Month-1)) && (parsedBanDate.Day <= parsedTodayDate.Day))
                 {
+                    //Debug.Log("Date Override: Today -" +parsedTodayDate+" Banned -"+parsedBanDate);
                     return true;
                 }
             }
@@ -71,6 +75,8 @@ public class Validator
             {
                 if (!condition(user))
                 {
+                    // string myKey = _conditions.FirstOrDefault(x => x.Value == condition).Key;
+                    //Debug.Log(myKey);
                     return false;
                 }
             }
@@ -96,9 +102,17 @@ public class Validator
 
     public bool messagesContain(UserEntry? user, string text)
     {
-        return user.Value.messages.Any<string>(
-            (msg) => Regex.IsMatch(msg, $".*{Regex.Escape(text)}.*")
-        );
+        bool res = true;
+
+        foreach (string message in user.Value.messages)
+        {
+            if (Regex.IsMatch(message, text))
+            {
+                res = false;
+            }
+        }
+
+        return res;
     }
 
     public bool messageRepeats(UserEntry? user, int reps)
@@ -270,7 +284,7 @@ public class Validator
 
     public bool stringContains(string s, string text)
     {
-        return (Regex.IsMatch(s.ToLower(), $".*{Regex.Escape(text)}.*"));
+        return (Regex.IsMatch(s.ToLower(), $".*{text}.*"));
     }
 
     public bool stringRepeats(string s, int reps)
