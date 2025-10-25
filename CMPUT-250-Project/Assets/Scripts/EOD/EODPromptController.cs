@@ -9,9 +9,9 @@ public class EODPromptController : Subscriber // same base class style as your o
     private GameObject arrowPrompt; // your arrow or hint UI
 
     [SerializeField]
-    private Button powerButton; // your Power button
+    private GameObject NMAPanel; // your NMAPanel
 
-    [Header("Events")]
+    [Header("Event Listeners")]
     public UnitGameEvent DayFinished; // assign this in Inspector
 
     public override void Subscribe()
@@ -27,6 +27,7 @@ public class EODPromptController : Subscriber // same base class style as your o
 
     private void OnDayFinished()
     {
+        NMAPanel.GetComponent<Animator>().SetTrigger("NoMoreAppeals");
         if (arrowPrompt)
             arrowPrompt.SetActive(true);
     }

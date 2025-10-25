@@ -39,6 +39,7 @@ public class AppealPanelController : Subscriber
     [Header("Event Listeners")]
     public UserEntryGameEvent RefreshUserInfo;
     public BoolGameEvent AppealPanelActive;
+    public UnitGameEvent DayFinished;
 
     [Header("Events")]
     public BoolGameEvent ResolveAppeal;
@@ -48,6 +49,7 @@ public class AppealPanelController : Subscriber
     {
         RefreshUserInfo?.Subscribe(OnRefreshUserInfo);
         AppealPanelActive?.Subscribe(OnAppealPanelActive);
+        DayFinished?.Subscribe(OnDayFinished);
     }
 
     public override void AfterSubscribe()
@@ -81,6 +83,13 @@ public class AppealPanelController : Subscriber
             DenyButton.enabled = false;
             scrollable = false;
         }
+    }
+
+    void OnDayFinished() //FIXME: Should work but does not.
+    {
+        AcceptButton.enabled = false;
+        DenyButton.enabled = false;
+        scrollable = false;
     }
 
     void RefreshUI(UserEntry? userOption)
