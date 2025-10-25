@@ -294,9 +294,7 @@ RectTransform:
   - {fileID: 1142964827}
   - {fileID: 109518994}
   - {fileID: 1164254733}
-  - {fileID: 299333725}
   - {fileID: 1980102624}
-  - {fileID: 324722777}
   - {fileID: 254976187}
   - {fileID: 1572879049}
   m_Father: {fileID: 0}
@@ -339,7 +337,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 110034705}
-  m_RootOrder: 8
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -444,16 +442,25 @@ MonoBehaviour:
     volume: 1
     pitchVariance: 0.4
     loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
   ClickStart:
     clip: {fileID: 8300000, guid: 44be13caa470762f9bdff29c60c54ee5, type: 3}
     volume: 1
     pitchVariance: 0.4
     loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
   ClickRelease:
     clip: {fileID: 8300000, guid: a9f055b497933c748a7decd4ef41bff4, type: 3}
     volume: 1
     pitchVariance: 0.4
     loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
   AudioBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
 --- !u!1 &340204208
 GameObject:
@@ -488,9 +495,9 @@ MonoBehaviour:
   appealsText: {fileID: 1142964828}
   appealsTextTitle: {fileID: 109518995}
   quotaText: {fileID: 1164254734}
-  quotaTextTitle: {fileID: 299333726}
+  quotaTextTitle: {fileID: 0}
   totalScoreText: {fileID: 1980102625}
-  totalScoreTextTitle: {fileID: 324722778}
+  totalScoreTextTitle: {fileID: 0}
   nextButton: {fileID: 254976188}
   powerOnPanel: {fileID: 1572879050}
   TitleAudio:
@@ -1075,7 +1082,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 110034705}
-  m_RootOrder: 9
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -1168,7 +1175,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 110034705}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
