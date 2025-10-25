@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
 
 [DisallowMultipleComponent]
 public class SlideshowController : MonoBehaviour
@@ -90,21 +92,67 @@ public class SlideshowController : MonoBehaviour
             beginButton.onClick.RemoveListener(Begin);
     }
 
+
     void Update()
     {
         if (_isFading)
             return; // lock input during fade
 
-        if (
-            Input.GetKeyDown(nextKey)
-            || Input.GetKeyDown(alsoNextKey)
-            || Input.GetButtonDown("Submit")
-        )
-            Next();
+        bool isLastSlide = (_index == slides.Count - 1);
 
-        if (Input.GetKeyDown(prevKey))
-            Prev();
+        // On all slides except the last — allow arrow and space to go forward
+        if (!isLastSlide)
+        {
+            if (Input.GetKeyDown(nextKey) || Input.GetKeyDown(alsoNextKey) || Input.GetButtonDown("Submit"))
+                Next();
+
+            if (Input.GetKeyDown(prevKey))
+                Prev();
+        }
+        else
+        {
+            // On the last slide — pressing Enter simulates a proper BeginButton click
+            if (Input.GetButtonDown("Submit"))
+            {
+                if (beginButton != null && beginButton.gameObject.activeSelf && beginButton.interactable)
+                    StartCoroutine(SimulateBeginButtonPress());
+                else
+                    Begin(); // fallback if button missing
+            }
+
+            // Optional: still allow going backward if you want
+            if (Input.GetKeyDown(prevKey))
+                Prev();
+        }
     }
+
+    private IEnumerator SimulateBeginButtonPress()
+    {
+        var btn = beginButton;
+        if (btn == null) yield break;
+
+        if (EventSystem.current == null)
+        {
+            new GameObject("EventSystem", typeof(EventSystem), typeof(StandaloneInputModule));
+        }
+
+        // Create a fake click
+        var ped = new PointerEventData(EventSystem.current)
+        {
+            button = PointerEventData.InputButton.Left,
+            clickCount = 1
+        };
+
+        // Trigger pressed visual
+        ExecuteEvents.Execute(btn.gameObject, ped, ExecuteEvents.pointerDownHandler);
+        yield return new WaitForSeconds(0.1f);
+
+        // Release and invoke the click
+        ExecuteEvents.Execute(btn.gameObject, ped, ExecuteEvents.pointerUpHandler);
+        btn.onClick.Invoke();
+    }
+
+
 
     public void Next()
     {

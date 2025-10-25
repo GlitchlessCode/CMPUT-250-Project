@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
 
 public class EndOfDayUI : Subscriber
 {
@@ -191,4 +193,43 @@ public class EndOfDayUI : Subscriber
             SceneManager.LoadScene("Failscreen");
         }
     }
+    private void Update()
+    {
+        if (nextButton != null && nextButton.gameObject.activeSelf && nextButton.interactable)
+        {
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+            {
+                StartCoroutine(SimulateNextButtonPress());
+            }
+        }
+    }
+    private IEnumerator SimulateNextButtonPress()
+    {
+        var btn = nextButton;
+        if (btn == null) yield break;
+
+        // Ensure there’s an EventSystem (if your scene doesn’t already have one)
+        if (EventSystem.current == null)
+        {
+            new GameObject("EventSystem", typeof(EventSystem), typeof(StandaloneInputModule));
+        }
+
+        // Create a fake pointer event to simulate a mouse click
+        var ped = new PointerEventData(EventSystem.current)
+        {
+            button = PointerEventData.InputButton.Left,
+            clickCount = 1
+        };
+
+        // Trigger the button's "pressed" visual state
+        ExecuteEvents.Execute(btn.gameObject, ped, ExecuteEvents.pointerDownHandler);
+
+        // Wait briefly so the pressed sprite is visible
+        yield return new WaitForSeconds(0.1f);
+
+        // Release and invoke the click
+        ExecuteEvents.Execute(btn.gameObject, ped, ExecuteEvents.pointerUpHandler);
+        btn.onClick.Invoke();
+    }
+
 }
