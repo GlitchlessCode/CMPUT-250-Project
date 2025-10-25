@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class TitleScreenUI : MonoBehaviour
 {
@@ -40,4 +41,49 @@ public class TitleScreenUI : MonoBehaviour
         PowerOff.SetActive(true);
         PowerOff.GetComponent<Animator>().SetTrigger("PlayPowerOff");
     }
+
+    private void Update()
+    {
+        if (StartButton != null && StartButton.gameObject.activeSelf && StartButton.interactable)
+        {
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+            {
+                // Visually simulate the button press
+                StartCoroutine(SimulateButtonPress());
+            }
+        }
+    }
+
+    private IEnumerator SimulateButtonPress()
+    {
+        var btn = StartButton;
+        if (btn == null) yield break;
+
+        // Ensure there’s an EventSystem (your scene should already have one;
+        // but this makes it robust if it’s missing).
+        if (EventSystem.current == null)
+        {
+            new GameObject("EventSystem", typeof(EventSystem), typeof(StandaloneInputModule));
+            // Optionally: yield return null; // give it a frame to initialize
+        }
+
+        // Create a fake left-click event
+        var ped = new PointerEventData(EventSystem.current)
+        {
+            button = PointerEventData.InputButton.Left,
+            clickCount = 1
+        };
+
+        // Visually go to Pressed state
+        ExecuteEvents.Execute(btn.gameObject, ped, ExecuteEvents.pointerDownHandler);
+
+        // Brief pressed time so the sprite/transition is visible
+        yield return new WaitForSeconds(0.1f);
+
+        // Release and invoke the click
+        ExecuteEvents.Execute(btn.gameObject, ped, ExecuteEvents.pointerUpHandler);
+        btn.onClick.Invoke();
+    }
+
+
 }
