@@ -63,9 +63,8 @@ public class AppealPanelController : Subscriber
         SetupButton(DenyButton);
     }
 
-    void OnDayFinished() //FIXME: Should work but does not.
+    void OnDayFinished()
     {
-        Debug.Log("Day finished");
         canUpdate = false;
         AcceptButton.gameObject.SetActive(false);
         DenyButton.gameObject.SetActive(false);
