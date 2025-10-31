@@ -1,10 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
-
 
 [DisallowMultipleComponent]
 public class SlideshowController : MonoBehaviour
@@ -92,7 +91,6 @@ public class SlideshowController : MonoBehaviour
             beginButton.onClick.RemoveListener(Begin);
     }
 
-
     void Update()
     {
         if (_isFading)
@@ -103,7 +101,11 @@ public class SlideshowController : MonoBehaviour
         // On all slides except the last — allow arrow and space to go forward
         if (!isLastSlide)
         {
-            if (Input.GetKeyDown(nextKey) || Input.GetKeyDown(alsoNextKey) || Input.GetButtonDown("Submit"))
+            if (
+                Input.GetKeyDown(nextKey)
+                || Input.GetKeyDown(alsoNextKey)
+                || Input.GetButtonDown("Submit")
+            )
                 Next();
 
             if (Input.GetKeyDown(prevKey))
@@ -114,7 +116,11 @@ public class SlideshowController : MonoBehaviour
             // On the last slide — pressing Enter simulates a proper BeginButton click
             if (Input.GetButtonDown("Submit"))
             {
-                if (beginButton != null && beginButton.gameObject.activeSelf && beginButton.interactable)
+                if (
+                    beginButton != null
+                    && beginButton.gameObject.activeSelf
+                    && beginButton.interactable
+                )
                     StartCoroutine(SimulateBeginButtonPress());
                 else
                     Begin(); // fallback if button missing
@@ -129,7 +135,8 @@ public class SlideshowController : MonoBehaviour
     private IEnumerator SimulateBeginButtonPress()
     {
         var btn = beginButton;
-        if (btn == null) yield break;
+        if (btn == null)
+            yield break;
 
         if (EventSystem.current == null)
         {
@@ -140,7 +147,7 @@ public class SlideshowController : MonoBehaviour
         var ped = new PointerEventData(EventSystem.current)
         {
             button = PointerEventData.InputButton.Left,
-            clickCount = 1
+            clickCount = 1,
         };
 
         // Trigger pressed visual
@@ -151,8 +158,6 @@ public class SlideshowController : MonoBehaviour
         ExecuteEvents.Execute(btn.gameObject, ped, ExecuteEvents.pointerUpHandler);
         btn.onClick.Invoke();
     }
-
-
 
     public void Next()
     {

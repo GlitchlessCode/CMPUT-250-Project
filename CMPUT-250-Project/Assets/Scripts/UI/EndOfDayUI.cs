@@ -2,10 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
-
 
 public class EndOfDayUI : Subscriber
 {
@@ -193,6 +192,7 @@ public class EndOfDayUI : Subscriber
             SceneManager.LoadScene("Failscreen");
         }
     }
+
     private void Update()
     {
         if (nextButton != null && nextButton.gameObject.activeSelf && nextButton.interactable)
@@ -203,10 +203,12 @@ public class EndOfDayUI : Subscriber
             }
         }
     }
+
     private IEnumerator SimulateNextButtonPress()
     {
         var btn = nextButton;
-        if (btn == null) yield break;
+        if (btn == null)
+            yield break;
 
         // Ensure there’s an EventSystem (if your scene doesn’t already have one)
         if (EventSystem.current == null)
@@ -218,7 +220,7 @@ public class EndOfDayUI : Subscriber
         var ped = new PointerEventData(EventSystem.current)
         {
             button = PointerEventData.InputButton.Left,
-            clickCount = 1
+            clickCount = 1,
         };
 
         // Trigger the button's "pressed" visual state
@@ -231,5 +233,4 @@ public class EndOfDayUI : Subscriber
         ExecuteEvents.Execute(btn.gameObject, ped, ExecuteEvents.pointerUpHandler);
         btn.onClick.Invoke();
     }
-
 }

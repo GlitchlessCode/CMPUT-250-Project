@@ -51,11 +51,13 @@ public class TabMenu : Subscriber
         dmsTab.onValueChanged.AddListener(ActiveTab);
         settingsTab.onValueChanged.AddListener(ActiveTab);
 
-        tabsDictionary = new Dictionary<Toggle, GameObject>();
-        tabsDictionary.Add(appealTab, appealPanel);
-        tabsDictionary.Add(rulesTab, rulesPanel);
-        tabsDictionary.Add(dmsTab, dmsPanel);
-        tabsDictionary.Add(settingsTab, settingsPanel);
+        tabsDictionary = new Dictionary<Toggle, GameObject>
+        {
+            { appealTab, appealPanel },
+            { rulesTab, rulesPanel },
+            { dmsTab, dmsPanel },
+            { settingsTab, settingsPanel },
+        };
     }
 
     private void ActiveTab(bool arg0)

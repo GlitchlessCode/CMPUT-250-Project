@@ -39,16 +39,22 @@ public class Validator
             );
 
             // if more than a year has passed
-            if (parsedBanDate.Year < (parsedTodayDate.Year-1))
+            if (parsedBanDate.Year < (parsedTodayDate.Year - 1))
             {
                 //Debug.Log("Date Override: Today -" +parsedTodayDate+" Banned -"+parsedBanDate);
                 return true;
-            } 
+            }
             // if the ban was last year
-            else if (parsedBanDate.Year == (parsedTodayDate.Year-1))
+            else if (parsedBanDate.Year == (parsedTodayDate.Year - 1))
             {
                 // check if the ban was like end of december and we are in january
-                if (!((parsedBanDate.Month == 12) && (parsedTodayDate.Month == 1) && (parsedBanDate.Day < parsedTodayDate.Day)))
+                if (
+                    !(
+                        (parsedBanDate.Month == 12)
+                        && (parsedTodayDate.Month == 1)
+                        && (parsedBanDate.Day < parsedTodayDate.Day)
+                    )
+                )
                 {
                     //Debug.Log("Date Override: Today -" +parsedTodayDate+" Banned -"+parsedBanDate);
                     return true;
@@ -58,13 +64,16 @@ public class Validator
             else if (parsedBanDate.Year == parsedTodayDate.Year)
             {
                 // check if more than a month has passed
-                if (parsedBanDate.Month < (parsedTodayDate.Month-1))
+                if (parsedBanDate.Month < (parsedTodayDate.Month - 1))
                 {
                     //Debug.Log("Date Override: Today -" +parsedTodayDate+" Banned -"+parsedBanDate);
                     return true;
                 }
                 // check if exactly one month has passed - make sure the days work out, too
-                if ((parsedBanDate.Month == (parsedTodayDate.Month-1)) && (parsedBanDate.Day <= parsedTodayDate.Day))
+                if (
+                    (parsedBanDate.Month == (parsedTodayDate.Month - 1))
+                    && (parsedBanDate.Day <= parsedTodayDate.Day)
+                )
                 {
                     //Debug.Log("Date Override: Today -" +parsedTodayDate+" Banned -"+parsedBanDate);
                     return true;
@@ -88,8 +97,6 @@ public class Validator
             Debug.LogError("Error parsing date: " + ex.Message);
             return false;
         }
-
-        
     }
 
     // Method to remove a condition based on its description
@@ -130,9 +137,9 @@ public class Validator
         return true;
     }
 
-        public bool messageRepeatsSpecific(UserEntry? user, int reps, string character)
+    public bool messageRepeatsSpecific(UserEntry? user, int reps, string character)
     {
-        string text = @".*("+character+@")\1{" + (reps - 1) + ",}.*";
+        string text = @".*(" + character + @")\1{" + (reps - 1) + ",}.*";
 
         foreach (string message in user.Value.messages)
         {
@@ -336,9 +343,8 @@ public class Validator
     // combine rule text
     public string GetConditionText()
     {
-
         return string.Join("\n\n", _conditions.Keys);
     }
 
-    // public 
+    // public
 }

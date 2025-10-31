@@ -13,8 +13,10 @@ public struct CoupledEventSequence
 public class DirectMessageManager : Subscriber
 {
     [Header("Pools")]
-    public DirectMessagePoolDefinition SuccessMessages;
-    public DirectMessagePoolDefinition FailureMessages;
+    public DirectMessagePoolDefinition GoodMessages;
+    public DirectMessagePoolDefinition BadMessages;
+    public DirectMessagePoolDefinition GettingGoodMessages;
+    public DirectMessagePoolDefinition GettingBadMessages;
 
     [Header("Sequences")]
     public List<CoupledEventSequence> MessageSequences;
@@ -29,10 +31,16 @@ public class DirectMessageManager : Subscriber
     public DirectMessageGameEvent MessageTarget;
     public AudioGameEvent AudioBus;
 
-    private bool loadedSuccessMessages = false;
-    private InternalDirectMessagePool successMessages;
-    private bool loadedFailureMessages = false;
-    private InternalDirectMessagePool failureMessages;
+    private int lastState = 0;
+    private int state = 0;
+    private bool loadedGoodMessages = false;
+    private InternalDirectMessagePool goodMessages;
+    private bool loadedBadMessages = false;
+    private InternalDirectMessagePool badMessages;
+    private bool loadedGettingGoodMessages = false;
+    private InternalDirectMessagePool gettingGoodMessages;
+    private bool loadedGettingBadMessages = false;
+    private InternalDirectMessagePool gettingBadMessages;
     private List<InternalDirectMessageSequence> messageSequences;
 
     private Queue<bool> queuedAppeals;
@@ -47,21 +55,41 @@ public class DirectMessageManager : Subscriber
 
         queuedAppeals = new Queue<bool>();
         StartCoroutine(
-            SuccessMessages.GetMessages(
+            GoodMessages.GetMessages(
                 (messages) =>
                 {
-                    successMessages = new InternalDirectMessagePool(messages);
-                    loadedSuccessMessages = true;
+                    goodMessages = new InternalDirectMessagePool(messages);
+                    loadedGoodMessages = true;
                     catchUpAppeals();
                 }
             )
         );
         StartCoroutine(
-            FailureMessages.GetMessages(
+            BadMessages.GetMessages(
                 (messages) =>
                 {
-                    failureMessages = new InternalDirectMessagePool(messages);
-                    loadedFailureMessages = true;
+                    badMessages = new InternalDirectMessagePool(messages);
+                    loadedBadMessages = true;
+                    catchUpAppeals();
+                }
+            )
+        );
+        StartCoroutine(
+            GettingGoodMessages.GetMessages(
+                (messages) =>
+                {
+                    gettingGoodMessages = new InternalDirectMessagePool(messages);
+                    loadedGettingGoodMessages = true;
+                    catchUpAppeals();
+                }
+            )
+        );
+        StartCoroutine(
+            GettingBadMessages.GetMessages(
+                (messages) =>
+                {
+                    gettingBadMessages = new InternalDirectMessagePool(messages);
+                    loadedGettingBadMessages = true;
                     catchUpAppeals();
                 }
             )
@@ -99,21 +127,49 @@ public class DirectMessageManager : Subscriber
         queuedAppeals.Enqueue(success);
     }
 
-    void OnAfterAppeal(bool success)
+    void OnAfterAppeal(bool currentCorrect)
     {
-        if (success)
+        float frequency = UnityEngine.Random.Range(0, 1);
+        if (currentCorrect)
         {
-            QueueMessage(successMessages.GetRandomMessage());
+            state = Math.Min(state + 1, 2);
         }
         else
         {
-            QueueMessage(failureMessages.GetRandomMessage());
+            state = Math.Max(state - 1, -2);
+        }
+        if (state == 0 && lastState > 0) // getting bad
+        {
+            QueueMessage(gettingBadMessages.GetRandomMessage());
+        }
+        else if (state == 0 && lastState < 0) // getting good
+        {
+            QueueMessage(gettingGoodMessages.GetRandomMessage());
+        }
+        else if (state > 0 && lastState > 0) // good
+        {
+            if (frequency <= 0.3)
+            {
+                QueueMessage(goodMessages.GetRandomMessage());
+            }
+        }
+        else if (state < 0 && lastState < 0) // bad
+        {
+            if (frequency <= 0.3)
+            {
+                QueueMessage(badMessages.GetRandomMessage());
+            }
         }
     }
 
     void catchUpAppeals()
     {
-        if (loadedSuccessMessages && loadedFailureMessages)
+        if (
+            loadedGoodMessages
+            && loadedBadMessages
+            && loadedGettingGoodMessages
+            && loadedGettingBadMessages
+        )
         {
             if (queuedAppeals.Count > 0)
             {

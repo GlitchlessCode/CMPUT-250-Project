@@ -5497,8 +5497,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d63c47afd9ed2199be7a8347666dfdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SuccessMessages: {fileID: 11400000, guid: e96e02f5d646941f9a4ce3ceec14335c, type: 2}
-  FailureMessages: {fileID: 11400000, guid: 7b103eec60431664cb3ec616c7671363, type: 2}
+  GoodMessages: {fileID: 11400000, guid: e96e02f5d646941f9a4ce3ceec14335c, type: 2}
+  BadMessages: {fileID: 11400000, guid: 7b103eec60431664cb3ec616c7671363, type: 2}
+  GettingGoodMessages: {fileID: 11400000, guid: 937f1be730a07504ea83e37a695a8d57,
+    type: 2}
+  GettingBadMessages: {fileID: 11400000, guid: c3551468295be374897a894ffc1422d8, type: 2}
   MessageSequences:
   - trigger: {fileID: 11400000, guid: 33d83fdd621ae47188ee41fecc01d67c, type: 2}
     sequence: {fileID: 11400000, guid: 8db4488eabbb4279da9580e389648dea, type: 2}

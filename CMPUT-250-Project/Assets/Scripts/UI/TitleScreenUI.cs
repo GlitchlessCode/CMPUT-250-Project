@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 public class TitleScreenUI : MonoBehaviour
 {
@@ -57,7 +57,8 @@ public class TitleScreenUI : MonoBehaviour
     private IEnumerator SimulateButtonPress()
     {
         var btn = StartButton;
-        if (btn == null) yield break;
+        if (btn == null)
+            yield break;
 
         // Ensure there’s an EventSystem (your scene should already have one;
         // but this makes it robust if it’s missing).
@@ -71,7 +72,7 @@ public class TitleScreenUI : MonoBehaviour
         var ped = new PointerEventData(EventSystem.current)
         {
             button = PointerEventData.InputButton.Left,
-            clickCount = 1
+            clickCount = 1,
         };
 
         // Visually go to Pressed state
@@ -84,6 +85,4 @@ public class TitleScreenUI : MonoBehaviour
         ExecuteEvents.Execute(btn.gameObject, ped, ExecuteEvents.pointerUpHandler);
         btn.onClick.Invoke();
     }
-
-
 }
