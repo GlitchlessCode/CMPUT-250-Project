@@ -10,15 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1671a69c9f854a6afad02ebb1f4a0074, type: 3}
-  m_Name: SuccessPool
+  m_Name: GettingGoodPool
   m_EditorClassIdentifier: 
-  directory: generic
-  dmFiles:
-  - gooddm1
-  - gooddm2
-  - gooddm3
-  - gooddm4
-  - gooddm5
-  - gooddm6
-  - gooddm7
-  - gooddm8
+  directory: 
+  dmFiles: []

@@ -41,7 +41,7 @@ public class DMSPanelController : Subscriber
         // killDM();
     }
 
-    public void OnDMTabClick(bool clicked) 
+    public void OnDMTabClick(bool clicked)
     {
         if (clicked)
         {
