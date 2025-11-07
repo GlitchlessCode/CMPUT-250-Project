@@ -80,6 +80,8 @@ public class ScoreManager : Subscriber
     [Header("Events")]
     public DaySummaryGameEvent DisplayCurrentDaySummary;
 
+    private bool setup = false;
+
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -87,6 +89,19 @@ public class ScoreManager : Subscriber
 
     public override void Subscribe()
     {
+        if (!setup)
+        {
+            int managerCount = FindObjectsOfType<ScoreManager>().Count();
+            if (managerCount > 1)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            else
+            {
+                setup = true;
+            }
+        }
         AfterAppeal?.Subscribe(OnAfterAppeal);
         UserLoaded?.Subscribe(OnUserLoaded);
         DayStart?.Subscribe(OnDayStart);

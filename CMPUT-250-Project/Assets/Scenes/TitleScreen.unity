@@ -466,6 +466,49 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &795917718
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 795917720}
+  - component: {fileID: 795917719}
+  m_Layer: 0
+  m_Name: ScoreManagerClear
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &795917719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795917718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a70b982b78274b9db64d6fa4313522e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &795917720
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795917718}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 956.341, y: 662.0812, z: -48.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &871075147
 GameObject:
   m_ObjectHideFlags: 0
@@ -787,16 +830,25 @@ MonoBehaviour:
     volume: 1
     pitchVariance: 0.2
     loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
   ClickStart:
     clip: {fileID: 8300000, guid: 44be13caa470762f9bdff29c60c54ee5, type: 3}
     volume: 1
     pitchVariance: 0.2
     loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
   ClickRelease:
     clip: {fileID: 8300000, guid: a9f055b497933c748a7decd4ef41bff4, type: 3}
     volume: 1
     pitchVariance: 0.2
     loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
   AudioBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
 --- !u!1 &1364060730
 GameObject:
@@ -915,6 +967,9 @@ MonoBehaviour:
     volume: 0.6
     pitchVariance: 0
     loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
   AudioBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
 --- !u!4 &1863754706
 Transform:
