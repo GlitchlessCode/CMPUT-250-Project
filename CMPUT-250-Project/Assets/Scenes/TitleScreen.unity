@@ -784,19 +784,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Hover:
     clip: {fileID: 8300000, guid: 557fcad7df2fb37b6971b41055f733d7, type: 3}
-    volume: 1
+    volume: 0.8
     pitchVariance: 0.2
     loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
   ClickStart:
     clip: {fileID: 8300000, guid: 44be13caa470762f9bdff29c60c54ee5, type: 3}
-    volume: 1
+    volume: 0.8
     pitchVariance: 0.2
     loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
   ClickRelease:
     clip: {fileID: 8300000, guid: a9f055b497933c748a7decd4ef41bff4, type: 3}
-    volume: 1
+    volume: 0.8
     pitchVariance: 0.2
     loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
   AudioBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
 --- !u!1 &1364060730
 GameObject:
@@ -915,6 +924,9 @@ MonoBehaviour:
     volume: 0.6
     pitchVariance: 0
     loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
   AudioBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
 --- !u!4 &1863754706
 Transform:

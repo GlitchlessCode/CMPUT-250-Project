@@ -36,11 +36,6 @@ public class PowerButtonController : Subscriber
         DayFinished?.Subscribe(OnDayFinished);
     }
 
-    public override void AfterSubscribe()
-    {
-        PowerButton.onClick.AddListener(OnPowerPressed);
-    }
-
     private void OnDayFinished()
     {
         canShutdown = true;
