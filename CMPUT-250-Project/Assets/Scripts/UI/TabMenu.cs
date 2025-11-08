@@ -11,13 +11,11 @@ public class TabMenu : Subscriber
     public Toggle appealTab;
     public Toggle rulesTab;
     public Toggle dmsTab;
-    public Toggle settingsTab;
 
     [Header("Panels")]
     public GameObject appealPanel;
     public GameObject rulesPanel;
     public GameObject dmsPanel;
-    public GameObject settingsPanel;
 
     [Header("Audio")]
     public Audio TabSwitch;
