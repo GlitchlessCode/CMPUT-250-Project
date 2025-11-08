@@ -3251,7 +3251,7 @@ MonoBehaviour:
   settingsPanel: {fileID: 697209356}
   TabSwitch:
     clip: {fileID: 8300000, guid: 44be13caa470762f9bdff29c60c54ee5, type: 3}
-    volume: 1
+    volume: 0.5
     pitchVariance: 0.3
     loop: 0
     pitchOverride:
@@ -3904,7 +3904,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Scroll:
     clip: {fileID: 8300000, guid: dcaf3f6a07d966e62bebe571ef05e51a, type: 3}
-    volume: 0.3
+    volume: 0.6
     pitchVariance: 0.3
     loop: 0
     pitchOverride:
@@ -4204,7 +4204,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Scroll:
     clip: {fileID: 8300000, guid: dcaf3f6a07d966e62bebe571ef05e51a, type: 3}
-    volume: 0.3
+    volume: 0.6
     pitchVariance: 0.3
     loop: 0
     pitchOverride:
@@ -4859,7 +4859,7 @@ MonoBehaviour:
       value: 0
   HoverAudio:
     clip: {fileID: 8300000, guid: edc7d894e152736e991fc69fe572b90f, type: 3}
-    volume: 1
+    volume: 0.8
     pitchVariance: 0.3
     loop: 0
     pitchOverride:
@@ -4867,7 +4867,7 @@ MonoBehaviour:
       value: 0
   ClickInvalidAudio:
     clip: {fileID: 8300000, guid: f1ed2d2de8e029d8c96cce31862b46a3, type: 3}
-    volume: 1
+    volume: 0.5
     pitchVariance: 0.3
     loop: 0
     pitchOverride:
@@ -4875,7 +4875,7 @@ MonoBehaviour:
       value: 0
   ClickValidAudio:
     clip: {fileID: 8300000, guid: d11b20e7d2629f368a4d45618b3dcb90, type: 3}
-    volume: 1
+    volume: 0.8
     pitchVariance: 0.3
     loop: 0
     pitchOverride:
@@ -6357,8 +6357,17 @@ MonoBehaviour:
   musicSliderText: {fileID: 1718533167}
   soundSliderText: {fileID: 2122949274}
   maxSliderAmount: 100
+  SoundSample:
+    clip: {fileID: 8300000, guid: 44be13caa470762f9bdff29c60c54ee5, type: 3}
+    volume: 0.8
+    pitchVariance: 0.2
+    loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
   ChangeMusic: {fileID: 11400000, guid: 50ceba6f3c991b4deb83d07f7c4cc3ab, type: 2}
   ChangeSound: {fileID: 11400000, guid: bb9e88c84f39f8d5fb9cb238de2fac02, type: 2}
+  SoundSampleBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
 --- !u!114 &1987603602
 MonoBehaviour:
   m_ObjectHideFlags: 0
