@@ -131,6 +131,8 @@ public class AppealPanelController : Subscriber
             LayoutRebuilder.ForceRebuildLayoutImmediate(Panel.GetComponent<RectTransform>());
             transforms.Add(trans);
         }
+
+        content.anchoredPosition = new Vector2(0,0);
     }
 
     void scroll()

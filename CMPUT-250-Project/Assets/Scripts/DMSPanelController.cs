@@ -27,7 +27,9 @@ public class DMSPanelController : Subscriber
     public float scrollSpeed = 5000000f;
     private Vector3 initialPosition;
 
-    void Start() { }
+    void Start() {
+        content.anchoredPosition = new Vector2(0,0);
+     }
 
     public override void Subscribe()
     {
@@ -84,6 +86,11 @@ public class DMSPanelController : Subscriber
         {
             content.anchoredPosition += new Vector2(0, scrollSpeed);
         }
+    }
+
+    void ResetDMHeight()
+    {
+        content.anchoredPosition = new Vector2(0,0);
     }
 
     // void killDM()
