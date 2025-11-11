@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class TabMenu : Subscriber
@@ -58,6 +59,7 @@ public class TabMenu : Subscriber
             { dmsTab, dmsPanel },
             { settingsTab, settingsPanel },
         };
+        TabSetup();
     }
 
     private void ActiveTab(bool arg0)
@@ -98,7 +100,7 @@ public class TabMenu : Subscriber
         }
     }
 
-    void TabSwap(Dictionary<Toggle, GameObject> tabsDictionary)
+    public void TabSwap(Dictionary<Toggle, GameObject> tabsDictionary)
     {
         bool OnDMTab = false;
         AudioBus?.Emit(TabSwitch);
@@ -125,5 +127,39 @@ public class TabMenu : Subscriber
         {
             AppealPanelActive?.Emit(appealPanel.activeSelf);
         }
+    }
+
+    public void TabSetup()
+    {
+        foreach (KeyValuePair<Toggle, GameObject> tab in tabsDictionary)
+        {
+            Toggle toggle = tab.Key;
+            toggle.TryGetComponent<EventTrigger>(out EventTrigger trigger);
+            if (trigger == null)
+            {
+                trigger = toggle.gameObject.AddComponent<EventTrigger>();
+            }
+            trigger.triggers.Add(createEntry(EventTriggerType.PointerEnter, OnHover));
+            trigger.triggers.Add(createEntry(EventTriggerType.PointerExit, OnPointerExit));
+            trigger = null;
+        }
+    }
+
+    private EventTrigger.Entry createEntry(EventTriggerType kind, Action<PointerEventData> callback)
+    {
+        EventTrigger.Entry entry = new EventTrigger.Entry();
+        entry.callback.AddListener((data) => callback((PointerEventData)data));
+        entry.eventID = kind;
+        return entry;
+    }
+
+    private void OnHover(PointerEventData _)
+    {
+        CursorManager.Instance.Clickable();
+    }
+
+    private void OnPointerExit(PointerEventData _)
+    {
+        CursorManager.Instance.Default();
     }
 }

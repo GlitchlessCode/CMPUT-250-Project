@@ -22,11 +22,23 @@ public class ScrollAudio : MonoBehaviour
         {
             trigger.triggers.Add(createEntry(EventTriggerType.Scroll, OnScroll));
         }
+        trigger.triggers.Add(createEntry(EventTriggerType.PointerEnter, OnEnter));
+        trigger.triggers.Add(createEntry(EventTriggerType.PointerExit, OnExit));
     }
 
     private void OnScroll(PointerEventData _)
     {
         AudioBus?.Emit(Scroll);
+    }
+
+    private void OnEnter(PointerEventData _)
+    {
+        CursorManager.Instance.Clickable();
+    }
+
+    private void OnExit(PointerEventData _)
+    {
+        CursorManager.Instance.Default();
     }
 
     private EventTrigger.Entry createEntry(EventTriggerType kind, Action<PointerEventData> callback)

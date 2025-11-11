@@ -32,11 +32,18 @@ public class ButtonAudio : MonoBehaviour
         {
             trigger.triggers.Add(createEntry(EventTriggerType.PointerUp, OnClickRelease));
         }
+        trigger.triggers.Add(createEntry(EventTriggerType.PointerExit, OnPointerExit));
     }
 
     private void OnHover(PointerEventData _)
     {
         AudioBus?.Emit(Hover);
+        CursorManager.Instance.Clickable();
+    }
+
+    private void OnPointerExit(PointerEventData _)
+    {
+        CursorManager.Instance.Default();
     }
 
     private void OnClickStart(PointerEventData _)
