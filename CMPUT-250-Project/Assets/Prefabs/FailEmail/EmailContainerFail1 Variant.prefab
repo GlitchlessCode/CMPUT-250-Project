@@ -10,13 +10,17 @@ PrefabInstance:
     - target: {fileID: 376447059847163922, guid: c78ca0c8c02a981428f7239a94f84996,
         type: 3}
       propertyPath: m_text
-      value: "You've been purr-manently relieved of your duties, effective immediately.
-        \r\n\nRegretfully signed, \r\n\r\n@THEMOUSER"
+      value: "From: pawwn1@mousermedia.com\r\nSubject: Termination Notice (Sorry!)\r\n\r\nPer
+        THEMOUSER,\r\n\r\nYou\u2019ve been purr-manently relieved of your duties,
+        effective immediately. \r\nTHEMOUSER is looking for a mod that is more\u2026
+        \u201Ccommitted\u201D.\r\nFeel free to recommend any peers you know of that
+        would be better suited for this job.\r\n\r\nRegretfully signed,\r\n\r\nTHEMOUSER
+        Team\r\nMOUSERMEDIA HQ\r\n\u201CPAWS up, don\u2019t PAUSE up!\u201D\r\n"
       objectReference: {fileID: 0}
     - target: {fileID: 3786595519832767639, guid: c78ca0c8c02a981428f7239a94f84996,
         type: 3}
       propertyPath: m_Name
-      value: EmailContainerFail1
+      value: EmailContainerFail1 Variant
       objectReference: {fileID: 0}
     - target: {fileID: 7305062573186774026, guid: c78ca0c8c02a981428f7239a94f84996,
         type: 3}
