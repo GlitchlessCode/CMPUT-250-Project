@@ -28,7 +28,7 @@ public class EODPromptController : Subscriber // same base class style as your o
     private void OnDayFinished()
     {
         NMAPanel.GetComponent<Animator>().SetTrigger("NoMoreAppeals");
-        if (arrowPrompt)
-            arrowPrompt.SetActive(true);
+        // if (arrowPrompt)
+        //     arrowPrompt.SetActive(true);
     }
 }
