@@ -11,6 +11,27 @@ public class SlideshowController : MonoBehaviour
     [Header("Target UI")]
     public Image targetImage;
 
+    [Header("Scroll")]
+    public string msg =@"From: pawwn1@mousermedia.com
+Subject: Formal Employment Offer
+
+Good 'meow'ning,
+
+I hope this email finds you well. I’m a PR representative for Scritch streamer THEMOUSER, esteemed and beloved gaming creator. 
+We are reaching out in regard to your application to moderate their chat — we noticed you’d applied recently, so we hope you’re still interested!
+We are aware there are currently fan discussions surrounding an ‘incident’ of sorts regarding the recent sudden termination of the last mod team. In turn, there’s been a request to hire ONE mod that won’t ask questions.
+THEMOUSER is private about their business for a reason. Please respect this.
+To start your work with THEMOUSER, we’ll first be putting you on ban appeals. It’s a simple process — only two buttons and some self-explanatory rules to worry about! It’ll be EZ-PZ! 
+Upon acceptance, you’ll be eligible to work immediately. Please reply at your earliest convenience.
+
+Warm regards,
+
+THEMOUSER Team
+MOUSERMEDIA HQ
+“PAWS up, don’t PAUSE up!” ";
+    public EmailScroller email;
+    public  GameObject emailPhotos;
+
     [Header("Slides")]
     public List<Sprite> slides = new List<Sprite>();
 
@@ -70,6 +91,8 @@ public class SlideshowController : MonoBehaviour
 
     void Start()
     {
+        email.updateMessages(msg);
+        email.updateImages(emailPhotos);
         targetImage.preserveAspect = true;
 
         if (slides.Count > 0)
@@ -95,24 +118,26 @@ public class SlideshowController : MonoBehaviour
     {
         if (_isFading)
             return; // lock input during fade
+        
+        
 
-        bool isLastSlide = (_index == slides.Count - 1);
+        //bool isLastSlide = (_index == slides.Count - 1);
 
-        // On all slides except the last — allow arrow and space to go forward
-        if (!isLastSlide)
-        {
-            if (
-                Input.GetKeyDown(nextKey)
-                || Input.GetKeyDown(alsoNextKey)
-                || Input.GetButtonDown("Submit")
-            )
-                Next();
+        // // On all slides except the last — allow arrow and space to go forward
+        // if (!isLastSlide)
+        // {
+        //     if (
+        //         Input.GetKeyDown(nextKey)
+        //         || Input.GetKeyDown(alsoNextKey)
+        //         || Input.GetButtonDown("Submit")
+        //     )
+        //         Next();
 
-            if (Input.GetKeyDown(prevKey))
-                Prev();
-        }
-        else
-        {
+        //     if (Input.GetKeyDown(prevKey))
+        //         Prev();
+        // }
+        // else
+        // {
             // On the last slide — pressing Enter simulates a proper BeginButton click
             if (Input.GetButtonDown("Submit"))
             {
@@ -127,9 +152,9 @@ public class SlideshowController : MonoBehaviour
             }
 
             // Optional: still allow going backward if you want
-            if (Input.GetKeyDown(prevKey))
-                Prev();
-        }
+            // if (Input.GetKeyDown(prevKey))
+            //     Prev();
+        // }
     }
 
     private IEnumerator SimulateBeginButtonPress()
@@ -249,8 +274,8 @@ public class SlideshowController : MonoBehaviour
     {
         if (!beginButton)
             return;
-        bool isLast = (slides != null && slides.Count > 0 && _index == slides.Count - 1);
-        beginButton.gameObject.SetActive(isLast);
+        // bool isLast = (slides != null && slides.Count > 0 && _index == slides.Count - 1);
+        //beginButton.gameObject.SetActive(isLast);
     }
 
     private IEnumerator RunPowerOff()
