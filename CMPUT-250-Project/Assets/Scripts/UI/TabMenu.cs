@@ -12,13 +12,11 @@ public class TabMenu : Subscriber
     public Toggle appealTab;
     public Toggle rulesTab;
     public Toggle dmsTab;
-    public Toggle settingsTab;
 
     [Header("Panels")]
     public GameObject appealPanel;
     public GameObject rulesPanel;
     public GameObject dmsPanel;
-    public GameObject settingsPanel;
 
     [Header("Audio")]
     public Audio TabSwitch;
@@ -45,19 +43,16 @@ public class TabMenu : Subscriber
         appealPanel.gameObject.SetActive(false);
         rulesPanel.gameObject.SetActive(false);
         dmsPanel.gameObject.SetActive(true);
-        settingsPanel.gameObject.SetActive(false);
 
         appealTab.onValueChanged.AddListener(ActiveTab);
         rulesTab.onValueChanged.AddListener(ActiveTab);
         dmsTab.onValueChanged.AddListener(ActiveTab);
-        settingsTab.onValueChanged.AddListener(ActiveTab);
 
         tabsDictionary = new Dictionary<Toggle, GameObject>
         {
             { appealTab, appealPanel },
             { rulesTab, rulesPanel },
             { dmsTab, dmsPanel },
-            { settingsTab, settingsPanel },
         };
         TabSetup();
     }
@@ -83,11 +78,6 @@ public class TabMenu : Subscriber
         {
             dmsTab.isOn = true;
             DMTabClick?.Emit(true);
-        }
-        else if (Input.GetKey(KeyCode.O))
-        {
-            settingsTab.isOn = true;
-            DMTabClick?.Emit(false);
         }
     }
 
