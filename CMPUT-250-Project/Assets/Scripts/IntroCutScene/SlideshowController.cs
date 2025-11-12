@@ -102,6 +102,7 @@ MOUSERMEDIA HQ
         }
 
         UpdateBeginButtonVisibility();
+        beginButton.transform.SetAsLastSibling();
     }
 
     void OnDestroy()
