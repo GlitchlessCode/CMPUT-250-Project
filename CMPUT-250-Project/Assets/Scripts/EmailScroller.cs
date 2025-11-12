@@ -32,9 +32,9 @@ public class EmailScroller : Subscriber
         transforms.Add(trans);
     }
 
-        public void updateImages(GameObject img)
+        public void updateObject(GameObject thing)
     {
-        GameObject instantiatedObject = Instantiate(img, Panel);
+        GameObject instantiatedObject = Instantiate(thing, Panel);
 
         RectTransform trans = instantiatedObject.GetComponent<RectTransform>();
 

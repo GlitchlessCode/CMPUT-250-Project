@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2417442250701887096}
   - component: {fileID: 7728856029081842528}
   m_Layer: 5
-  m_Name: EmailContainer
+  m_Name: EmailContainer1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -237,15 +237,20 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '1234325
-
-    233
-
-
-
-    2334
-
-    22'
+  m_text: "From: pawwn1@mousermedia.com\r\nSubject: Formal Employment Offer\r\n\r\nGood
+    'meow'ning,\r\n\r\nI hope this email finds you well. I\u2019m a PR representative
+    for Scritch streamer THEMOUSER, esteemed and beloved gaming creator. \r\nWe are
+    reaching out in regard to your application to moderate their chat \u2014 we noticed
+    you\u2019d applied recently, so we hope you\u2019re still interested!\r\nWe are
+    aware there are currently fan discussions surrounding an \u2018incident\u2019
+    of sorts regarding the recent sudden termination of the last mod team. In turn,
+    there\u2019s been a request to hire ONE mod that won\u2019t ask questions.\r\nTHEMOUSER
+    is private about their business for a reason. Please respect this.\r\nTo start
+    your work with THEMOUSER, we\u2019ll first be putting you on ban appeals. It\u2019s
+    a simple process \u2014 only two buttons and some self-explanatory rules to worry
+    about! It\u2019ll be EZ-PZ! \r\nUpon acceptance, you\u2019ll be eligible to work
+    immediately. Please reply at your earliest convenience.\r\n\r\nWarm regards,\r\n\r\nTHEMOUSER
+    Team\r\nMOUSERMEDIA HQ\r\n\u201CPAWS up, don\u2019t PAUSE up!\u201D \r\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3dfa0b5ad2dd29e40b6d32bbd51c0f72, type: 2}
   m_sharedMaterial: {fileID: 7184798586361103782, guid: 3dfa0b5ad2dd29e40b6d32bbd51c0f72,
