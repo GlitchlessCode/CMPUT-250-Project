@@ -32,7 +32,7 @@ public class EmailScroller : Subscriber
         transforms.Add(trans);
     }
 
-        public void updateObject(GameObject thing)
+    public void updateObject(GameObject thing)
     {
         GameObject instantiatedObject = Instantiate(thing, Panel);
 
