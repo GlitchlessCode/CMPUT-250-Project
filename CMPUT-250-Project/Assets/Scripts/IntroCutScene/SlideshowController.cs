@@ -103,6 +103,7 @@ public class SlideshowController : MonoBehaviour
 
     void Update()
     {
+        email.scroll();
         if (_isFading)
             return; // lock input during fade
         

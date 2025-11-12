@@ -43,4 +43,16 @@ public class EmailScroller : Subscriber
         transforms.Add(trans);
     }
 
+    public void scroll()
+    {
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            content.anchoredPosition -= new Vector2(0, 5);
+        }
+        else if (Input.GetKey(KeyCode.DownArrow))
+        {
+            content.anchoredPosition += new Vector2(0, 5);
+        }
+    }
+
 }

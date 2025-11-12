@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Fail : Subscriber
+public class Win : Subscriber
 {
     [Header("Scroll")]
     public EmailScroller email;
@@ -26,6 +26,5 @@ public class Fail : Subscriber
     void Update(){
         email.scroll();
     }
-
 }
 
