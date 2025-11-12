@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -36,17 +38,28 @@ public class PowerButtonController : Subscriber
         DayFinished?.Subscribe(OnDayFinished);
     }
 
+    public override void AfterSubscribe()
+    {
+        SetupButton(PowerButton);
+    }
+
     private void OnDayFinished()
     {
         canShutdown = true;
     }
 
-    public void OnHover()
+    public void OnHover(PointerEventData _)
     {
         if (HoverAudio.clip != null)
         {
             AudioBus?.Emit(HoverAudio);
+            CursorManager.Instance.Clickable();
         }
+    }
+
+    public void OnPointerExit(PointerEventData _)
+    {
+        CursorManager.Instance.Default();
     }
 
     public void OnPowerPressed()
@@ -98,5 +111,25 @@ public class PowerButtonController : Subscriber
         Debug.Log("Updating...");
         yield return new WaitForSeconds(time);
         canUpdate = true;
+    }
+
+    private void SetupButton(Button button)
+    {
+        button.TryGetComponent<EventTrigger>(out EventTrigger trigger);
+        Animator animator = button.GetComponent<Animator>();
+        if (trigger == null)
+        {
+            trigger = button.gameObject.AddComponent<EventTrigger>();
+        }
+        trigger.triggers.Add(createEntry(EventTriggerType.PointerEnter, OnHover));
+        trigger.triggers.Add(createEntry(EventTriggerType.PointerExit, OnPointerExit));
+    }
+
+    private EventTrigger.Entry createEntry(EventTriggerType kind, Action<PointerEventData> callback)
+    {
+        EventTrigger.Entry entry = new EventTrigger.Entry();
+        entry.callback.AddListener((data) => callback((PointerEventData)data));
+        entry.eventID = kind;
+        return entry;
     }
 }

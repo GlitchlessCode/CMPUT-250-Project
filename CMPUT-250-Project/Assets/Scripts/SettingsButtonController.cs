@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class SettingsButtonController : Subscriber
@@ -23,6 +25,8 @@ public class SettingsButtonController : Subscriber
     {
         SettingsOpenButton.onClick.AddListener(OnSettingsOpen);
         SettingsCloseButton.onClick.AddListener(OnSettingsClosed);
+        SetupButton(SettingsOpenButton);
+        SetupButton(SettingsCloseButton);
     }
 
     void OnSettingsOpen()
@@ -35,6 +39,7 @@ public class SettingsButtonController : Subscriber
     {
         SettingsPanel.SetActive(false);
         AudioBus?.Emit(TabSwitch);
+        CursorManager.Instance.Default();
     }
 
     void Update()
@@ -59,5 +64,35 @@ public class SettingsButtonController : Subscriber
         canUpdate = false;
         yield return new WaitForSeconds(time);
         canUpdate = true;
+    }
+
+    public void OnHover(PointerEventData _)
+    {
+        CursorManager.Instance.Clickable();
+    }
+
+    public void OnPointerExit(PointerEventData _)
+    {
+        CursorManager.Instance.Default();
+    }
+
+    private void SetupButton(Button button)
+    {
+        button.TryGetComponent<EventTrigger>(out EventTrigger trigger);
+        Animator animator = button.GetComponent<Animator>();
+        if (trigger == null)
+        {
+            trigger = button.gameObject.AddComponent<EventTrigger>();
+        }
+        trigger.triggers.Add(createEntry(EventTriggerType.PointerEnter, OnHover));
+        trigger.triggers.Add(createEntry(EventTriggerType.PointerExit, OnPointerExit));
+    }
+
+    private EventTrigger.Entry createEntry(EventTriggerType kind, Action<PointerEventData> callback)
+    {
+        EventTrigger.Entry entry = new EventTrigger.Entry();
+        entry.callback.AddListener((data) => callback((PointerEventData)data));
+        entry.eventID = kind;
+        return entry;
     }
 }

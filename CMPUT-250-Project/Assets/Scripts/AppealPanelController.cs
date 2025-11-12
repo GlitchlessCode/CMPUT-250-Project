@@ -196,11 +196,13 @@ public class AppealPanelController : Subscriber
                 animator.SetTrigger("PlayReset");
             }
         }
+        CursorManager.Instance.Default();
     }
 
-    private void OnHover(Animator animator)
+    public void OnHover(Animator animator)
     {
         animator.SetTrigger("PlayHighlighted");
+        CursorManager.Instance.Clickable();
     }
 
     void Update()
