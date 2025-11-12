@@ -24,9 +24,14 @@ public class ScrollAudio : MonoBehaviour
         }
         trigger.triggers.Add(createEntry(EventTriggerType.PointerEnter, OnEnter));
         trigger.triggers.Add(createEntry(EventTriggerType.PointerExit, OnExit));
+        trigger.triggers.Add(createEntry(EventTriggerType.Drag, OnDrag));
     }
 
     private void OnScroll(PointerEventData _)
+    {
+        AudioBus?.Emit(Scroll);
+    }
+    private void OnDrag(PointerEventData _)
     {
         AudioBus?.Emit(Scroll);
     }
