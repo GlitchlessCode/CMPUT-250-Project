@@ -27,6 +27,7 @@ public class AppealPanelController : Subscriber
     public GameObject container;
     public RectTransform content;
     public Transform Panel;
+    public Audio Scroll;
     private bool scrollable = false;
     public float scrollSpeed = 5f;
     private List<GameObject> containers = new List<GameObject>();
@@ -45,6 +46,7 @@ public class AppealPanelController : Subscriber
     [Header("Events")]
     public BoolGameEvent ResolveAppeal;
     public UnitGameEvent RequestUser;
+    public AudioGameEvent AudioBus;
 
     public override void Subscribe()
     {
@@ -138,10 +140,12 @@ public class AppealPanelController : Subscriber
         if (Input.GetKey(KeyCode.UpArrow) && scrollable)
         {
             content.anchoredPosition -= new Vector2(0, scrollSpeed);
+            AudioBus?.Emit(Scroll);
         }
         else if (Input.GetKey(KeyCode.DownArrow) && scrollable)
         {
             content.anchoredPosition += new Vector2(0, scrollSpeed);
+            AudioBus?.Emit(Scroll);
         }
     }
 
