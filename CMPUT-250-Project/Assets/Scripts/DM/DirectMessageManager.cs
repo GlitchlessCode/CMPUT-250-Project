@@ -129,7 +129,7 @@ public class DirectMessageManager : Subscriber
 
     void OnAfterAppeal(bool currentCorrect)
     {
-        float frequency = UnityEngine.Random.Range(0, 1);
+        float frequency = UnityEngine.Random.Range(0.0f, 1.0f);
         if (currentCorrect)
         {
             state = Math.Min(state + 1, 2);
@@ -160,6 +160,7 @@ public class DirectMessageManager : Subscriber
                 QueueMessage(badMessages.GetRandomMessage());
             }
         }
+        lastState = state;
     }
 
     void catchUpAppeals()
