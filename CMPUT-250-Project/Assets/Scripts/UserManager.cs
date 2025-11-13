@@ -191,7 +191,7 @@ public class UserManager : Subscriber
     private void addRules() // examples within
     {
         validator.AddCondition(
-            "1. NO swearing allowed!!",
+            "1. NO swearing allowed in chat!",
             (currentUser) =>
             {
                 return validator.messageRepeatsSpecific(currentUser, 2, @"\*");
@@ -199,7 +199,7 @@ public class UserManager : Subscriber
         );
 
         validator.AddCondition(
-            "2. Appeal message must exist",
+            "2. ban appeal MUST exist!",
             (currentUser) =>
             {
                 return validator.stringLengthCheck(currentUser.Value.appeal_message, ">", 0);
@@ -207,7 +207,7 @@ public class UserManager : Subscriber
         );
 
         validator.AddCondition(
-            "3. No more than 15 words per message!!",
+            "3. MAXIMUM 15 words in each chat message!",
             (currentUser) =>
             {
                 return validator.wordsPerMessage(currentUser, "<=", 15);
@@ -215,7 +215,7 @@ public class UserManager : Subscriber
         );
 
         validator.AddCondition(
-            "4. Do NOT send messages in ALL CAPITALS!!",
+            "4. no individual messages sent in ALL CAPS!",
             (currentUser) =>
             {
                 return validator.messagesContain(currentUser, @"^[^a-z]*$");
@@ -223,7 +223,7 @@ public class UserManager : Subscriber
         );
 
         validator.AddCondition(
-            "5. Plz unban ALL users who have been banned for at least a month!!",
+            "5. pls unban ALL users that have been banned for over a month!",
             (currentUser) =>
             {
                 return true;
