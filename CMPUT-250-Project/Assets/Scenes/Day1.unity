@@ -674,7 +674,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -493.6}
-  m_SizeDelta: {x: 0, y: 17.144983}
+  m_SizeDelta: {x: 45.4, y: 17.144983}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &183200517
 MonoBehaviour:
@@ -4653,7 +4653,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1447884752
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4997,6 +4997,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Day: {fileID: 11400000, guid: 360076ef013db9f3fa77780f7a9851cb, type: 2}
+  RedRing: {fileID: 1447884751}
+  BrokenRuleText: {fileID: 2086084006}
   ResolveAppeal: {fileID: 11400000, guid: 4c381b5a82e316b71a52ad513c65bbb5, type: 2}
   UserInfoRequest: {fileID: 11400000, guid: bd767a99f22ae800b90886e07da843ce, type: 2}
   UserLoaded: {fileID: 11400000, guid: 2e23c26185f87442795df3f94db57909, type: 2}
@@ -7628,10 +7630,10 @@ RectTransform:
   m_Father: {fileID: 183200516}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 36.5, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 22.7, y: -8.572492}
+  m_SizeDelta: {x: 98, y: 17.144983}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2086084006
 MonoBehaviour:
@@ -7665,7 +7667,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Broke Rule: 1'
+  m_Text: 1142314
 --- !u!222 &2086084007
 CanvasRenderer:
   m_ObjectHideFlags: 0
