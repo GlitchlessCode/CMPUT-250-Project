@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class DMSPanelController : Subscriber
 {
+    [Header("Events")]
+    public AudioGameEvent AudioBus;
+
     [Header("Event Listeners")]
     public DirectMessageGameEvent DMSent;
     public BoolGameEvent DMTabClick;
@@ -22,7 +25,7 @@ public class DMSPanelController : Subscriber
     private List<GameObject> containers = new List<GameObject>();
     private List<RectTransform> transforms = new List<RectTransform>();
     private List<float> heights = new List<float>();
-
+    public Audio Scroll;
     private bool scrollable = true;
     public float scrollSpeed = 5000000f;
     private Vector3 initialPosition;
@@ -81,10 +84,12 @@ public class DMSPanelController : Subscriber
         if (Input.GetKey(KeyCode.UpArrow) && scrollable)
         {
             content.anchoredPosition -= new Vector2(0, scrollSpeed);
+            AudioBus?.Emit(Scroll);
         }
         else if (Input.GetKey(KeyCode.DownArrow) && scrollable)
         {
             content.anchoredPosition += new Vector2(0, scrollSpeed);
+            AudioBus?.Emit(Scroll);
         }
     }
 

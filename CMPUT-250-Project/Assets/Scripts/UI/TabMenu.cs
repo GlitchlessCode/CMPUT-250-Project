@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class TabMenu : Subscriber
@@ -11,13 +12,11 @@ public class TabMenu : Subscriber
     public Toggle appealTab;
     public Toggle rulesTab;
     public Toggle dmsTab;
-    public Toggle settingsTab;
 
     [Header("Panels")]
     public GameObject appealPanel;
     public GameObject rulesPanel;
     public GameObject dmsPanel;
-    public GameObject settingsPanel;
 
     [Header("Audio")]
     public Audio TabSwitch;
@@ -44,20 +43,18 @@ public class TabMenu : Subscriber
         appealPanel.gameObject.SetActive(false);
         rulesPanel.gameObject.SetActive(false);
         dmsPanel.gameObject.SetActive(true);
-        settingsPanel.gameObject.SetActive(false);
 
         appealTab.onValueChanged.AddListener(ActiveTab);
         rulesTab.onValueChanged.AddListener(ActiveTab);
         dmsTab.onValueChanged.AddListener(ActiveTab);
-        settingsTab.onValueChanged.AddListener(ActiveTab);
 
         tabsDictionary = new Dictionary<Toggle, GameObject>
         {
             { appealTab, appealPanel },
             { rulesTab, rulesPanel },
             { dmsTab, dmsPanel },
-            { settingsTab, settingsPanel },
         };
+        TabSetup();
     }
 
     private void ActiveTab(bool arg0)
@@ -82,11 +79,6 @@ public class TabMenu : Subscriber
             dmsTab.isOn = true;
             DMTabClick?.Emit(true);
         }
-        else if (Input.GetKey(KeyCode.O))
-        {
-            settingsTab.isOn = true;
-            DMTabClick?.Emit(false);
-        }
     }
 
     void OnAsyncComplete()
@@ -98,7 +90,7 @@ public class TabMenu : Subscriber
         }
     }
 
-    void TabSwap(Dictionary<Toggle, GameObject> tabsDictionary)
+    public void TabSwap(Dictionary<Toggle, GameObject> tabsDictionary)
     {
         bool OnDMTab = false;
         AudioBus?.Emit(TabSwitch);
@@ -125,5 +117,39 @@ public class TabMenu : Subscriber
         {
             AppealPanelActive?.Emit(appealPanel.activeSelf);
         }
+    }
+
+    public void TabSetup()
+    {
+        foreach (KeyValuePair<Toggle, GameObject> tab in tabsDictionary)
+        {
+            Toggle toggle = tab.Key;
+            toggle.TryGetComponent<EventTrigger>(out EventTrigger trigger);
+            if (trigger == null)
+            {
+                trigger = toggle.gameObject.AddComponent<EventTrigger>();
+            }
+            trigger.triggers.Add(createEntry(EventTriggerType.PointerEnter, OnHover));
+            trigger.triggers.Add(createEntry(EventTriggerType.PointerExit, OnPointerExit));
+            trigger = null;
+        }
+    }
+
+    private EventTrigger.Entry createEntry(EventTriggerType kind, Action<PointerEventData> callback)
+    {
+        EventTrigger.Entry entry = new EventTrigger.Entry();
+        entry.callback.AddListener((data) => callback((PointerEventData)data));
+        entry.eventID = kind;
+        return entry;
+    }
+
+    private void OnHover(PointerEventData _)
+    {
+        CursorManager.Instance.Clickable();
+    }
+
+    private void OnPointerExit(PointerEventData _)
+    {
+        CursorManager.Instance.Default();
     }
 }
