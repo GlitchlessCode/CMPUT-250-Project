@@ -46,6 +46,7 @@ public class EndOfDayUI : Subscriber
 
     [Header("Events")]
     public UnitGameEvent RequestDaySummary;
+    public UnitGameEvent GoToNextDay;
     public AudioGameEvent AudioBus;
 
     public override void Subscribe()
@@ -86,7 +87,7 @@ public class EndOfDayUI : Subscriber
         (summary, quota, passedQuota, totalScore) = summaryTuple;
 
         if (nextButton)
-            nextButton.onClick.AddListener(() => OnNextButton(summary.DayIndex, passedQuota));
+            nextButton.onClick.AddListener(() => OnNextButton(passedQuota));
         StartCoroutine(AnimatedDisplaySequence(summary, quota, totalScore));
     }
 
@@ -181,11 +182,11 @@ public class EndOfDayUI : Subscriber
         target.text = $"{upTo}";
     }
 
-    private void OnNextButton(int completedDay, bool passedQuota)
+    private void OnNextButton(bool passedQuota)
     {
         if (passedQuota)
         {
-            SceneManager.LoadScene(completedDay + 1, LoadSceneMode.Single);
+            GoToNextDay?.Emit();
         }
         else
         {

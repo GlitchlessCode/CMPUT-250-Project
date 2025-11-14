@@ -683,6 +683,7 @@ MonoBehaviour:
       value: 0
   DisplayDaySummary: {fileID: 11400000, guid: 796cea3c18e668a98bb7ffdaf615f0e9, type: 2}
   RequestDaySummary: {fileID: 11400000, guid: e09c9dd5394d75c01a4fff037da66131, type: 2}
+  GoToNextDay: {fileID: 11400000, guid: b718f5e84ba3778568aca0c251eb3c80, type: 2}
   AudioBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
 --- !u!4 &340204210
 Transform:

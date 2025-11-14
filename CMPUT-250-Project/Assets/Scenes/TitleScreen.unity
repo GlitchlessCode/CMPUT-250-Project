@@ -622,7 +622,7 @@ GameObject:
   - component: {fileID: 795917720}
   - component: {fileID: 795917719}
   m_Layer: 0
-  m_Name: ScoreManagerClear
+  m_Name: PersistanceClear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
