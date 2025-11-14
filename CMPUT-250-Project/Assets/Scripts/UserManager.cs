@@ -1,9 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
-using UnityEngine.UI;
 using UnityEngine;
-using System.Collections;
+using UnityEngine.UI;
 
 class InternalDayDefinition
 {
@@ -128,11 +128,10 @@ public class UserManager : Subscriber
     [Header("Validation")]
     private UserEntry? currentUser;
     Validator validator = new Validator();
-    public GameObject RedRing;
+    public Animator RedRing;
     public Text BrokenRuleText;
     private Coroutine valRoutine;
     public float MistakeTime = 2f;
-
 
     private Dictionary<string, UserEntry> users;
 
@@ -285,7 +284,6 @@ public class UserManager : Subscriber
     {
         UserEntry? user = currentUser;
         //Canvas.ForceUpdateCanvases();
-        
 
         if (user != null)
         {
@@ -301,18 +299,18 @@ public class UserManager : Subscriber
                     }
                     else
                     {
-                    BrokenRuleText.text = "No Rules Broken";
+                        BrokenRuleText.text = "No Rules Broken";
                     }
-                } 
-                else 
+                }
+                else
                 {
                     BrokenRuleText.text = validator.GetBrokenRules(user, day.Date);
                 }
-                RedRing.SetActive(true);
+                RedRing.SetBool("Show", true);
             }
             else
             {
-                RedRing.SetActive(false);
+                RedRing.SetBool("Show", false);
             }
             if (valRoutine != null)
             {
@@ -324,7 +322,7 @@ public class UserManager : Subscriber
 
             AfterAppeal?.Emit(correct == decision);
         }
-        
+
         valRoutine = StartCoroutine(RedRingOff());
         MoveToNextUser();
     }
@@ -332,9 +330,9 @@ public class UserManager : Subscriber
     IEnumerator RedRingOff()
     {
         yield return new WaitForSeconds(MistakeTime);
-        RedRing.SetActive(false);
+        RedRing.SetBool("Show", false);
     }
-    
+
     private void OnUserInfoRequest()
     {
         UserEntry? user = currentUser;
