@@ -155,8 +155,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -323.09, y: 104.4}
-  m_SizeDelta: {x: 446.1827, y: 101.54247}
+  m_AnchoredPosition: {x: -317.7, y: 104.4}
+  m_SizeDelta: {x: 457.0392, y: 101.54247}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &109518995
 MonoBehaviour:
@@ -190,7 +190,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 2.7
-  m_Text: 'Correct Appeals:'
+  m_Text: 'CORRECT APPEALS:'
 --- !u!222 &109518996
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -567,8 +567,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -390.78, y: 11.814}
-  m_SizeDelta: {x: 310.79956, y: 83.628784}
+  m_AnchoredPosition: {x: -377.2, y: 11.814}
+  m_SizeDelta: {x: 337.9408, y: 83.628784}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &263117978
 MonoBehaviour:
@@ -602,7 +602,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Quota:'
+  m_Text: 'SCORE/QUOTA:'
 --- !u!222 &263117979
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1004,8 +1004,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -448.15, y: -116.25}
-  m_SizeDelta: {x: 196.06079, y: 59.504272}
+  m_AnchoredPosition: {x: -381.1, y: -116.25}
+  m_SizeDelta: {x: 330.13116, y: 59.504272}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &982871603
 MonoBehaviour:
@@ -1039,7 +1039,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Score:'
+  m_Text: 'TOTAL SCORE:'
 --- !u!222 &982871604
 CanvasRenderer:
   m_ObjectHideFlags: 0

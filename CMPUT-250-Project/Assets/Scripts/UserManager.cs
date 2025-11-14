@@ -1,7 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.UI;
 
 class InternalDayDefinition
 {
@@ -123,8 +125,13 @@ public class UserManager : Subscriber
     public DayDefinition Day;
     private InternalDayDefinition day;
 
+    [Header("Validation")]
     private UserEntry? currentUser;
     Validator validator = new Validator();
+    public Animator RedRing;
+    public Text BrokenRuleText;
+    private Coroutine valRoutine;
+    public float MistakeTime = 2f;
 
     private Dictionary<string, UserEntry> users;
 
@@ -276,12 +283,54 @@ public class UserManager : Subscriber
     private void OnResolveAppeal(bool decision)
     {
         UserEntry? user = currentUser;
+        //Canvas.ForceUpdateCanvases();
+
         if (user != null)
         {
-            AfterAppeal?.Emit(validator.Validate(user, day.Date) == decision);
+            // red ring stuff
+            bool correct = validator.Validate(user, day.Date);
+            if (correct != decision)
+            {
+                if (correct)
+                {
+                    if (validator.DateCheck(user, day.Date))
+                    {
+                        BrokenRuleText.text = "User had been banned for a month already...";
+                    }
+                    else
+                    {
+                        BrokenRuleText.text = "No Rules Broken";
+                    }
+                }
+                else
+                {
+                    BrokenRuleText.text = validator.GetBrokenRules(user, day.Date);
+                }
+                RedRing.SetBool("Show", true);
+            }
+            else
+            {
+                RedRing.SetBool("Show", false);
+            }
+            if (valRoutine != null)
+            {
+                StopCoroutine(valRoutine);
+            }
+            Canvas.ForceUpdateCanvases();
+            BrokenRuleText.transform.parent.GetComponent<HorizontalLayoutGroup>().enabled = false;
+            BrokenRuleText.transform.parent.GetComponent<HorizontalLayoutGroup>().enabled = true;
+
+            AfterAppeal?.Emit(correct == decision);
         }
 
+        valRoutine = StartCoroutine(RedRingOff());
         MoveToNextUser();
+    }
+
+    IEnumerator RedRingOff()
+    {
+        yield return new WaitForSeconds(MistakeTime);
+        RedRing.SetBool("Show", false);
     }
 
     private void OnUserInfoRequest()
