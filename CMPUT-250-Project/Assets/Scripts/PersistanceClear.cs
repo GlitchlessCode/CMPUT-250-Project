@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScoreManagerClear : MonoBehaviour
+public class PersistanceClear : MonoBehaviour
 {
     void Start()
     {
         foreach (ScoreManager manager in FindObjectsOfType<ScoreManager>())
+        {
+            Destroy(manager.gameObject);
+        }
+        foreach (DayManager manager in FindObjectsOfType<DayManager>())
         {
             Destroy(manager.gameObject);
         }

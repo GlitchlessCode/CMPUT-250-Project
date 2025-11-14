@@ -3,6 +3,147 @@ using System.IO;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
+public class UserManager : Subscriber
+{
+    private InternalDayDefinition day;
+
+    private UserEntry? currentUser;
+    Validator validator = new Validator();
+
+    private Dictionary<string, UserEntry> users;
+
+    [Header("Event Listeners")]
+    public BoolGameEvent ResolveAppeal;
+    public UnitGameEvent UserInfoRequest;
+    public DayDefinitionGameEvent DayLoaded;
+
+    [Header("Events")]
+    public UserEntryGameEvent UserLoaded;
+    public StringGameEvent ValidatorLoaded;
+    public StringGameEvent DayDate;
+    public UnitGameEvent AsyncComplete;
+
+    // `true` implies player chose correctly, `false` implies player chose incorrectly
+    public BoolGameEvent AfterAppeal;
+    public IntGameEvent DayStart;
+    public UnitGameEvent DayFinished;
+    private bool dayAlreadyFinished = false;
+
+    public override void Subscribe()
+    {
+        ResolveAppeal?.Subscribe(OnResolveAppeal);
+        UserInfoRequest?.Subscribe(OnUserInfoRequest);
+        DayLoaded?.Subscribe(OnDayLoaded);
+    }
+
+    public override void AfterSubscribe()
+    {
+        currentUser = null;
+    }
+
+    private void OnDayLoaded(DayDefinition Day)
+    {
+        day = new InternalDayDefinition(Day);
+        sendDayData(day);
+        addRules(day.Index);
+
+        // load users
+        StartCoroutine(
+            JSONImporter.ImportFiles<UserEntry>(
+                Path.Combine("lang", "en", "days", day.Directory),
+                day.UserFiles,
+                (usersOut) =>
+                {
+                    users = usersOut;
+                    MoveToNextUser();
+                    DayStart?.Emit(day.Index);
+                    AsyncComplete?.Emit();
+                }
+            )
+        );
+    }
+
+    private void sendDayData(InternalDayDefinition day)
+    {
+        DayDate?.Emit(day.Date);
+    }
+
+    private static readonly IRuleset[] RULESETS = new IRuleset[3]
+    {
+        new Day1Rules(),
+        new EmptyRuleset(),
+        new EmptyRuleset(),
+    };
+
+    private void addRules(int index)
+    {
+        IRuleset ruleset = RULESETS[index - 1];
+        ruleset.AddRules(validator);
+
+        ValidatorLoaded?.Emit(validator.GetConditionText());
+    }
+
+    // moves to next user index
+    private bool MoveToNextUser()
+    {
+        // if we somehow get here with no users
+        if (users == null || users.Count == 0)
+        {
+            currentUser = null;
+            SignalDayFinishedOnce();
+            return false;
+        }
+
+        string user_file = day.PopNextUser();
+        if (user_file != null && users.ContainsKey(user_file))
+        {
+            currentUser = users[user_file];
+        }
+        else
+        {
+            currentUser = null;
+            SignalDayFinishedOnce();
+            return false;
+        }
+
+        OnUserInfoRequest();
+
+        // return true if successful
+        return true;
+    }
+
+    private void SignalDayFinishedOnce()
+    {
+        if (dayAlreadyFinished)
+            return;
+        dayAlreadyFinished = true;
+        DayFinished?.Emit();
+        UserEntry empty = new UserEntry();
+        empty.messages = new string[0];
+        UserLoaded?.Emit(empty);
+    }
+
+    private void OnResolveAppeal(bool decision)
+    {
+        UserEntry? user = currentUser;
+        if (user != null)
+        {
+            AfterAppeal?.Emit(validator.Validate(user, day.Date) == decision);
+        }
+
+        MoveToNextUser();
+    }
+
+    private void OnUserInfoRequest()
+    {
+        UserEntry? user = currentUser;
+        if (user != null)
+        {
+            UserLoaded?.Emit(user.Value);
+        }
+    }
+}
+
 class InternalDayDefinition
 {
     public int Index;
@@ -115,181 +256,5 @@ class InternalDayDefinition
         pool.UserFiles.RemoveAt(idx);
 
         return file;
-    }
-}
-
-public class UserManager : Subscriber
-{
-    public DayDefinition Day;
-    private InternalDayDefinition day;
-
-    private UserEntry? currentUser;
-    Validator validator = new Validator();
-
-    private Dictionary<string, UserEntry> users;
-
-    [Header("Event Listeners")]
-    public BoolGameEvent ResolveAppeal;
-    public UnitGameEvent UserInfoRequest;
-
-    [Header("Events")]
-    public UserEntryGameEvent UserLoaded;
-    public StringGameEvent ValidatorLoaded;
-    public StringGameEvent DayDate;
-    public UnitGameEvent AsyncComplete;
-
-    // `true` implies player chose correctly, `false` implies player chose incorrectly
-    public BoolGameEvent AfterAppeal;
-    public IntGameEvent DayStart;
-    public UnitGameEvent DayFinished;
-    private bool dayAlreadyFinished = false;
-
-    public override void Subscribe()
-    {
-        ResolveAppeal?.Subscribe(OnResolveAppeal);
-        UserInfoRequest?.Subscribe(OnUserInfoRequest);
-    }
-
-    public override void AfterSubscribe()
-    {
-        addRules();
-
-        if (Day == null)
-        {
-            Day = new DayDefinition();
-        }
-
-        day = new InternalDayDefinition(Day);
-
-        sendDayData(day);
-
-        // load users
-        StartCoroutine(
-            JSONImporter.ImportFiles<UserEntry>(
-                Path.Combine("lang", "en", "days", day.Directory),
-                day.UserFiles,
-                (usersOut) =>
-                {
-                    users = usersOut;
-                    MoveToNextUser();
-                    DayStart?.Emit(day.Index);
-                    AsyncComplete?.Emit();
-                }
-            )
-        );
-
-        // (string ruleName, string checking, string ruleType, var criteria)
-
-        currentUser = null;
-    }
-
-    private void sendDayData(InternalDayDefinition day)
-    {
-        DayDate?.Emit(day.Date);
-    }
-
-    private void addRules() // examples within
-    {
-        validator.AddCondition(
-            "1. NO swearing allowed in chat!",
-            (currentUser) =>
-            {
-                return validator.messageRepeatsSpecific(currentUser, 2, @"\*");
-            }
-        );
-
-        validator.AddCondition(
-            "2. ban appeal MUST exist!",
-            (currentUser) =>
-            {
-                return validator.stringLengthCheck(currentUser.Value.appeal_message, ">", 0);
-            }
-        );
-
-        validator.AddCondition(
-            "3. MAXIMUM 15 words in each chat message!",
-            (currentUser) =>
-            {
-                return validator.wordsPerMessage(currentUser, "<=", 15);
-            }
-        );
-
-        validator.AddCondition(
-            "4. no individual messages sent in ALL CAPS!",
-            (currentUser) =>
-            {
-                return validator.messagesContain(currentUser, @"^[^a-z]*$");
-            }
-        );
-
-        validator.AddCondition(
-            "5. pls unban ALL users that have been banned for over a month!",
-            (currentUser) =>
-            {
-                return true;
-            }
-        );
-
-        ValidatorLoaded?.Emit(validator.GetConditionText());
-    }
-
-    // moves to next user index
-    private bool MoveToNextUser()
-    {
-        // if we somehow get here with no users
-        if (users == null || users.Count == 0)
-        {
-            currentUser = null;
-            SignalDayFinishedOnce();
-            return false;
-        }
-
-        string user_file = day.PopNextUser();
-        if (user_file != null && users.ContainsKey(user_file))
-        {
-            currentUser = users[user_file];
-        }
-        else
-        {
-            currentUser = null;
-            SignalDayFinishedOnce();
-            return false;
-        }
-
-        OnUserInfoRequest();
-
-        // return true if successful
-        return true;
-    }
-
-    private void SignalDayFinishedOnce()
-    {
-        if (dayAlreadyFinished)
-            return;
-        dayAlreadyFinished = true;
-        DayFinished?.Emit();
-        UserEntry empty = new UserEntry();
-        empty.messages = new string[0];
-        UserLoaded?.Emit(empty);
-    }
-
-    private void OnResolveAppeal(bool decision)
-    {
-        UserEntry? user = currentUser;
-        if (user != null)
-        {
-            AfterAppeal?.Emit(validator.Validate(user, day.Date) == decision);
-        }
-
-        MoveToNextUser();
-    }
-
-    private void OnUserInfoRequest()
-    {
-        UserEntry? user = currentUser;
-        if (user != null)
-        {
-            UserLoaded?.Emit(user.Value);
-        }
     }
 }

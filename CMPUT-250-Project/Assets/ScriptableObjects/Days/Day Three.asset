@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ae3ad5ed19f8e064af2e3cb234c606e, type: 3}
+  m_Name: Day Three
+  m_EditorClassIdentifier: 
+  Index: 3
+  Directory: day3
+  Date: 2025-10-05
+  PoolDefinitions:
+  - UserFiles:
+    - user1_deny
+    - user2_deny
+    - user3_deny
+    - user4_accept
+    - user5_accept
+    - user6_deny_DOGPFP
+    - user7_deny
+    - user9_deny
+    - user10_deny
+    - user11_accept
+    - user12_deny
+  - UserFiles:
+    - user15_deny
+    - user13_accept
+  - UserFiles:
+    - extrauser_deny
+    - user14_accept
+  - UserFiles:
+    - user8_acceptFINAL
+  PoolOrder:
+  - PoolIndex: 0
+    UserCount: 4
+    Before:
+    - {fileID: 11400000, guid: b562b1c3a295309809396ef3faa38659, type: 2}
+    After: []
+  - PoolIndex: 1
+    UserCount: 2
+    Before: []
+    After: []
+  - PoolIndex: 0
+    UserCount: 3
+    Before: []
+    After: []
+  - PoolIndex: 2
+    UserCount: 2
+    Before: []
+    After: []
+  - PoolIndex: 0
+    UserCount: 3
+    Before: []
+    After: []
+  - PoolIndex: 3
+    UserCount: 1
+    Before: []
+    After:
+    - {fileID: 11400000, guid: 2bb67d1db11ea9fcd998595ff02d0d35, type: 2}

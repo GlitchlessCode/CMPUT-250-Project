@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 620341e864e4947c6991814d23d83297, type: 3}
+  m_Name: Day3EndSeq
+  m_EditorClassIdentifier: 
+  directory: day3
+  dmFiles:
+  - endseq1
+  - endseq2
+  - endseq3
+  - endseq4
+  - endseq5
+  - endseq6
+  - endseq7
+  - endseq8
+  - endseq9
+  - endseq10
+  - endseq11
+  - endseq12
+  - endseq13
+  - endseq14
+  - endseq15
+  - endseq16
+  - endseq17
+  - endseq18
+  - endseq19
+  - endseq20
+  - endseq21
+  - endseq22
+  - endseq23
+  - endseq24
+  - endseq25
+  - endseq26
+  - endseq27
+  - endseq28
+  - endseq29
+  - endseq30
+  - endseq31
+  - endseq32
+  - endseq33
