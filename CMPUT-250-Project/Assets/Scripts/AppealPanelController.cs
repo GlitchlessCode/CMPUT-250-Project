@@ -29,6 +29,7 @@ public class AppealPanelController : Subscriber
     public Transform Panel;
     public Audio Scroll;
     private bool scrollable = false;
+    private bool audioUpdate = false;
     public float scrollSpeed = 5f;
     private List<GameObject> containers = new List<GameObject>();
     private List<RectTransform> transforms = new List<RectTransform>();
@@ -79,6 +80,7 @@ public class AppealPanelController : Subscriber
         RefreshUI(null);
         RequestUser?.Emit();
         canUpdate = true;
+        audioUpdate = true;
     }
 
     void OnAppealPanelActive(bool isActive)
@@ -134,7 +136,7 @@ public class AppealPanelController : Subscriber
             transforms.Add(trans);
         }
 
-        content.anchoredPosition = new Vector2(0,0);
+        content.anchoredPosition = new Vector2(0, 0);
     }
 
     void scroll()
@@ -142,12 +144,20 @@ public class AppealPanelController : Subscriber
         if (Input.GetKey(KeyCode.UpArrow) && scrollable)
         {
             content.anchoredPosition -= new Vector2(0, scrollSpeed);
-            AudioBus?.Emit(Scroll);
+            if (audioUpdate)
+            {
+                AudioBus?.Emit(Scroll);
+                StartCoroutine(DelayAudio(0.01f));
+            }
         }
         else if (Input.GetKey(KeyCode.DownArrow) && scrollable)
         {
             content.anchoredPosition += new Vector2(0, scrollSpeed);
-            AudioBus?.Emit(Scroll);
+            if (audioUpdate)
+            {
+                AudioBus?.Emit(Scroll);
+                StartCoroutine(DelayAudio(0.01f));
+            }
         }
     }
 
@@ -240,6 +250,13 @@ public class AppealPanelController : Subscriber
         canUpdate = false;
         yield return new WaitForSeconds(time);
         canUpdate = true;
+    }
+
+    IEnumerator DelayAudio(float time)
+    {
+        audioUpdate = false;
+        yield return new WaitForSeconds(time);
+        audioUpdate = true;
     }
 
     private void SetupButton(Button button)

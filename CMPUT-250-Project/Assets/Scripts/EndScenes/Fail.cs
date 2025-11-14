@@ -23,9 +23,8 @@ public class Fail : Subscriber
         button.transform.SetAsLastSibling();
     }
 
-    void Update(){
+    void Update()
+    {
         email.scroll();
     }
-
 }
-

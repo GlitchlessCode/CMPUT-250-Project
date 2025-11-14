@@ -1134,7 +1134,16 @@ MonoBehaviour:
     type: 3}
   content: {fileID: 1813997598}
   Panel: {fileID: 1813997598}
+  Scroll:
+    clip: {fileID: 8300000, guid: dcaf3f6a07d966e62bebe571ef05e51a, type: 3}
+    volume: 0.6
+    pitchVariance: 0.3
+    loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
   scrollSpeed: 5
+  AudioBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
 --- !u!224 &1453476107
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1246,7 +1255,16 @@ MonoBehaviour:
     type: 3}
   content: {fileID: 1813997598}
   Panel: {fileID: 1813997598}
+  Scroll:
+    clip: {fileID: 0}
+    volume: 0
+    pitchVariance: 0
+    loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
   scrollSpeed: 5
+  AudioBus: {fileID: 0}
 --- !u!1 &1532922113
 GameObject:
   m_ObjectHideFlags: 0
