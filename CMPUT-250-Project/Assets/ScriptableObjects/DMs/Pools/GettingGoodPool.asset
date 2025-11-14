@@ -12,5 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1671a69c9f854a6afad02ebb1f4a0074, type: 3}
   m_Name: GettingGoodPool
   m_EditorClassIdentifier: 
-  directory: 
-  dmFiles: []
+  directory: generic
+  dmFiles:
+  - badtogooddm1
+  - badtogooddm2
+  - badtogooddm3
+  - badtogooddm4
+  - badtogooddm5
+  - badtogooddm6
+  - badtogooddm7
+  - badtogooddm8
+  - badtogooddm9
+  - badtogooddm10
+  - badtogooddm11
+  - badtogooddm12
+  - badtogooddm13
+  - badtogooddm14
+  - badtogooddm15

@@ -11,6 +11,10 @@ public class SlideshowController : MonoBehaviour
     [Header("Target UI")]
     public Image targetImage;
 
+    [Header("Scroll")]
+    public EmailScroller email;
+    public List<GameObject> emailObjects;
+
     [Header("Slides")]
     public List<Sprite> slides = new List<Sprite>();
 
@@ -70,6 +74,11 @@ public class SlideshowController : MonoBehaviour
 
     void Start()
     {
+        foreach (GameObject thing in emailObjects)
+        {
+            email.updateObject(thing);
+        }
+
         targetImage.preserveAspect = true;
 
         if (slides.Count > 0)
@@ -79,6 +88,7 @@ public class SlideshowController : MonoBehaviour
         }
 
         UpdateBeginButtonVisibility();
+        beginButton.transform.SetAsLastSibling();
     }
 
     void OnDestroy()
@@ -93,26 +103,29 @@ public class SlideshowController : MonoBehaviour
 
     void Update()
     {
+        email.scroll();
         if (_isFading)
             return; // lock input during fade
+        
+        
 
-        bool isLastSlide = (_index == slides.Count - 1);
+        //bool isLastSlide = (_index == slides.Count - 1);
 
-        // On all slides except the last — allow arrow and space to go forward
-        if (!isLastSlide)
-        {
-            if (
-                Input.GetKeyDown(nextKey)
-                || Input.GetKeyDown(alsoNextKey)
-                || Input.GetButtonDown("Submit")
-            )
-                Next();
+        // // On all slides except the last — allow arrow and space to go forward
+        // if (!isLastSlide)
+        // {
+        //     if (
+        //         Input.GetKeyDown(nextKey)
+        //         || Input.GetKeyDown(alsoNextKey)
+        //         || Input.GetButtonDown("Submit")
+        //     )
+        //         Next();
 
-            if (Input.GetKeyDown(prevKey))
-                Prev();
-        }
-        else
-        {
+        //     if (Input.GetKeyDown(prevKey))
+        //         Prev();
+        // }
+        // else
+        // {
             // On the last slide — pressing Enter simulates a proper BeginButton click
             if (Input.GetButtonDown("Submit"))
             {
@@ -127,9 +140,9 @@ public class SlideshowController : MonoBehaviour
             }
 
             // Optional: still allow going backward if you want
-            if (Input.GetKeyDown(prevKey))
-                Prev();
-        }
+            // if (Input.GetKeyDown(prevKey))
+            //     Prev();
+        // }
     }
 
     private IEnumerator SimulateBeginButtonPress()
@@ -249,8 +262,8 @@ public class SlideshowController : MonoBehaviour
     {
         if (!beginButton)
             return;
-        bool isLast = (slides != null && slides.Count > 0 && _index == slides.Count - 1);
-        beginButton.gameObject.SetActive(isLast);
+        // bool isLast = (slides != null && slides.Count > 0 && _index == slides.Count - 1);
+        //beginButton.gameObject.SetActive(isLast);
     }
 
     private IEnumerator RunPowerOff()
