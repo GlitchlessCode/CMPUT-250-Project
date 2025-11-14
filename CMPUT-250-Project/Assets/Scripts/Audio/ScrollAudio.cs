@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 
 public class ScrollAudio : MonoBehaviour
 {
+    private bool audioUpdate;
     public Audio Scroll;
 
     [Header("Events")]
@@ -13,6 +14,7 @@ public class ScrollAudio : MonoBehaviour
 
     void Awake()
     {
+        audioUpdate = true;
         gameObject.TryGetComponent(out EventTrigger trigger);
         if (trigger == null)
         {
@@ -31,9 +33,14 @@ public class ScrollAudio : MonoBehaviour
     {
         AudioBus?.Emit(Scroll);
     }
+
     private void OnDrag(PointerEventData _)
     {
-        AudioBus?.Emit(Scroll);
+        if (audioUpdate)
+        {
+            AudioBus?.Emit(Scroll);
+            StartCoroutine(DelayAudio(0.01f));
+        }
     }
 
     private void OnEnter(PointerEventData _)
@@ -52,5 +59,12 @@ public class ScrollAudio : MonoBehaviour
         entry.callback.AddListener((data) => callback((PointerEventData)data));
         entry.eventID = kind;
         return entry;
+    }
+
+    IEnumerator DelayAudio(float time)
+    {
+        audioUpdate = false;
+        yield return new WaitForSeconds(time);
+        audioUpdate = true;
     }
 }

@@ -23,8 +23,8 @@ public class Win : Subscriber
         button.transform.SetAsLastSibling();
     }
 
-    void Update(){
+    void Update()
+    {
         email.scroll();
     }
 }
-

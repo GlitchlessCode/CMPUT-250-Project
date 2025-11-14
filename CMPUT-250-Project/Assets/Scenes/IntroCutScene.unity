@@ -1216,7 +1216,16 @@ MonoBehaviour:
     type: 3}
   content: {fileID: 332031487}
   Panel: {fileID: 332031487}
+  Scroll:
+    clip: {fileID: 8300000, guid: dcaf3f6a07d966e62bebe571ef05e51a, type: 3}
+    volume: 0.6
+    pitchVariance: 0.3
+    loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
   scrollSpeed: 5
+  AudioBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
 --- !u!1 &1311329521
 GameObject:
   m_ObjectHideFlags: 0

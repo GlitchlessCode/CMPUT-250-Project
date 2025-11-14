@@ -18,7 +18,6 @@ public class DMSPanelController : Subscriber
 
     [SerializeField]
     private Image image;
-
     public GameObject container;
     public RectTransform content;
     public Transform DMPanel;
@@ -26,13 +25,16 @@ public class DMSPanelController : Subscriber
     private List<RectTransform> transforms = new List<RectTransform>();
     private List<float> heights = new List<float>();
     public Audio Scroll;
+    private bool audioUpdate;
     private bool scrollable = true;
     public float scrollSpeed = 5000000f;
     private Vector3 initialPosition;
 
-    void Start() {
-        content.anchoredPosition = new Vector2(0,0);
-     }
+    void Start()
+    {
+        content.anchoredPosition = new Vector2(0, 0);
+        audioUpdate = true;
+    }
 
     public override void Subscribe()
     {
@@ -43,7 +45,6 @@ public class DMSPanelController : Subscriber
     public void OnDMSent(DirectMessage DM)
     {
         AddDM(DM);
-        // killDM();
     }
 
     public void OnDMTabClick(bool clicked)
@@ -84,31 +85,32 @@ public class DMSPanelController : Subscriber
         if (Input.GetKey(KeyCode.UpArrow) && scrollable)
         {
             content.anchoredPosition -= new Vector2(0, scrollSpeed);
-            AudioBus?.Emit(Scroll);
+            if (audioUpdate)
+            {
+                AudioBus?.Emit(Scroll);
+                StartCoroutine(DelayAudio(0.01f));
+            }
         }
         else if (Input.GetKey(KeyCode.DownArrow) && scrollable)
         {
             content.anchoredPosition += new Vector2(0, scrollSpeed);
-            AudioBus?.Emit(Scroll);
+            if (audioUpdate)
+            {
+                AudioBus?.Emit(Scroll);
+                StartCoroutine(DelayAudio(0.01f));
+            }
         }
     }
 
     void ResetDMHeight()
     {
-        content.anchoredPosition = new Vector2(0,0);
+        content.anchoredPosition = new Vector2(0, 0);
     }
 
-    // void killDM()
-    // {
-    //     foreach (GameObject con in containers)
-    //     {
-    //         if(con.transform.position.y > 600)
-    //         {
-    //             Image image = con.GetComponentInChildren<Image>();
-    //             textComponent = con.GetComponentInChildren<TextMeshProUGUI>();
-    //             image.enabled = false;
-    //             textComponent.enabled = false;
-    //         }
-    //     }
-    // }
+    IEnumerator DelayAudio(float time)
+    {
+        audioUpdate = false;
+        yield return new WaitForSeconds(time);
+        audioUpdate = true;
+    }
 }
