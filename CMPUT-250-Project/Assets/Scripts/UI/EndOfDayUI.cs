@@ -104,7 +104,7 @@ public class EndOfDayUI : Subscriber
         }
         yield return new WaitForSeconds(1.25f);
         if (appealsTextTitle)
-            appealsTextTitle.text = "NO. OF APPEALS:";
+            appealsTextTitle.text = "CORRECT APPEALS:";
         if (PlaceAudio.clip != null)
         {
             AudioBus?.Emit(PlaceAudio);
@@ -113,7 +113,7 @@ public class EndOfDayUI : Subscriber
         yield return TallyValue(appealsText, summary.correctAppeals, 1, summary.completedAppeals);
         yield return new WaitForSeconds(1.0f);
         if (quotaTextTitle)
-            quotaTextTitle.text = "QUOTA:";
+            quotaTextTitle.text = "SCORE/QUOTA:";
         if (PlaceAudio.clip != null)
         {
             AudioBus?.Emit(PlaceAudio);
@@ -122,7 +122,7 @@ public class EndOfDayUI : Subscriber
         yield return TallyValue(quotaText, summary.TotalScore, 17, quota);
         yield return new WaitForSeconds(1.0f);
         if (totalScoreTextTitle)
-            totalScoreTextTitle.text = "SCORE:";
+            totalScoreTextTitle.text = "TOTAL SCORE:";
         if (PlaceAudio.clip != null)
         {
             AudioBus?.Emit(PlaceAudio);

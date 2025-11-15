@@ -20,12 +20,52 @@ public class Validator
     // Method to check if a UserEntry satisfies all conditions
     public bool Validate(UserEntry? user, string Date)
     {
+        if (DateCheck(user, Date))
+        {
+            return DateCheck(user, Date);
+        }
+
+        foreach (var condition in _conditions.Values)
+        {
+            if (!condition(user))
+            {
+                // string myKey = _conditions.FirstOrDefault(x => x.Value == condition).Key;
+                //Debug.Log(myKey);
+                return false;
+            }
+        }
+
+        return true;
+        
+    }
+
+    // Get which rules broken
+    public string GetBrokenRules(UserEntry? user, string Date){
+        string broken = "Broke Rule(s): ";
+
+        foreach (var kvp in _conditions)
+        {
+            string text = kvp.Key;
+            var condition = kvp.Value;
+
+            if (!condition(user))
+            {
+                // string myKey = _conditions.FirstOrDefault(x => x.Value == condition).Key;
+                //Debug.Log(myKey);
+                broken = broken + $"{text[0]}, ";
+            }
+        }
+        return broken.Substring(0,broken.Length - 2);
+        
+    }
+
+    public bool DateCheck(UserEntry? user, string Date)
+    {
         Regex regex = new Regex(@"(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})");
         Match banMatch = regex.Match(user.Value.date);
         Match todayMatch = regex.Match(Date);
-
-        try
-        {
+        
+        try {
             DateTime parsedBanDate = new DateTime(
                 int.Parse(banMatch.Groups["year"].Value),
                 int.Parse(banMatch.Groups["month"].Value),
@@ -79,24 +119,13 @@ public class Validator
                     return true;
                 }
             }
-
-            foreach (var condition in _conditions.Values)
-            {
-                if (!condition(user))
-                {
-                    // string myKey = _conditions.FirstOrDefault(x => x.Value == condition).Key;
-                    //Debug.Log(myKey);
-                    return false;
-                }
-            }
-
-            return true;
         }
         catch (FormatException ex)
         {
             Debug.LogError("Error parsing date: " + ex.Message);
             return false;
         }
+        return false;
     }
 
     // Method to remove a condition based on its description
