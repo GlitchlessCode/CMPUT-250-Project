@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Game Events/GameEvent")]
-public class UnitGameEvent : GameEvent<System.ValueTuple>
+public class UnitGameEvent : GameEvent<System.ValueTuple>, IGameEvent
 {
     private event Action unit_listeners;
 
@@ -28,6 +28,11 @@ public class UnitGameEvent : GameEvent<System.ValueTuple>
     public void Unsubscribe(Action listener)
     {
         unit_listeners -= listener;
+    }
+
+    public new void ClearAll()
+    {
+        unit_listeners = null;
     }
 
     void OnEnable()
