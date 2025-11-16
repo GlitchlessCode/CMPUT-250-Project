@@ -5,16 +5,59 @@ using UnityEngine.UI;
 
 public class RulePanelController : Subscriber
 {
+    public float scrollSpeed = 5000000f;
+    public RectTransform content;
+
     [Header("UI")]
     public Text RulesText;
 
+    [Header("Audio")]
+    public Audio Scroll;
+
+    [Header("Events")]
+    public AudioGameEvent AudioBus;
+
     [Header("Event Listeners")]
     public StringGameEvent RuleText;
+    public BoolGameEvent RulePanelActive;
+
+    private bool audioUpdate;
+    private bool scrollable;
 
     public override void Subscribe()
     {
         RuleText?.Subscribe(OnRuleText);
+        RulePanelActive?.Subscribe(OnRulePanelActive);
+        audioUpdate = true;
+        scrollable = false;
         OnRuleText("");
+    }
+
+    public void Update()
+    {
+        if (Input.GetKey(KeyCode.UpArrow) && scrollable)
+        {
+            content.anchoredPosition -= new Vector2(0, scrollSpeed);
+            if (audioUpdate)
+            {
+                AudioBus?.Emit(Scroll);
+                StartCoroutine(DelayAudio(0.01f));
+            }
+        }
+        else if (Input.GetKey(KeyCode.DownArrow) && scrollable)
+        {
+            content.anchoredPosition += new Vector2(0, scrollSpeed);
+            if (audioUpdate)
+            {
+                AudioBus?.Emit(Scroll);
+                StartCoroutine(DelayAudio(0.01f));
+            }
+        }
+    }
+
+    private void OnRulePanelActive(bool active)
+    {
+        scrollable = active;
     }
 
     public void OnRuleText(string text)
@@ -27,5 +70,12 @@ public class RulePanelController : Subscriber
         {
             RulesText.text = "No conditions available.";
         }
+    }
+
+    IEnumerator DelayAudio(float time)
+    {
+        audioUpdate = false;
+        yield return new WaitForSeconds(time);
+        audioUpdate = true;
     }
 }

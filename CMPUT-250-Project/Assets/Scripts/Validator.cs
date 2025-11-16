@@ -36,11 +36,11 @@ public class Validator
         }
 
         return true;
-        
     }
 
     // Get which rules broken
-    public string GetBrokenRules(UserEntry? user, string Date){
+    public string GetBrokenRules(UserEntry? user, string Date)
+    {
         string broken = "Broke Rule(s): ";
 
         foreach (var kvp in _conditions)
@@ -52,11 +52,10 @@ public class Validator
             {
                 // string myKey = _conditions.FirstOrDefault(x => x.Value == condition).Key;
                 //Debug.Log(myKey);
-                broken = broken + $"{text[0]}, ";
+                broken = broken + $"{Regex.Match(text, @"^([0-9]*)\.").Groups[1]}, ";
             }
         }
-        return broken.Substring(0,broken.Length - 2);
-        
+        return broken.Substring(0, broken.Length - 2);
     }
 
     public bool DateCheck(UserEntry? user, string Date)
@@ -64,8 +63,9 @@ public class Validator
         Regex regex = new Regex(@"(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})");
         Match banMatch = regex.Match(user.Value.date);
         Match todayMatch = regex.Match(Date);
-        
-        try {
+
+        try
+        {
             DateTime parsedBanDate = new DateTime(
                 int.Parse(banMatch.Groups["year"].Value),
                 int.Parse(banMatch.Groups["month"].Value),
@@ -320,7 +320,7 @@ public class Validator
 
     public bool stringContains(string s, string text)
     {
-        return (Regex.IsMatch(s.ToLower(), $".*{text}.*"));
+        return (Regex.IsMatch(s.ToLower(), text));
     }
 
     public bool stringRepeats(string s, int reps)

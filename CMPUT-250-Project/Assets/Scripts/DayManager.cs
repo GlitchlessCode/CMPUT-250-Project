@@ -14,6 +14,10 @@ public class DayManager : Subscriber
     [Header("Event Listeners")]
     public UnitGameEvent IncrementAndMove;
 
+    [Header("Testing")]
+    public bool EnableOverride;
+    public int IndexOverride;
+
     private int index = 0;
     private bool setup = false;
 
@@ -42,6 +46,11 @@ public class DayManager : Subscriber
         {
             if (index < Days.Count())
             {
+                if (EnableOverride)
+                {
+                    DayInit?.Emit(Days[IndexOverride]);
+                    return;
+                }
                 DayInit?.Emit(Days[index]);
             }
         }
