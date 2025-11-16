@@ -7071,6 +7071,10 @@ MonoBehaviour:
     sequence: {fileID: 11400000, guid: 8db4488eabbb4279da9580e389648dea, type: 2}
   - trigger: {fileID: 11400000, guid: 3d62789954ce30834b1ab74f60732d69, type: 2}
     sequence: {fileID: 11400000, guid: 17bc086c9795987b1a1ccdd8798416d2, type: 2}
+  - trigger: {fileID: 11400000, guid: 420fb87839fb0884f8335a8bc5f60390, type: 2}
+    sequence: {fileID: 11400000, guid: b8fa0a2d207e010499caa129be78fd25, type: 2}
+  - trigger: {fileID: 11400000, guid: 198cd9490c93a824fb7431fb36c2bd7b, type: 2}
+    sequence: {fileID: 11400000, guid: aa6f668b83e228649ac4722a04017570, type: 2}
   - trigger: {fileID: 11400000, guid: b562b1c3a295309809396ef3faa38659, type: 2}
     sequence: {fileID: 11400000, guid: 159ff3c3ed034d618987d9321d1a9f01, type: 2}
   - trigger: {fileID: 11400000, guid: 2bb67d1db11ea9fcd998595ff02d0d35, type: 2}
