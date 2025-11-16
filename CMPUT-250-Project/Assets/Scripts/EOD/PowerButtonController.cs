@@ -19,6 +19,9 @@ public class PowerButtonController : Subscriber
     [Header("Buttons")]
     public Button PowerButton;
 
+    [Header("Button Animation")] //EOD Power button animator
+    public Animator PowerButtonAnimator;
+
     [Header("Delay Time")]
     public float DelayTime = 0.5f;
 
@@ -41,11 +44,23 @@ public class PowerButtonController : Subscriber
     public override void AfterSubscribe()
     {
         SetupButton(PowerButton);
+
+        //Ensure we start PowerButtonAnimator in idle animation
+        if (PowerButtonAnimator != null)
+        {
+            PowerButtonAnimator.SetBool("IsFlashing", false);
+        }
     }
 
     private void OnDayFinished()
     {
         canShutdown = true;
+
+        //Set PowerButtonAnimator to flashing sequence
+        if (PowerButtonAnimator != null)
+        {
+            PowerButtonAnimator.SetBool("IsFlashing", true);
+        }
     }
 
     public void OnHover(PointerEventData _)
@@ -71,6 +86,14 @@ public class PowerButtonController : Subscriber
                 AudioBus?.Emit(ClickValidAudio);
             }
             StartCoroutine(Shutdown());
+
+            //Stop flashing and play pressed animation
+            if (PowerButtonAnimator != null)
+            {
+                PowerButtonAnimator.SetBool("IsFlashing", false);
+                PowerButtonAnimator.ResetTrigger("Pressed");
+                PowerButtonAnimator.SetTrigger("Pressed");
+            }
         }
         else
         {
