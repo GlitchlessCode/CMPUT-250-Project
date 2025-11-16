@@ -4054,6 +4054,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Days:
   - {fileID: 11400000, guid: 360076ef013db9f3fa77780f7a9851cb, type: 2}
+  - {fileID: 11400000, guid: 1255d9b41bfe9514d8b7a3cc534cdae1, type: 2}
   - {fileID: 11400000, guid: 88012cee28410826b89b507104cc4574, type: 2}
   DayInit: {fileID: 11400000, guid: 9eae0ffb72c123fafb163a013cfeeaa3, type: 2}
   IncrementAndMove: {fileID: 11400000, guid: b718f5e84ba3778568aca0c251eb3c80, type: 2}
@@ -9074,7 +9075,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 22.629898, y: 0}
+  m_AnchoredPosition: {x: 22.7, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2086084006
