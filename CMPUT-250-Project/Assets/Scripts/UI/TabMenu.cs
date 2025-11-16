@@ -24,6 +24,7 @@ public class TabMenu : Subscriber
     [Header("Events")]
     public BoolGameEvent DMTabClick;
     public BoolGameEvent AppealPanelActive;
+    public BoolGameEvent RulesPanelActive;
 
     [Header("Event Listeners")]
     public UnitGameEvent AsyncComplete;
@@ -117,6 +118,7 @@ public class TabMenu : Subscriber
         {
             AppealPanelActive?.Emit(appealPanel.activeSelf);
         }
+        RulesPanelActive?.Emit(rulesPanel.activeSelf);
     }
 
     public void TabSetup()
