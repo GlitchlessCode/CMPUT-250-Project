@@ -6091,6 +6091,7 @@ MonoBehaviour:
       active: 0
       value: 0
   PowerButton: {fileID: 1575665149}
+  PowerButtonAnimator: {fileID: 1575665154}
   DelayTime: 1
   AudioBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
   DayFinished: {fileID: 11400000, guid: 39445b5451252904ab3289bc94759e3f, type: 2}
@@ -8048,7 +8049,6 @@ GameObject:
   - component: {fileID: 1938714987}
   - component: {fileID: 1938714989}
   - component: {fileID: 1938714988}
-  - component: {fileID: 1938714990}
   m_Layer: 5
   m_Name: Battery
   m_TagString: Untagged
@@ -8112,25 +8112,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1938714986}
   m_CullTransparentMesh: 0
---- !u!95 &1938714990
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1938714986}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ec0baa1cdc4df2a40a5f2fdb755d6618, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1945987482
 GameObject:
   m_ObjectHideFlags: 0
