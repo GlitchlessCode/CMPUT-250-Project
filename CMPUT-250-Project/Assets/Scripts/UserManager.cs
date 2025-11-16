@@ -78,7 +78,7 @@ public class UserManager : Subscriber
     private static readonly IRuleset[] RULESETS = new IRuleset[3]
     {
         new Day1Rules(),
-        new EmptyRuleset(),
+        new Day2Rules(),
         new EmptyRuleset(),
     };
 
