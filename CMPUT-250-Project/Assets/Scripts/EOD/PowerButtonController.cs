@@ -131,7 +131,6 @@ public class PowerButtonController : Subscriber
     private IEnumerator DelayAction(float time)
     {
         canUpdate = false;
-        Debug.Log("Updating...");
         yield return new WaitForSeconds(time);
         canUpdate = true;
     }

@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using UnityEngine;
 
 public interface IRuleset
 {
@@ -114,10 +116,12 @@ public class Day2Rules : IRuleset
         );
 
         validator.AddCondition(
-            "6. NO links in user bios or chat!",
+            "6. NO links in user bios!",
             (currentUser) =>
             {
-                return validator.messagesContain(currentUser, @"http?://");
+                bool rule6bio = !validator.stringContains(currentUser.Value.bio, @"http?://");
+                //Debug.Log("!Bio link, http: " + rule6bio);
+                return rule6bio;
             }
         );
 
@@ -208,10 +212,12 @@ public class Day3Rules : IRuleset
         );
 
         validator.AddCondition(
-            "6. NO links in user bios or chat!",
+            "6. NO links in user bios!",
             (currentUser) =>
             {
-                return validator.messagesContain(currentUser, @"http?://");
+                bool rule6bio = !validator.stringContains(currentUser.Value.bio, @"http?://");
+                bool rule6chat = !validator.messagesContain(currentUser, @"http?://");
+                return rule6bio || rule6chat;
             }
         );
 

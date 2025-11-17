@@ -19,8 +19,8 @@ public class AppealPanelController : Subscriber
     public GameObject ScrollView;
 
     [Header("Chat")]
-    public Text ChatLogText; // ← NEW
-    public ScrollRect ChatScroll; // ← optional: auto-scroll
+    public Text ChatLogText;
+    public ScrollRect ChatScroll;
 
     [SerializeField]
     private TextMeshProUGUI textComponent;
