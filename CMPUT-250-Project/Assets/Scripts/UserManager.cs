@@ -79,7 +79,7 @@ public class UserManager : Subscriber
     {
         new Day1Rules(),
         new Day2Rules(),
-        new EmptyRuleset(),
+        new Day3Rules(),
     };
 
     private void addRules(int index)

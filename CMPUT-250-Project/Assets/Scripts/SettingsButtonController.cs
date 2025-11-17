@@ -11,6 +11,9 @@ public class SettingsButtonController : Subscriber
     public Button SettingsOpenButton;
     public Button SettingsCloseButton;
 
+    [Header("Button Animator")]
+    public Animator SettingButtonAnimator;
+
     [Header("Panel")]
     public GameObject SettingsPanel;
 
@@ -23,10 +26,11 @@ public class SettingsButtonController : Subscriber
 
     void Start()
     {
-        SettingsOpenButton.onClick.AddListener(OnSettingsOpen);
         SettingsCloseButton.onClick.AddListener(OnSettingsClosed);
-        SetupButton(SettingsOpenButton);
-        SetupButton(SettingsCloseButton);
+        SettingsOpenButton.onClick.AddListener(ToggleSettings);
+
+        SetupAnimatedSettingsButton(SettingsOpenButton);
+        SetupHoverOnlyButton(SettingsCloseButton);
     }
 
     void OnSettingsOpen()
@@ -39,13 +43,15 @@ public class SettingsButtonController : Subscriber
     {
         SettingsPanel.SetActive(false);
         AudioBus?.Emit(TabSwitch);
+        SettingButtonAnimator.ResetTrigger("PlayPressed");
         CursorManager.Instance.Default();
     }
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.O))
+        if (Input.GetKeyDown(KeyCode.O))
         {
+            SettingButtonAnimator.SetTrigger("PlayFullPress");
             if (canUpdate && !SettingsPanel.activeSelf)
             {
                 OnSettingsOpen();
@@ -76,14 +82,70 @@ public class SettingsButtonController : Subscriber
         CursorManager.Instance.Default();
     }
 
-    private void SetupButton(Button button)
+    public void OnButtonRelease()
+    {
+        if (SettingButtonAnimator.GetCurrentAnimatorStateInfo(0).IsName("ButtonPressed"))
+        {
+            SettingButtonAnimator.SetTrigger("PlayReleased");
+            SettingButtonAnimator.ResetTrigger("PlayPressed");
+        }
+    }
+
+    private void OnButtonClick(Animator animator)
+    {
+        animator.ResetTrigger("PlayReset");
+        animator.ResetTrigger("PlayReleased");
+        animator.SetTrigger("PlayPressed");
+    }
+
+    private void OnButtonReset(Animator animator)
+    {
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("ButtonPressed"))
+        {
+            animator.SetTrigger("PlayReset");
+        }
+        CursorManager.Instance.Default();
+    }
+
+    private void SetupAnimatedSettingsButton(Button button)
     {
         button.TryGetComponent<EventTrigger>(out EventTrigger trigger);
-        Animator animator = button.GetComponent<Animator>();
         if (trigger == null)
         {
             trigger = button.gameObject.AddComponent<EventTrigger>();
         }
+
+        trigger.triggers.Add(createEntry(EventTriggerType.PointerEnter, OnHover));
+        trigger.triggers.Add(createEntry(EventTriggerType.PointerExit, OnPointerExit));
+
+        trigger.triggers.Add(
+            createEntry(EventTriggerType.PointerDown, (_) => OnButtonClick(SettingButtonAnimator))
+        );
+        trigger.triggers.Add(
+            createEntry(EventTriggerType.PointerExit, (_) => OnButtonReset(SettingButtonAnimator))
+        );
+    }
+
+    private void ToggleSettings()
+    {
+        if (SettingsPanel.activeSelf)
+        {
+            OnSettingsClosed();
+        }
+        else
+        {
+            OnSettingsOpen();
+        }
+    }
+
+    private void SetupHoverOnlyButton(Button button)
+    {
+        button.TryGetComponent<EventTrigger>(out EventTrigger trigger);
+        if (trigger == null)
+        {
+            trigger = button.gameObject.AddComponent<EventTrigger>();
+        }
+
         trigger.triggers.Add(createEntry(EventTriggerType.PointerEnter, OnHover));
         trigger.triggers.Add(createEntry(EventTriggerType.PointerExit, OnPointerExit));
     }
