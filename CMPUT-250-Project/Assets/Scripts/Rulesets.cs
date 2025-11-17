@@ -117,7 +117,7 @@ public class Day2Rules : IRuleset
             "6. NO links in user bios or chat!",
             (currentUser) =>
             {
-                return validator.messagesContain(currentUser, @"https?://");
+                return validator.messagesContain(currentUser, @"http?://");
             }
         );
 
@@ -130,7 +130,6 @@ public class Day2Rules : IRuleset
         );
     }
 }
-
 
 public class Day3Rules : IRuleset
 {
@@ -212,7 +211,7 @@ public class Day3Rules : IRuleset
             "6. NO links in user bios or chat!",
             (currentUser) =>
             {
-                return validator.messagesContain(currentUser, @"https?://");
+                return validator.messagesContain(currentUser, @"http?://");
             }
         );
 
