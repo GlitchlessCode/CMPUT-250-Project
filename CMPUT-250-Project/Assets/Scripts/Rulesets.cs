@@ -94,7 +94,7 @@ public class Day2Rules : IRuleset
             "4. no full chat logs in ENTIRELY lowercase!",
             (currentUser) =>
             {
-                return validator.messagesContain(currentUser, @"[A-Z]");
+                return !validator.messagesContain(currentUser, @"[A-Z]");
             }
         );
 
