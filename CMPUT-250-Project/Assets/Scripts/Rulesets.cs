@@ -46,7 +46,7 @@ public class Day1Rules : IRuleset
             "4. no individual messages sent in ALL CAPS!",
             (currentUser) =>
             {
-                return validator.messagesContain(currentUser, @"[A-Z]");
+                return validator.messagesContain(currentUser, @"^[^a-z]*$");
             }
         );
 
@@ -84,7 +84,7 @@ public class Day2Rules : IRuleset
             "3. MINIMUM 3 words in each chat message!",
             (currentUser) =>
             {
-                return validator.wordsPerMessage(currentUser, ">", 3);
+                return validator.wordsPerMessage(currentUser, ">=", 3);
             }
         );
 
@@ -92,7 +92,7 @@ public class Day2Rules : IRuleset
             "4. no full chat logs in ENTIRELY lowercase!",
             (currentUser) =>
             {
-                return validator.messagesContain(currentUser, @"^[^a-z]*$");
+                return validator.messagesContain(currentUser, @"[A-Z]");
             }
         );
 
