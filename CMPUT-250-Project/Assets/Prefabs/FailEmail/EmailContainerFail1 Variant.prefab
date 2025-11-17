@@ -12,10 +12,9 @@ PrefabInstance:
       propertyPath: m_text
       value: "From: pawwn1@mousermedia.com\r\nSubject: Termination Notice (Sorry!)\r\n\r\nPer
         THEMOUSER,\r\n\r\nYou\u2019ve been purr-manently relieved of your duties,
-        effective immediately. \r\nTHEMOUSER is looking for a mod that is more\u2026
-        \u201Ccommitted\u201D.\r\nFeel free to recommend any peers you know of that
-        would be better suited for this job.\r\n\r\nRegretfully signed,\r\n\r\nTHEMOUSER
-        Team\r\nMOUSERMEDIA HQ\r\n\u201CPAWS up, don\u2019t PAUSE up!\u201D\r\n"
+        effective immediately. \r\n\nTHEMOUSER is looking for a mod that is more\u2026
+        \u201Ccommitted\u201D.\r\n\nFeel free to recommend any peers you know of
+        that would be better suited for this job.\r\n\r\nRegretfully signed,\r\n"
       objectReference: {fileID: 0}
     - target: {fileID: 3786595519832767639, guid: c78ca0c8c02a981428f7239a94f84996,
         type: 3}
