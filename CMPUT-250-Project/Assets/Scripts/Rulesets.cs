@@ -150,7 +150,7 @@ public class Day3Rules : IRuleset
             "7. NO dog avatars!",
             (currentUser) =>
             {
-                return currentUser.Value.image_index != 25;
+                return currentUser.Value.image_index != 35;
             }
         );
 
