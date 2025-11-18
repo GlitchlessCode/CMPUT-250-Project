@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,7 +23,8 @@ public class EndSceneDialogueManager : Subscriber
     [Tooltip("JSON filenames WITHOUT .json, in the order you want them played.")]
     public string[] dialogueFiles;
 
-    private readonly List<EndSceneLine> lines = new List<EndSceneLine>();
+    private Dictionary<string, EndSceneLine> lines;
+    private List<EndSceneLine> orderedLines = null;
     private int currentLineIndex = -1;
     private bool hasRequestedLoad = false;
 
@@ -86,33 +88,35 @@ public class EndSceneDialogueManager : Subscriber
         {
             MusicBus.Emit(EndSceneMusic);
         }
-    }
-
-    // Called when your async system announces completion (e.g., JSON & other data ready)
-    private void OnAsyncComplete()
-    {
-        if (hasRequestedLoad)
-            return; // avoid double-start if event emitted twice
-        hasRequestedLoad = true;
 
         // Start loading our end-scene JSON via the existing async importer
         StartCoroutine(
-            JSONImporter.ImportFiles<EndSceneLine>(directory, dialogueFiles, OnDialogueFilesLoaded)
+            JSONImporter.ImportFiles<EndSceneLine>(
+                Path.Combine("lang", "en", directory),
+                dialogueFiles,
+                (dialogueOut) =>
+                {
+                    lines = dialogueOut;
+                    AsyncComplete?.Emit();
+                }
+            )
         );
     }
 
     // ---------------- JSON load callback ----------------
-
-    private void OnDialogueFilesLoaded(Dictionary<string, EndSceneLine> loaded)
+    private void OnAsyncComplete()
     {
-        lines.Clear();
+        Debug.Log(lines.ToString());
+        if (hasRequestedLoad)
+            return; // avoid double-start if event emitted twice
+        hasRequestedLoad = true;
 
         // Preserve the order specified in dialogueFiles
-        foreach (string file in dialogueFiles)
+        foreach (string file in lines.Keys)
         {
-            if (loaded.TryGetValue(file, out EndSceneLine line))
+            if (lines.TryGetValue(file, out EndSceneLine line))
             {
-                lines.Add(line);
+                orderedLines.Add(line);
             }
             else
             {
@@ -176,7 +180,7 @@ public class EndSceneDialogueManager : Subscriber
             StartCoroutine(FadeTextBox(0f, 1f, 0.5f));
         }
 
-        EndSceneLine line = lines[currentLineIndex];
+        EndSceneLine line = orderedLines[currentLineIndex];
 
         // Handle sprite change
         if (
@@ -244,7 +248,7 @@ public class EndSceneDialogueManager : Subscriber
         }
 
         if (dialogueText != null)
-            dialogueText.text = lines[currentLineIndex].message;
+            dialogueText.text = orderedLines[currentLineIndex].message;
 
         isTyping = false;
     }
