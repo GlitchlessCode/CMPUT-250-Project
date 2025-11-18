@@ -212,7 +212,7 @@ public class Day3Rules : IRuleset
         );
 
         validator.AddCondition(
-            "6. NO links in user bios!",
+            "6. NO links in user bios or chat!",
             (currentUser) =>
             {
                 bool rule6bio = !validator.stringContains(currentUser.Value.bio, @"http?://");
