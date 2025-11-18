@@ -65,6 +65,7 @@ public class EndSceneDialogueManager : Subscriber
 
     public override void Subscribe()
     {
+        canUpdate = true;
         // Listen for the async-complete signal
         AsyncComplete?.Subscribe(OnAsyncComplete);
 
@@ -107,7 +108,6 @@ public class EndSceneDialogueManager : Subscriber
     // ---------------- JSON load callback ----------------
     private void OnAsyncComplete()
     {
-        canUpdate = true;
         if (hasRequestedLoad)
             return; // avoid double-start if event emitted twice
         hasRequestedLoad = true;
@@ -140,13 +140,13 @@ public class EndSceneDialogueManager : Subscriber
 
     void Update()
     {
-        if (canUpdate)
+        if (canUpdate && currentLineIndex < orderedLines.Count)
         {
-            if ((Input.GetKey(KeyCode.KeypadEnter) || Input.GetKey(KeyCode.Return)))
+            if (Input.GetKey(KeyCode.KeypadEnter) || Input.GetKey(KeyCode.Return))
             {
                 OnNextClicked();
+                StartCoroutine(DelayAction(0.5f));
             }
-            StartCoroutine(DelayAction(1f));
         }
     }
 
