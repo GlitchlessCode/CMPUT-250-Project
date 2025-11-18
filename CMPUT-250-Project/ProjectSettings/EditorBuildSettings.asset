@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Failscreen.unity
     guid: 911e0131ff2eeb17b97a45a75a509e42
+  - enabled: 1
+    path: Assets/Scenes/FinalCutScene.unity
+    guid: e2b8bbf3804bf734a9add4cb5fe31178
   m_configObjects: {}
