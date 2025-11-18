@@ -58,6 +58,7 @@ public class EndSceneDialogueManager : Subscriber
 
     private Coroutine typingCoroutine;
     private bool isTyping = false;
+    private bool canUpdate = false;
     private bool textBoxVisible = false;
 
     // ---------------- Subscriber setup ----------------
@@ -106,10 +107,7 @@ public class EndSceneDialogueManager : Subscriber
     // ---------------- JSON load callback ----------------
     private void OnAsyncComplete()
     {
-        foreach (KeyValuePair<string, EndSceneLine> line in lines)
-        {
-            Debug.Log(line);
-        }
+        canUpdate = true;
         if (hasRequestedLoad)
             return; // avoid double-start if event emitted twice
         hasRequestedLoad = true;
@@ -119,7 +117,6 @@ public class EndSceneDialogueManager : Subscriber
         {
             if (lines.TryGetValue(file, out EndSceneLine line))
             {
-                Debug.Log(line);
                 orderedLines.Add(line);
             }
             else
@@ -139,6 +136,18 @@ public class EndSceneDialogueManager : Subscriber
 
         currentLineIndex = -1;
         ShowNextLine();
+    }
+
+    void Update()
+    {
+        if (canUpdate)
+        {
+            if ((Input.GetKey(KeyCode.KeypadEnter) || Input.GetKey(KeyCode.Return)))
+            {
+                OnNextClicked();
+            }
+            StartCoroutine(DelayAction(1f));
+        }
     }
 
     // ---------------- Input / flow ----------------
@@ -281,5 +290,12 @@ public class EndSceneDialogueManager : Subscriber
         {
             textBoxVisible = false;
         }
+    }
+
+    IEnumerator DelayAction(float time)
+    {
+        canUpdate = false;
+        yield return new WaitForSeconds(time);
+        canUpdate = true;
     }
 }
