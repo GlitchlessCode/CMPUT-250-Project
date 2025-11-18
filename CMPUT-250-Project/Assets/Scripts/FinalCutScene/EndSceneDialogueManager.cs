@@ -56,6 +56,30 @@ public class EndSceneDialogueManager : Subscriber
     public Audio TypingSfx; // small bleep for typing
     public Audio NextLineSfx; // optional click when moving to next line
 
+    // --------- NEW: Background swapping stuff ---------
+    [Header("Background Swap")]
+    [Tooltip("The UI Image used for the background.")]
+    public Image backgroundImage;
+
+    [Tooltip("Sprite used at scene start.")]
+    public Sprite startBackgroundSprite;
+
+    [Tooltip("Sprite to switch to after the 5th dialogue line.")]
+    public Sprite swappedBackgroundSprite;
+
+    [Tooltip("Optional panel with Animator that plays the power-on effect.")]
+    public GameObject PowerOnPanel;
+
+    [Tooltip("Animator trigger name for the power-on animation.")]
+    public string powerOnTriggerName = "PlayPowerOn";
+
+    [Tooltip("0-based index of the line at which to swap the background (4 = 5th line).")]
+    public int backgroundSwapLineIndex = 4;
+
+    private bool hasSwappedBackground = false;
+
+    // --------------------------------------------------
+
     private Coroutine typingCoroutine;
     private bool isTyping = false;
     private bool canUpdate = false;
@@ -85,6 +109,17 @@ public class EndSceneDialogueManager : Subscriber
             nextButton.interactable = false; // we enable this once lines are loaded
         }
 
+        // NEW: Set starting background and play PowerOn after a short delay
+        if (backgroundImage != null && startBackgroundSprite != null)
+        {
+            backgroundImage.sprite = startBackgroundSprite;
+        }
+
+        if (PowerOnPanel != null)
+        {
+            StartCoroutine(PowerOnDelayed());
+        }
+
         // Start loading our end-scene JSON via the existing async importer
         StartCoroutine(
             JSONImporter.ImportFiles<EndSceneLine>(
@@ -97,6 +132,18 @@ public class EndSceneDialogueManager : Subscriber
                 }
             )
         );
+    }
+
+    // NEW: Power-on animation coroutine (from BackgroundSwapper)
+    private IEnumerator PowerOnDelayed()
+    {
+        yield return new WaitForSeconds(0.2f);
+
+        Animator anim = PowerOnPanel.GetComponent<Animator>();
+        if (anim != null && !string.IsNullOrEmpty(powerOnTriggerName))
+        {
+            anim.SetTrigger(powerOnTriggerName);
+        }
     }
 
     // ---------------- JSON load callback ----------------
@@ -136,7 +183,7 @@ public class EndSceneDialogueManager : Subscriber
     {
         if (canUpdate && currentLineIndex < orderedLines.Count)
         {
-            if (Input.GetKey(KeyCode.KeypadEnter) || Input.GetKey(KeyCode.Return))
+            if (Input.GetKeyUp(KeyCode.KeypadEnter) || Input.GetKeyUp(KeyCode.Return))
             {
                 OnNextClicked();
                 StartCoroutine(DelayAction(0.5f));
@@ -188,6 +235,13 @@ public class EndSceneDialogueManager : Subscriber
             return;
         }
 
+        // --------- NEW: Check if it's time to swap the background ---------
+        if (!hasSwappedBackground && currentLineIndex >= backgroundSwapLineIndex)
+        {
+            SwapBackgroundOnce();
+        }
+        // -------------------------------------------------------------------
+
         // Ensure textbox visible
         if (!textBoxVisible && textBoxGroup != null)
         {
@@ -212,6 +266,16 @@ public class EndSceneDialogueManager : Subscriber
             StopCoroutine(typingCoroutine);
 
         typingCoroutine = StartCoroutine(TypeLine(line.message));
+    }
+
+    // NEW: Background swap logic (only runs once)
+    private void SwapBackgroundOnce()
+    {
+        if (backgroundImage != null && swappedBackgroundSprite != null)
+        {
+            backgroundImage.sprite = swappedBackgroundSprite;
+            hasSwappedBackground = true;
+        }
     }
 
     // ---------------- Typing effect ----------------
