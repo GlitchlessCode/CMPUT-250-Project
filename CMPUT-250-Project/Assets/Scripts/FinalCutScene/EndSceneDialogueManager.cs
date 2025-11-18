@@ -142,7 +142,7 @@ public class EndSceneDialogueManager : Subscriber
     {
         if (canUpdate && currentLineIndex < orderedLines.Count)
         {
-            if (Input.GetKey(KeyCode.KeypadEnter) || Input.GetKey(KeyCode.Return))
+            if (Input.GetKeyUp(KeyCode.KeypadEnter) || Input.GetKeyUp(KeyCode.Return))
             {
                 OnNextClicked();
                 StartCoroutine(DelayAction(0.5f));
