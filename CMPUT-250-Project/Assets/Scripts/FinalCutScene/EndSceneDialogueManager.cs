@@ -24,7 +24,7 @@ public class EndSceneDialogueManager : Subscriber
     public string[] dialogueFiles;
 
     private Dictionary<string, EndSceneLine> lines;
-    private List<EndSceneLine> orderedLines = null;
+    private List<EndSceneLine> orderedLines = new List<EndSceneLine>();
     private int currentLineIndex = -1;
     private bool hasRequestedLoad = false;
 
@@ -106,7 +106,10 @@ public class EndSceneDialogueManager : Subscriber
     // ---------------- JSON load callback ----------------
     private void OnAsyncComplete()
     {
-        Debug.Log(lines.ToString());
+        foreach (KeyValuePair<string, EndSceneLine> line in lines)
+        {
+            Debug.Log(line);
+        }
         if (hasRequestedLoad)
             return; // avoid double-start if event emitted twice
         hasRequestedLoad = true;
@@ -116,6 +119,7 @@ public class EndSceneDialogueManager : Subscriber
         {
             if (lines.TryGetValue(file, out EndSceneLine line))
             {
+                Debug.Log(line);
                 orderedLines.Add(line);
             }
             else
