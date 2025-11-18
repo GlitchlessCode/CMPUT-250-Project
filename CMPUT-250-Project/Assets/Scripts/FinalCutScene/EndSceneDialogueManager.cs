@@ -37,6 +37,7 @@ public class EndSceneDialogueManager : Subscriber
     public Text dialogueText; // regular UnityEngine.UI.Text
     public Button nextButton;
     public Image characterImage; // character portrait image
+    public Animator credits;
 
     [Header("Character Sprites")]
     public Sprite[] characterSprites; // indices used by spriteIndex
@@ -52,7 +53,6 @@ public class EndSceneDialogueManager : Subscriber
     public AudioGameEvent SfxBus; // SFX bus (typing, click, etc.)
 
     [Header("Audio Clips")]
-    public Audio EndSceneMusic; // background track for this scene
     public Audio TypingSfx; // small bleep for typing
     public Audio NextLineSfx; // optional click when moving to next line
 
@@ -83,12 +83,6 @@ public class EndSceneDialogueManager : Subscriber
         {
             nextButton.onClick.AddListener(OnNextClicked);
             nextButton.interactable = false; // we enable this once lines are loaded
-        }
-
-        // Start end-scene music via the audio bus (if configured)
-        if (MusicBus != null && EndSceneMusic.clip != null) // CHANGED
-        {
-            MusicBus.Emit(EndSceneMusic);
         }
 
         // Start loading our end-scene JSON via the existing async importer
@@ -166,8 +160,15 @@ public class EndSceneDialogueManager : Subscriber
         }
         else
         {
-            ShowNextLine();
+            StartCoroutine(DelayedNextLine());
         }
+    }
+
+    private IEnumerator DelayedNextLine()
+    {
+        dialogueText.text = string.Empty;
+        yield return new WaitForSeconds(0.2f);
+        ShowNextLine();
     }
 
     private void ShowNextLine()
@@ -183,7 +184,7 @@ public class EndSceneDialogueManager : Subscriber
             if (textBoxGroup != null)
                 StartCoroutine(FadeTextBox(1f, 0f, 0.5f));
 
-            // TODO: trigger scene change / credits here if needed
+            credits.SetTrigger("FadeIn");
             return;
         }
 
