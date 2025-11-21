@@ -26,6 +26,9 @@ public class DirectMessageManager : Subscriber
 
     [Header("Event Listeners")]
     public BoolGameEvent AfterAppeal;
+    public UnitGameEvent AsyncComplete;
+
+    private bool asyncComplete = false;
 
     [Header("Events")]
     public DirectMessageGameEvent MessageTarget;
@@ -52,6 +55,7 @@ public class DirectMessageManager : Subscriber
     public override void Subscribe()
     {
         AfterAppeal?.Subscribe(OnAfterAppealQueued);
+        AsyncComplete?.Subscribe(OnAsyncComplete);
 
         queuedAppeals = new Queue<bool>();
         StartCoroutine(
@@ -118,6 +122,18 @@ public class DirectMessageManager : Subscriber
                 queuedSequences[id] = 0;
 
                 coupled.trigger.Subscribe(action);
+            }
+        }
+    }
+
+    void OnAsyncComplete()
+    {
+        if (!asyncComplete)
+        {
+            asyncComplete = true;
+            if (!isRunningQueue && queuedMessages.Count > 0)
+            {
+                StartCoroutine(RunQueue());
             }
         }
     }
@@ -212,7 +228,7 @@ public class DirectMessageManager : Subscriber
     void QueueMessage(DirectMessage message)
     {
         queuedMessages.Enqueue(message);
-        if (!isRunningQueue)
+        if (!isRunningQueue && asyncComplete)
         {
             StartCoroutine(RunQueue());
         }
