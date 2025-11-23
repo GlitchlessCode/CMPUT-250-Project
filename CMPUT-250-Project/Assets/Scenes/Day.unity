@@ -4403,8 +4403,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 11.999922, y: 0}
+  m_SizeDelta: {x: 1160, y: 0}
   m_Pivot: {x: -0.000000067055225, y: 1}
 --- !u!114 &1086780059
 MonoBehaviour:
@@ -7601,11 +7601,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d63c47afd9ed2199be7a8347666dfdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GoodMessages: {fileID: 11400000, guid: e96e02f5d646941f9a4ce3ceec14335c, type: 2}
-  BadMessages: {fileID: 11400000, guid: 7b103eec60431664cb3ec616c7671363, type: 2}
+  StartingGoodMessages: {fileID: 11400000, guid: 5e4ec2d9e377ddd10a7715b3bd948c78,
+    type: 2}
+  StartingBadMessages: {fileID: 11400000, guid: 42182619d73c919b1b30b41b47a8d732,
+    type: 2}
+  StayingGoodMessages: {fileID: 11400000, guid: e96e02f5d646941f9a4ce3ceec14335c,
+    type: 2}
+  StayingBadMessages: {fileID: 11400000, guid: 7b103eec60431664cb3ec616c7671363, type: 2}
   GettingGoodMessages: {fileID: 11400000, guid: 937f1be730a07504ea83e37a695a8d57,
     type: 2}
   GettingBadMessages: {fileID: 11400000, guid: c3551468295be374897a894ffc1422d8, type: 2}
+  FeedbackPoints: 050000000a000000
+  RatioForGood: 0.75
   MessageSequences:
   - trigger: {fileID: 11400000, guid: 33d83fdd621ae47188ee41fecc01d67c, type: 2}
     sequence: {fileID: 11400000, guid: 8db4488eabbb4279da9580e389648dea, type: 2}
@@ -9605,7 +9612,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 22.7, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2086084006

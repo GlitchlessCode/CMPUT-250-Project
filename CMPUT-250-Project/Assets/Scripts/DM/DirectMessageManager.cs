@@ -21,11 +21,29 @@ public class DirectMessageManager : Subscriber
 
     private MessageType lastMessageType = MessageType.None;
 
-    [Header("Pools")]
-    public DirectMessagePoolDefinition GoodMessages;
-    public DirectMessagePoolDefinition BadMessages;
+    private enum FeedbackState
+    {
+        NoFeedback,
+        GoodFeedback,
+        BadFeedback,
+    }
+
+    [Header("Feedback")]
+    public DirectMessagePoolDefinition StartingGoodMessages;
+    public DirectMessagePoolDefinition StartingBadMessages;
+    public DirectMessagePoolDefinition StayingGoodMessages;
+    public DirectMessagePoolDefinition StayingBadMessages;
     public DirectMessagePoolDefinition GettingGoodMessages;
     public DirectMessagePoolDefinition GettingBadMessages;
+
+    public List<int> FeedbackPoints;
+
+    [Range(0.0f, 1.0f)]
+    public float RatioForGood = 0.75f;
+
+    private FeedbackState state;
+    private int appealCount;
+    private int correctAppealCount;
 
     [Header("Sequences")]
     public List<CoupledEventSequence> MessageSequences;
@@ -44,15 +62,13 @@ public class DirectMessageManager : Subscriber
     public AudioGameEvent AudioBus;
     public UnitGameEvent AddTimestamp;
 
-    private int lastState = 0;
-    private int state = 0;
-    private bool loadedGoodMessages = false;
-    private InternalDirectMessagePool goodMessages;
-    private bool loadedBadMessages = false;
-    private InternalDirectMessagePool badMessages;
-    private bool loadedGettingGoodMessages = false;
+    private int loadedPools = 0;
+    private const int TOTAL_POOLS = 6;
+    private InternalDirectMessagePool startingGoodMessages;
+    private InternalDirectMessagePool startingBadMessages;
+    private InternalDirectMessagePool stayingGoodMessages;
+    private InternalDirectMessagePool stayingBadMessages;
     private InternalDirectMessagePool gettingGoodMessages;
-    private bool loadedGettingBadMessages = false;
     private InternalDirectMessagePool gettingBadMessages;
     private List<InternalDirectMessageSequence> messageSequences;
 
@@ -70,21 +86,41 @@ public class DirectMessageManager : Subscriber
 
         queuedAppeals = new Queue<bool>();
         StartCoroutine(
-            GoodMessages.GetMessages(
+            StartingGoodMessages.GetMessages(
                 (messages) =>
                 {
-                    goodMessages = new InternalDirectMessagePool(messages);
-                    loadedGoodMessages = true;
+                    startingGoodMessages = new InternalDirectMessagePool(messages);
+                    loadedPools++;
                     catchUpAppeals();
                 }
             )
         );
         StartCoroutine(
-            BadMessages.GetMessages(
+            StartingBadMessages.GetMessages(
                 (messages) =>
                 {
-                    badMessages = new InternalDirectMessagePool(messages);
-                    loadedBadMessages = true;
+                    startingBadMessages = new InternalDirectMessagePool(messages);
+                    loadedPools++;
+                    catchUpAppeals();
+                }
+            )
+        );
+        StartCoroutine(
+            StayingGoodMessages.GetMessages(
+                (messages) =>
+                {
+                    stayingGoodMessages = new InternalDirectMessagePool(messages);
+                    loadedPools++;
+                    catchUpAppeals();
+                }
+            )
+        );
+        StartCoroutine(
+            StayingBadMessages.GetMessages(
+                (messages) =>
+                {
+                    stayingBadMessages = new InternalDirectMessagePool(messages);
+                    loadedPools++;
                     catchUpAppeals();
                 }
             )
@@ -94,7 +130,7 @@ public class DirectMessageManager : Subscriber
                 (messages) =>
                 {
                     gettingGoodMessages = new InternalDirectMessagePool(messages);
-                    loadedGettingGoodMessages = true;
+                    loadedPools++;
                     catchUpAppeals();
                 }
             )
@@ -104,7 +140,7 @@ public class DirectMessageManager : Subscriber
                 (messages) =>
                 {
                     gettingBadMessages = new InternalDirectMessagePool(messages);
-                    loadedGettingBadMessages = true;
+                    loadedPools++;
                     catchUpAppeals();
                 }
             )
@@ -156,48 +192,51 @@ public class DirectMessageManager : Subscriber
 
     void OnAfterAppeal(bool currentCorrect)
     {
-        float frequency = UnityEngine.Random.Range(0.0f, 1.0f);
+        appealCount++;
         if (currentCorrect)
+            correctAppealCount++;
+
+        Debug.Log(
+            $"{correctAppealCount} / {appealCount} = {(float)correctAppealCount / (float)appealCount}"
+        );
+
+        if (FeedbackPoints.Contains(appealCount))
         {
-            state = Math.Min(state + 1, 2);
-        }
-        else
-        {
-            state = Math.Max(state - 1, -2);
-        }
-        if (state == 0 && lastState > 0) // getting bad
-        {
-            QueueMessage(MessageType.Pool, gettingBadMessages.GetRandomMessage());
-        }
-        else if (state == 0 && lastState < 0) // getting good
-        {
-            QueueMessage(MessageType.Pool, gettingGoodMessages.GetRandomMessage());
-        }
-        else if (state > 0 && lastState > 0) // good
-        {
-            if (frequency <= 0.3)
+            InternalDirectMessagePool goodPool;
+            InternalDirectMessagePool badPool;
+            switch (state)
             {
-                QueueMessage(MessageType.Pool, goodMessages.GetRandomMessage());
+                case FeedbackState.BadFeedback:
+                    goodPool = gettingGoodMessages;
+                    badPool = stayingBadMessages;
+                    break;
+                case FeedbackState.GoodFeedback:
+                    goodPool = stayingGoodMessages;
+                    badPool = gettingBadMessages;
+                    break;
+                case FeedbackState.NoFeedback:
+                default:
+                    goodPool = startingGoodMessages;
+                    badPool = startingBadMessages;
+                    break;
+            }
+
+            if (((float)correctAppealCount / (float)appealCount) >= RatioForGood)
+            {
+                QueueMessage(MessageType.Pool, goodPool.GetRandomMessage());
+                state = FeedbackState.GoodFeedback;
+            }
+            else
+            {
+                QueueMessage(MessageType.Pool, badPool.GetRandomMessage());
+                state = FeedbackState.BadFeedback;
             }
         }
-        else if (state < 0 && lastState < 0) // bad
-        {
-            if (frequency <= 0.3)
-            {
-                QueueMessage(MessageType.Pool, badMessages.GetRandomMessage());
-            }
-        }
-        lastState = state;
     }
 
     void catchUpAppeals()
     {
-        if (
-            loadedGoodMessages
-            && loadedBadMessages
-            && loadedGettingGoodMessages
-            && loadedGettingBadMessages
-        )
+        if (loadedPools == TOTAL_POOLS)
         {
             if (queuedAppeals.Count > 0)
             {
@@ -249,11 +288,10 @@ public class DirectMessageManager : Subscriber
     {
         isRunningQueue = true;
 
-        yield return new WaitForSeconds(0.7f);
-
         while (queuedMessages.Count > 0)
         {
             var (type, message) = queuedMessages.Dequeue();
+            yield return new WaitForSeconds(message.message.Length * 0.0019f + 0.5f);
             if (type != lastMessageType && lastMessageType != MessageType.None)
                 AddTimestamp?.Emit();
             lastMessageType = type;
@@ -262,7 +300,6 @@ public class DirectMessageManager : Subscriber
             {
                 AudioBus?.Emit(DMArrivedAudio);
             }
-            yield return new WaitForSeconds(0.7f);
         }
 
         isRunningQueue = false;
@@ -287,16 +324,17 @@ public class DirectMessageManager : Subscriber
 class InternalDirectMessagePool
 {
     List<DirectMessage> messages;
+    private System.Random randState;
 
     public InternalDirectMessagePool(List<DirectMessage> messagesIn)
     {
         messages = messagesIn;
+        randState = new System.Random();
     }
 
     public DirectMessage GetRandomMessage()
     {
-        System.Random rand = new System.Random();
-        return messages[rand.Next(messages.Count)];
+        return messages[randState.Next(messages.Count)];
     }
 }
 
