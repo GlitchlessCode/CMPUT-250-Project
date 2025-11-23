@@ -196,10 +196,6 @@ public class DirectMessageManager : Subscriber
         if (currentCorrect)
             correctAppealCount++;
 
-        Debug.Log(
-            $"{correctAppealCount} / {appealCount} = {(float)correctAppealCount / (float)appealCount}"
-        );
-
         if (FeedbackPoints.Contains(appealCount))
         {
             InternalDirectMessagePool goodPool;
