@@ -12,6 +12,7 @@ public class DMSPanelController : Subscriber
     [Header("Event Listeners")]
     public DirectMessageGameEvent DMSent;
     public BoolGameEvent DMTabClick;
+    public UnitGameEvent AddTimestamp;
 
     [SerializeField]
     private TextMeshProUGUI textComponent;
@@ -30,7 +31,10 @@ public class DMSPanelController : Subscriber
     public float scrollSpeed = 5000000f;
     private Vector3 initialPosition;
 
-    void Start()
+    [Header("Timestamps")]
+    public Text TimestampPrefab;
+
+    private void Start()
     {
         content.anchoredPosition = new Vector2(0, 0);
         audioUpdate = true;
@@ -40,6 +44,7 @@ public class DMSPanelController : Subscriber
     {
         DMSent?.Subscribe(OnDMSent);
         DMTabClick?.Subscribe(OnDMTabClick);
+        AddTimestamp?.Subscribe(OnAddTimestamp);
     }
 
     public void OnDMSent(DirectMessage DM)
@@ -57,6 +62,12 @@ public class DMSPanelController : Subscriber
         {
             scrollable = false;
         }
+    }
+
+    private void OnAddTimestamp()
+    {
+        Text timestamp = Instantiate(TimestampPrefab, DMPanel);
+        timestamp.text = $"  {System.DateTime.Now.ToString("t")}";
     }
 
     void Update()

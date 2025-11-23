@@ -12,6 +12,15 @@ public struct CoupledEventSequence
 
 public class DirectMessageManager : Subscriber
 {
+    private enum MessageType
+    {
+        None,
+        Pool,
+        Sequence,
+    };
+
+    private MessageType lastMessageType = MessageType.None;
+
     [Header("Pools")]
     public DirectMessagePoolDefinition GoodMessages;
     public DirectMessagePoolDefinition BadMessages;
@@ -33,6 +42,7 @@ public class DirectMessageManager : Subscriber
     [Header("Events")]
     public DirectMessageGameEvent MessageTarget;
     public AudioGameEvent AudioBus;
+    public UnitGameEvent AddTimestamp;
 
     private int lastState = 0;
     private int state = 0;
@@ -49,7 +59,8 @@ public class DirectMessageManager : Subscriber
     private Queue<bool> queuedAppeals;
     private Dictionary<Guid, int> queuedSequences;
 
-    private Queue<DirectMessage> queuedMessages = new Queue<DirectMessage>();
+    private Queue<(MessageType, DirectMessage)> queuedMessages =
+        new Queue<(MessageType, DirectMessage)>();
     private bool isRunningQueue = false;
 
     public override void Subscribe()
@@ -156,24 +167,24 @@ public class DirectMessageManager : Subscriber
         }
         if (state == 0 && lastState > 0) // getting bad
         {
-            QueueMessage(gettingBadMessages.GetRandomMessage());
+            QueueMessage(MessageType.Pool, gettingBadMessages.GetRandomMessage());
         }
         else if (state == 0 && lastState < 0) // getting good
         {
-            QueueMessage(gettingGoodMessages.GetRandomMessage());
+            QueueMessage(MessageType.Pool, gettingGoodMessages.GetRandomMessage());
         }
         else if (state > 0 && lastState > 0) // good
         {
             if (frequency <= 0.3)
             {
-                QueueMessage(goodMessages.GetRandomMessage());
+                QueueMessage(MessageType.Pool, goodMessages.GetRandomMessage());
             }
         }
         else if (state < 0 && lastState < 0) // bad
         {
             if (frequency <= 0.3)
             {
-                QueueMessage(badMessages.GetRandomMessage());
+                QueueMessage(MessageType.Pool, badMessages.GetRandomMessage());
             }
         }
         lastState = state;
@@ -218,16 +229,16 @@ public class DirectMessageManager : Subscriber
         {
             foreach (DirectMessage msg in seq.GetMessages())
             {
-                QueueMessage(msg);
+                QueueMessage(MessageType.Sequence, msg);
             }
         }
 
         return OnSequenceTrigger;
     }
 
-    void QueueMessage(DirectMessage message)
+    void QueueMessage(MessageType type, DirectMessage message)
     {
-        queuedMessages.Enqueue(message);
+        queuedMessages.Enqueue((type, message));
         if (!isRunningQueue && asyncComplete)
         {
             StartCoroutine(RunQueue());
@@ -242,7 +253,10 @@ public class DirectMessageManager : Subscriber
 
         while (queuedMessages.Count > 0)
         {
-            DirectMessage message = queuedMessages.Dequeue();
+            var (type, message) = queuedMessages.Dequeue();
+            if (type != lastMessageType && lastMessageType != MessageType.None)
+                AddTimestamp?.Emit();
+            lastMessageType = type;
             MessageTarget?.Emit(message);
             if (DMArrivedAudio.clip != null)
             {
