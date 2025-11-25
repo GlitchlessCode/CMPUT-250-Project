@@ -12,10 +12,6 @@ public class UserManager : Subscriber
     [Header("Validation")]
     private UserEntry? currentUser;
     Validator validator = new Validator();
-    public Animator RedRing;
-    public Text BrokenRuleText;
-    private Coroutine valRoutine;
-    public float MistakeTime = 2f;
 
     private Dictionary<string, UserEntry> users;
 
@@ -28,6 +24,7 @@ public class UserManager : Subscriber
     public UserEntryGameEvent UserLoaded;
     public StringGameEvent ValidatorLoaded;
     public StringGameEvent DayDate;
+    public StringGameEvent Mistake;
     public UnitGameEvent AsyncComplete;
 
     // `true` implies player chose correctly, `false` implies player chose incorrectly
@@ -145,42 +142,22 @@ public class UserManager : Subscriber
                 {
                     if (validator.DateCheck(user, day.Date))
                     {
-                        BrokenRuleText.text = "User had been banned for a month already...";
+                        Mistake?.Emit("User had been banned for a month already...");
                     }
                     else
                     {
-                        BrokenRuleText.text = "No Rules Broken";
+                        Mistake?.Emit("No Rules Broken");
                     }
                 }
                 else
                 {
-                    BrokenRuleText.text = validator.GetBrokenRules(user, day.Date);
+                    Mistake?.Emit(validator.GetBrokenRules(user, day.Date));
                 }
-                RedRing.SetBool("Show", true);
             }
-            else
-            {
-                RedRing.SetBool("Show", false);
-            }
-            if (valRoutine != null)
-            {
-                StopCoroutine(valRoutine);
-            }
-            Canvas.ForceUpdateCanvases();
-            BrokenRuleText.transform.parent.GetComponent<HorizontalLayoutGroup>().enabled = false;
-            BrokenRuleText.transform.parent.GetComponent<HorizontalLayoutGroup>().enabled = true;
-
             AfterAppeal?.Emit(correct == decision);
         }
 
-        valRoutine = StartCoroutine(RedRingOff());
         MoveToNextUser();
-    }
-
-    IEnumerator RedRingOff()
-    {
-        yield return new WaitForSeconds(MistakeTime);
-        RedRing.SetBool("Show", false);
     }
 
     private void OnUserInfoRequest()

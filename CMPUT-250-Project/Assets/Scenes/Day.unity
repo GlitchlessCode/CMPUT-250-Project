@@ -6226,15 +6226,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3df76cb733ee772448cd1ffa253ae05c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RedRing: {fileID: 1447884754}
-  BrokenRuleText: {fileID: 2086084006}
-  MistakeTime: 2
   ResolveAppeal: {fileID: 11400000, guid: 4c381b5a82e316b71a52ad513c65bbb5, type: 2}
   UserInfoRequest: {fileID: 11400000, guid: bd767a99f22ae800b90886e07da843ce, type: 2}
   DayLoaded: {fileID: 11400000, guid: 9eae0ffb72c123fafb163a013cfeeaa3, type: 2}
   UserLoaded: {fileID: 11400000, guid: 2e23c26185f87442795df3f94db57909, type: 2}
   ValidatorLoaded: {fileID: 11400000, guid: a7beb5f51cad79fa6a4f62610bddb8c7, type: 2}
   DayDate: {fileID: 11400000, guid: ccb92dd95991c0d4f9b1cf2d85ade1c1, type: 2}
+  Mistake: {fileID: 11400000, guid: 190cbf12e322e76d682e33bf22d8bd4d, type: 2}
   AsyncComplete: {fileID: 11400000, guid: c371d16b7454de745adfa5f1e67ebd48, type: 2}
   AfterAppeal: {fileID: 11400000, guid: 3415a55705509574ba2326867d1369be, type: 2}
   DayStart: {fileID: 11400000, guid: c79ecc17206ea70d08a8aecfb3aa8695, type: 2}
@@ -8955,6 +8953,7 @@ GameObject:
   - component: {fileID: 1987603606}
   - component: {fileID: 1987603607}
   - component: {fileID: 1987603608}
+  - component: {fileID: 1987603609}
   m_Layer: 0
   m_Name: UIController
   m_TagString: Untagged
@@ -9204,6 +9203,32 @@ MonoBehaviour:
       active: 0
       value: 0
   AudioBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
+--- !u!114 &1987603609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1987603600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c1d7feb62dcf0087abd7f1a18158964, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RedRing: {fileID: 1447884754}
+  BrokenRuleText: {fileID: 2086084006}
+  MistakeTime: 2
+  MistakeSound:
+    clip: {fileID: 8300000, guid: 2d800054e581413849e405b1ab86da7e, type: 3}
+    volume: 0.6
+    pitchVariance: 0.15
+    loop: 0
+    pitchOverride:
+      active: 0
+      value: 0
+  AudioBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
+  Mistake: {fileID: 11400000, guid: 190cbf12e322e76d682e33bf22d8bd4d, type: 2}
+  AfterAppeal: {fileID: 11400000, guid: 3415a55705509574ba2326867d1369be, type: 2}
 --- !u!1 &2004798487
 GameObject:
   m_ObjectHideFlags: 0
