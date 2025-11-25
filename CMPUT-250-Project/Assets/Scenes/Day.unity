@@ -1220,7 +1220,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -639.84, y: -95.46}
+  m_AnchoredPosition: {x: -639.84, y: -95.5}
   m_SizeDelta: {x: 349.97995, y: 93.01313}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &185184380
@@ -1913,7 +1913,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 80, y: -95.461914}
+  m_AnchoredPosition: {x: 80, y: -95.5}
   m_SizeDelta: {x: 356.69943, y: 93.01754}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &485931865
@@ -5172,7 +5172,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 374343517}
   m_HandleRect: {fileID: 374343516}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -6662,6 +6662,7 @@ MonoBehaviour:
   DelayTime: 1
   AudioBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
   DayFinished: {fileID: 11400000, guid: 39445b5451252904ab3289bc94759e3f, type: 2}
+  DMPanelActive: {fileID: 11400000, guid: 074e5403052471449b841afb3e4f8100, type: 2}
   canUpdate: 1
 --- !u!114 &1575665153
 MonoBehaviour:
@@ -7600,11 +7601,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d63c47afd9ed2199be7a8347666dfdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GoodMessages: {fileID: 11400000, guid: e96e02f5d646941f9a4ce3ceec14335c, type: 2}
-  BadMessages: {fileID: 11400000, guid: 7b103eec60431664cb3ec616c7671363, type: 2}
+  StartingGoodMessages: {fileID: 11400000, guid: 5e4ec2d9e377ddd10a7715b3bd948c78,
+    type: 2}
+  StartingBadMessages: {fileID: 11400000, guid: 42182619d73c919b1b30b41b47a8d732,
+    type: 2}
+  StayingGoodMessages: {fileID: 11400000, guid: e96e02f5d646941f9a4ce3ceec14335c,
+    type: 2}
+  StayingBadMessages: {fileID: 11400000, guid: 7b103eec60431664cb3ec616c7671363, type: 2}
   GettingGoodMessages: {fileID: 11400000, guid: 937f1be730a07504ea83e37a695a8d57,
     type: 2}
   GettingBadMessages: {fileID: 11400000, guid: c3551468295be374897a894ffc1422d8, type: 2}
+  FeedbackPoints: 050000000a000000
+  RatioForGood: 0.75
   MessageSequences:
   - trigger: {fileID: 11400000, guid: 33d83fdd621ae47188ee41fecc01d67c, type: 2}
     sequence: {fileID: 11400000, guid: 8db4488eabbb4279da9580e389648dea, type: 2}
@@ -7627,8 +7635,10 @@ MonoBehaviour:
       active: 0
       value: 0
   AfterAppeal: {fileID: 11400000, guid: 3415a55705509574ba2326867d1369be, type: 2}
+  AsyncComplete: {fileID: 11400000, guid: c371d16b7454de745adfa5f1e67ebd48, type: 2}
   MessageTarget: {fileID: 11400000, guid: 97ebe09952f655c42b984331ad049f6d, type: 2}
   AudioBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
+  AddTimestamp: {fileID: 11400000, guid: 9e5849bb78caaf7db82042b6eda21e0f, type: 2}
 --- !u!1 &1737691715
 GameObject:
   m_ObjectHideFlags: 0
@@ -9076,6 +9086,7 @@ MonoBehaviour:
   AudioBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
   DMSent: {fileID: 11400000, guid: 97ebe09952f655c42b984331ad049f6d, type: 2}
   DMTabClick: {fileID: 11400000, guid: 074e5403052471449b841afb3e4f8100, type: 2}
+  AddTimestamp: {fileID: 11400000, guid: 9e5849bb78caaf7db82042b6eda21e0f, type: 2}
   textComponent: {fileID: 0}
   image: {fileID: 0}
   container: {fileID: 364561899323518073, guid: 1e9803137db81244293d380ba2c318ed,
@@ -9091,6 +9102,8 @@ MonoBehaviour:
       active: 0
       value: 0
   scrollSpeed: 5
+  TimestampPrefab: {fileID: 827716288257779411, guid: 100f33708f197674c9c700e89927e891,
+    type: 3}
 --- !u!114 &1987603606
 MonoBehaviour:
   m_ObjectHideFlags: 0

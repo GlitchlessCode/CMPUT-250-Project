@@ -8,6 +8,15 @@ using UnityEngine.UI;
 
 public class PowerButtonController : Subscriber
 {
+    private enum ButtonState
+    {
+        Inactive,
+        WaitingForDMTab,
+        WaitingForRead,
+        CanShutdown,
+        IsShuttingDown,
+    };
+
     public Animator PowerOffPanel;
 
     [Header("Audio")]
@@ -30,15 +39,16 @@ public class PowerButtonController : Subscriber
 
     [Header("Event Listeners")]
     public UnitGameEvent DayFinished;
+    public BoolGameEvent DMPanelActive;
 
-    private bool isShuttingDown = false;
-    private bool canShutdown = false;
+    private ButtonState state = ButtonState.Inactive;
 
     public bool canUpdate = true;
 
     public override void Subscribe()
     {
         DayFinished?.Subscribe(OnDayFinished);
+        DMPanelActive?.Subscribe(OnDMPanelActive);
     }
 
     public override void AfterSubscribe()
@@ -54,7 +64,26 @@ public class PowerButtonController : Subscriber
 
     private void OnDayFinished()
     {
-        canShutdown = true;
+        if (state == ButtonState.Inactive)
+        {
+            state = ButtonState.WaitingForDMTab;
+        }
+    }
+
+    private void OnDMPanelActive(bool active)
+    {
+        if (active && state == ButtonState.WaitingForDMTab)
+        {
+            state = ButtonState.WaitingForRead;
+            StartCoroutine(WaitForRead());
+        }
+    }
+
+    private IEnumerator WaitForRead()
+    {
+        yield return new WaitForSeconds(2.5f);
+
+        state = ButtonState.CanShutdown;
 
         //Set PowerButtonAnimator to flashing sequence
         if (PowerButtonAnimator != null)
@@ -79,8 +108,10 @@ public class PowerButtonController : Subscriber
 
     public void OnPowerPressed()
     {
-        if (canShutdown && !isShuttingDown)
+        if (state == ButtonState.CanShutdown)
         {
+            state = ButtonState.IsShuttingDown;
+
             if (ClickValidAudio.clip != null)
             {
                 AudioBus?.Emit(ClickValidAudio);
@@ -118,7 +149,6 @@ public class PowerButtonController : Subscriber
 
     private IEnumerator Shutdown()
     {
-        isShuttingDown = true;
         yield return new WaitForSeconds(0.15f);
         if (ShutdownAudio.clip != null)
         {
