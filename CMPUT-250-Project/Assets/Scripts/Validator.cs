@@ -41,7 +41,7 @@ public class Validator
     // Get which rules broken
     public string GetBrokenRules(UserEntry? user, string Date)
     {
-        string broken = "Broke Rule(s): ";
+        string broken = "Rule Number Broken: ";
 
         foreach (var kvp in _conditions)
         {
