@@ -291,6 +291,7 @@ GameObject:
   - component: {fileID: 323799115}
   - component: {fileID: 323799114}
   - component: {fileID: 323799117}
+  - component: {fileID: 323799118}
   m_Layer: 5
   m_Name: PlayAgainButton
   m_TagString: Untagged
@@ -435,6 +436,21 @@ MonoBehaviour:
       active: 0
       value: 0
   AudioBus: {fileID: 11400000, guid: 7aa3e6f8e7ff8143aa03f78053e4c52f, type: 2}
+--- !u!114 &323799118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 323799112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.2509804}
+  m_EffectDistance: {x: 0, y: -5}
+  m_UseGraphicAlpha: 1
 --- !u!1 &509620290
 GameObject:
   m_ObjectHideFlags: 0
