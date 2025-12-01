@@ -8,8 +8,10 @@ public class MistakesController : Subscriber
     [Header("Validation")]
     public Animator RedRing;
     public Text BrokenRuleText;
+    public Text NumMistakes;
     private Coroutine valRoutine;
-    public float MistakeTime = 2f;
+    public float MistakeTime = 4f;
+    private int Mistakes = 0;
 
     [Header("Audio")]
     public Audio MistakeSound;
@@ -19,12 +21,14 @@ public class MistakesController : Subscriber
 
     [Header("Event Listeners")]
     public StringGameEvent Mistake;
+    public IntGameEvent DayStart;
     public BoolGameEvent AfterAppeal;
 
     public override void Subscribe()
     {
         AfterAppeal?.Subscribe(OnAfterAppeal);
         Mistake?.Subscribe(OnMistake);
+        DayStart?.Subscribe(OnDayStart);
     }
 
     private void OnAfterAppeal(bool correct)
@@ -33,9 +37,17 @@ public class MistakesController : Subscriber
             RedRing.SetBool("Show", false);
     }
 
+    private void OnDayStart(int dayIndex)
+    {
+        Mistakes = 0;
+    }
+
     private void OnMistake(string mistakeMsg)
     {
+        Mistakes++;
+        print(Mistakes);
         BrokenRuleText.text = mistakeMsg;
+        NumMistakes.text = "Total Failed Appeals: " + Mistakes.ToString();
         RedRing.SetBool("Show", true);
         if (valRoutine != null)
         {
