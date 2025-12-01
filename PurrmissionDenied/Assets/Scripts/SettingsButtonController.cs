@@ -22,6 +22,7 @@ public class SettingsButtonController : Subscriber
 
     [Header("Event Listeners")]
     public AudioGameEvent AudioBus;
+    public DayDefinitionGameEvent Day;
     private bool canUpdate = true;
 
     void Start()
@@ -33,10 +34,26 @@ public class SettingsButtonController : Subscriber
         SetupHoverOnlyButton(SettingsCloseButton);
     }
 
+    public override void Subscribe()
+    {
+        Day?.Subscribe(OnDay);
+    }
+
+    private void OnDay(DayDefinition dayDef)
+    {
+        if (dayDef.Index == 1)
+        {
+            // Run animation
+            Debug.Log("Flashing true");
+            SettingButtonAnimator.SetBool("IsFlashing", true);
+        }
+    }
+
     void OnSettingsOpen()
     {
         SettingsPanel.SetActive(true);
         AudioBus?.Emit(TabSwitch);
+        SettingButtonAnimator.SetBool("IsFlashing", false);
     }
 
     void OnSettingsClosed()

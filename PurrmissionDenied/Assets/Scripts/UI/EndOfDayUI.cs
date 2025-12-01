@@ -211,7 +211,7 @@ public class EndOfDayUI : Subscriber
         if (btn == null)
             yield break;
 
-        // Ensure there’s an EventSystem (if your scene doesn’t already have one)
+        // Ensure there’s an EventSystem (if the scene doesn’t already have one)
         if (EventSystem.current == null)
         {
             new GameObject("EventSystem", typeof(EventSystem), typeof(StandaloneInputModule));
