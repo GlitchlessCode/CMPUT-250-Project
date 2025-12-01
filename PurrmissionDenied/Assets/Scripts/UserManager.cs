@@ -31,6 +31,7 @@ public class UserManager : Subscriber
     public BoolGameEvent AfterAppeal;
     public IntGameEvent DayStart;
     public UnitGameEvent DayFinished;
+    public IntGameEvent GetUserAmount;
     private bool dayAlreadyFinished = false;
 
     public override void Subscribe()
@@ -62,9 +63,11 @@ public class UserManager : Subscriber
                     MoveToNextUser();
                     DayStart?.Emit(day.Index);
                     AsyncComplete?.Emit();
+                    GetUserAmount?.Emit(users.Count);
                 }
             )
         );
+        
     }
 
     private void sendDayData(InternalDayDefinition day)
