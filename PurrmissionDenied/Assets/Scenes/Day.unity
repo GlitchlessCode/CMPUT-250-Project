@@ -9723,16 +9723,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SuccessScore: 100
-  BonusScoreRatio: 1.25
   QuotaRatio: 0.75
-  perfectAppealTime: 5
-  worstAppealTime: 30
+  StreakStart: 3
+  StreakStartMultiplier: 1.05
+  StreakEnd: 5
+  StreakEndMultiplier: 1.35
   DayStart: {fileID: 11400000, guid: c79ecc17206ea70d08a8aecfb3aa8695, type: 2}
   DayFinished: {fileID: 11400000, guid: 39445b5451252904ab3289bc94759e3f, type: 2}
   CurrentDaySummaryRequest: {fileID: 11400000, guid: e09c9dd5394d75c01a4fff037da66131,
     type: 2}
   AfterAppeal: {fileID: 11400000, guid: 3415a55705509574ba2326867d1369be, type: 2}
-  UserLoaded: {fileID: 11400000, guid: 2e23c26185f87442795df3f94db57909, type: 2}
   DisplayCurrentDaySummary: {fileID: 11400000, guid: 796cea3c18e668a98bb7ffdaf615f0e9,
     type: 2}
 --- !u!4 &2077904381
