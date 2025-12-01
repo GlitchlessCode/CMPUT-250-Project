@@ -9,9 +9,11 @@ public class MistakesController : Subscriber
     public Animator RedRing;
     public Text BrokenRuleText;
     public Text NumMistakes;
+    public Text RemainingAppealsText;
     private Coroutine valRoutine;
     public float MistakeTime = 4f;
     private int Mistakes = 0;
+    private int RemainingAppeals = 0;
 
     [Header("Audio")]
     public Audio MistakeSound;
@@ -23,16 +25,35 @@ public class MistakesController : Subscriber
     public StringGameEvent Mistake;
     public IntGameEvent DayStart;
     public BoolGameEvent AfterAppeal;
+    public IntGameEvent GetUserAmount;
 
     public override void Subscribe()
     {
         AfterAppeal?.Subscribe(OnAfterAppeal);
         Mistake?.Subscribe(OnMistake);
         DayStart?.Subscribe(OnDayStart);
+        GetUserAmount?.Subscribe(OnGetUserAmount);
+    }
+
+    private void OnGetUserAmount(int amount)
+    {
+        RemainingAppeals = amount;
+        RemainingAppealsText.text = RemainingAppeals.ToString() + " Appeals Remaining";
     }
 
     private void OnAfterAppeal(bool correct)
     {
+        RemainingAppeals -= 1;
+
+        if (RemainingAppeals == 1)
+        {
+            RemainingAppealsText.text = RemainingAppeals.ToString() + " Appeal Remaining";
+        } 
+        else
+        {
+            RemainingAppealsText.text = RemainingAppeals.ToString() + " Appeals Remaining";
+        } 
+        
         if (correct)
             RedRing.SetBool("Show", false);
     }
@@ -45,7 +66,6 @@ public class MistakesController : Subscriber
     private void OnMistake(string mistakeMsg)
     {
         Mistakes++;
-        print(Mistakes);
         BrokenRuleText.text = mistakeMsg;
         NumMistakes.text = "Total Failed Appeals: " + Mistakes.ToString();
         RedRing.SetBool("Show", true);
