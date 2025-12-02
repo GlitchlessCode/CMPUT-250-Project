@@ -89,7 +89,6 @@ public class EndSceneDialogueManager : Subscriber
 
     public override void Subscribe()
     {
-        canUpdate = true;
         // Listen for the async-complete signal
         AsyncComplete?.Subscribe(OnAsyncComplete);
 
@@ -173,7 +172,10 @@ public class EndSceneDialogueManager : Subscriber
         }
 
         if (nextButton != null)
+        {
             nextButton.interactable = true;
+            canUpdate = true;
+        }
 
         currentLineIndex = -1;
         ShowNextLine();
