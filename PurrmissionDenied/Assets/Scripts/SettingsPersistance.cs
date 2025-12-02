@@ -33,7 +33,7 @@ public class SettingsPersistance : Subscriber
                     if (adjuster != null)
                     {
                         subscribers.Add(adjuster);
-                        savedVolumes.Add(1.0f);
+                        savedVolumes.Add(0.7f);
                     }
                 }
                 setup = true;
