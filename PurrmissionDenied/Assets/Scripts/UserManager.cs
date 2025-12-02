@@ -154,7 +154,14 @@ public class UserManager : Subscriber
                 }
                 else
                 {
-                    Mistake?.Emit(validator.GetBrokenRules(user, day.Date));
+                    if (user.Value.image_index == 39)
+                    {
+                        Mistake?.Emit("Rule Number(s) Broken: 1,9");
+                    }
+                    else
+                    {
+                        Mistake?.Emit(validator.GetBrokenRules(user, day.Date));
+                    }
                 }
             }
             AfterAppeal?.Emit(correct == decision);
