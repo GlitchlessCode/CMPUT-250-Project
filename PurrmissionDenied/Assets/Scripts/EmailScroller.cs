@@ -49,7 +49,7 @@ public class EmailScroller : Subscriber
 
     public void scroll()
     {
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
         {
             content.anchoredPosition -= new Vector2(0, 5);
             if (audioUpdate)
@@ -58,7 +58,7 @@ public class EmailScroller : Subscriber
                 StartCoroutine(DelayAudio(0.01f));
             }
         }
-        else if (Input.GetKey(KeyCode.DownArrow))
+        else if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
         {
             content.anchoredPosition += new Vector2(0, 5);
             if (audioUpdate)

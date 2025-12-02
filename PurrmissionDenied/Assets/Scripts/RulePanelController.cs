@@ -35,7 +35,7 @@ public class RulePanelController : Subscriber
 
     public void Update()
     {
-        if (Input.GetKey(KeyCode.UpArrow) && scrollable)
+        if ((Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W)) && scrollable)
         {
             content.anchoredPosition -= new Vector2(0, scrollSpeed);
             if (audioUpdate)
@@ -44,7 +44,7 @@ public class RulePanelController : Subscriber
                 StartCoroutine(DelayAudio(0.01f));
             }
         }
-        else if (Input.GetKey(KeyCode.DownArrow) && scrollable)
+        else if ((Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S)) && scrollable)
         {
             content.anchoredPosition += new Vector2(0, scrollSpeed);
             if (audioUpdate)
