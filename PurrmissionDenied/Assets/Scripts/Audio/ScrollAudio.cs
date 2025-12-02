@@ -31,7 +31,11 @@ public class ScrollAudio : MonoBehaviour
 
     private void OnScroll(PointerEventData _)
     {
-        AudioBus?.Emit(Scroll);
+        if (audioUpdate)
+        {
+            AudioBus?.Emit(Scroll);
+            StartCoroutine(DelayAudio(0.01f));
+        }
     }
 
     private void OnDrag(PointerEventData _)
