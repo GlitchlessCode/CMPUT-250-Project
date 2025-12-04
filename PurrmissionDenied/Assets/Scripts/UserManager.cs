@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
@@ -63,11 +64,10 @@ public class UserManager : Subscriber
                     MoveToNextUser();
                     DayStart?.Emit(day.Index);
                     AsyncComplete?.Emit();
-                    GetUserAmount?.Emit(users.Count);
+                    GetUserAmount?.Emit(day.PoolOrder.ConvertAll((order) => order.UserCount).Sum());
                 }
             )
         );
-        
     }
 
     private void sendDayData(InternalDayDefinition day)
