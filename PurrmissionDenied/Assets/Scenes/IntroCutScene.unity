@@ -1441,7 +1441,7 @@ PrefabInstance:
     - target: {fileID: 2443412243350133555, guid: 3ad9d82b17dee5966b3ce6d7643595c3,
         type: 3}
       propertyPath: PlayOnStart.Array.data[0].audio.volume
-      value: 0.3
+      value: 0.21
       objectReference: {fileID: 0}
     - target: {fileID: 2443412243350133555, guid: 3ad9d82b17dee5966b3ce6d7643595c3,
         type: 3}

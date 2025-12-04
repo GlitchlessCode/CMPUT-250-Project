@@ -557,7 +557,7 @@ PrefabInstance:
     - target: {fileID: 2443412243350133555, guid: 3ad9d82b17dee5966b3ce6d7643595c3,
         type: 3}
       propertyPath: PlayOnStart.Array.data[0].audio.volume
-      value: 0.4
+      value: 0.21
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ad9d82b17dee5966b3ce6d7643595c3, type: 3}
