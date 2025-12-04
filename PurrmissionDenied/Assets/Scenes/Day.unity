@@ -8293,7 +8293,7 @@ MonoBehaviour:
   GettingGoodMessages: {fileID: 11400000, guid: 937f1be730a07504ea83e37a695a8d57,
     type: 2}
   GettingBadMessages: {fileID: 11400000, guid: c3551468295be374897a894ffc1422d8, type: 2}
-  FeedbackPoints: 050000000a000000
+  FeedbackPoints: 030000000600000009000000
   RatioForGood: 0.75
   MessageSequences:
   - trigger: {fileID: 11400000, guid: 33d83fdd621ae47188ee41fecc01d67c, type: 2}
