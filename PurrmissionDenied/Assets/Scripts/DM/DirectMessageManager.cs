@@ -330,7 +330,10 @@ class InternalDirectMessagePool
 
     public DirectMessage GetRandomMessage()
     {
-        return messages[randState.Next(messages.Count)];
+        int idx = randState.Next(messages.Count);
+        DirectMessage item = messages[idx];
+        messages.RemoveAt(idx);
+        return item;
     }
 }
 
