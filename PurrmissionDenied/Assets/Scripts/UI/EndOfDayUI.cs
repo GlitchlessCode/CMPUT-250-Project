@@ -46,6 +46,7 @@ public class EndOfDayUI : Subscriber
 
     [Header("Events")]
     public UnitGameEvent RequestDaySummary;
+    public UnitGameEvent SolidifyRecords;
     public UnitGameEvent GoToNextDay;
     public AudioGameEvent AudioBus;
 
@@ -88,6 +89,7 @@ public class EndOfDayUI : Subscriber
 
         if (nextButton)
             nextButton.onClick.AddListener(() => OnNextButton(passedQuota));
+        SolidifyRecords?.Emit();
         StartCoroutine(AnimatedDisplaySequence(summary, quota, totalScore));
     }
 
